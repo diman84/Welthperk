@@ -1,6 +1,6 @@
 sudo: required
 language: csharp
-solution: src/WelthPeck.csproj
+solution: src/Welthperk.csproj
 services:
   - docker
 matrix:
