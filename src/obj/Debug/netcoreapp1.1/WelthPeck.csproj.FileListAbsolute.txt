@@ -1,0 +1,16 @@
+E:\Projects\WelthPeck\bin\Debug\netcoreapp1.1\WelthPeck.deps.json
+E:\Projects\WelthPeck\bin\Debug\netcoreapp1.1\WelthPeck.runtimeconfig.json
+E:\Projects\WelthPeck\bin\Debug\netcoreapp1.1\WelthPeck.runtimeconfig.dev.json
+E:\Projects\WelthPeck\bin\Debug\netcoreapp1.1\WelthPeck.dll
+E:\Projects\WelthPeck\bin\Debug\netcoreapp1.1\WelthPeck.pdb
+E:\Projects\WelthPeck\obj\Debug\netcoreapp1.1\WelthPeck.AssemblyInfo.cs
+E:\Projects\WelthPeck\obj\Debug\netcoreapp1.1\WelthPeck.dll
+E:\Projects\WelthPeck\obj\Debug\netcoreapp1.1\WelthPeck.pdb
+E:\Projects\WelthPeck\src\bin\Debug\netcoreapp1.1\WelthPeck.deps.json
+E:\Projects\WelthPeck\src\bin\Debug\netcoreapp1.1\WelthPeck.runtimeconfig.json
+E:\Projects\WelthPeck\src\bin\Debug\netcoreapp1.1\WelthPeck.runtimeconfig.dev.json
+E:\Projects\WelthPeck\src\bin\Debug\netcoreapp1.1\WelthPeck.dll
+E:\Projects\WelthPeck\src\bin\Debug\netcoreapp1.1\WelthPeck.pdb
+E:\Projects\WelthPeck\src\obj\Debug\netcoreapp1.1\WelthPeck.AssemblyInfo.cs
+E:\Projects\WelthPeck\src\obj\Debug\netcoreapp1.1\WelthPeck.dll
+E:\Projects\WelthPeck\src\obj\Debug\netcoreapp1.1\WelthPeck.pdb

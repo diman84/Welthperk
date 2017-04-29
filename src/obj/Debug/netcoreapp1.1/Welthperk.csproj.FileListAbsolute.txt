@@ -1,0 +1,8 @@
+E:\Projects\Welthperk\src\bin\Debug\netcoreapp1.1\Welthperk.deps.json
+E:\Projects\Welthperk\src\bin\Debug\netcoreapp1.1\Welthperk.runtimeconfig.json
+E:\Projects\Welthperk\src\bin\Debug\netcoreapp1.1\Welthperk.runtimeconfig.dev.json
+E:\Projects\Welthperk\src\bin\Debug\netcoreapp1.1\Welthperk.dll
+E:\Projects\Welthperk\src\bin\Debug\netcoreapp1.1\Welthperk.pdb
+E:\Projects\Welthperk\src\obj\Debug\netcoreapp1.1\Welthperk.AssemblyInfo.cs
+E:\Projects\Welthperk\src\obj\Debug\netcoreapp1.1\Welthperk.dll
+E:\Projects\Welthperk\src\obj\Debug\netcoreapp1.1\Welthperk.pdb
