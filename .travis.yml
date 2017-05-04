@@ -1,6 +1,6 @@
 sudo: required
 language: csharp
-solution: src/Welthperk.sln
+solution: src/Wealthperk.sln
 services:
   - docker
 matrix:
