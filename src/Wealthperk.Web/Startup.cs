@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Wealthperk.Model;
+using Wealthperk.AWS;
 
 namespace WelthPeck
 {
@@ -26,8 +29,14 @@ namespace WelthPeck
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             // Add framework services.
+            services.AddIdentity<UserInfo, UserIdentityRole>()
+                    .AddUserStore<DynamoDbUserStore>()
+                    .AddDefaultTokenProviders();
+            services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
+            //services.AddAWSService<IAmazonS3>();
+            services.AddAWSService<Amazon.DynamoDBv2.IAmazonDynamoDB>();
             services.AddMvc();
         }
 
@@ -40,7 +49,7 @@ namespace WelthPeck
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {

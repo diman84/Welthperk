@@ -8,14 +8,22 @@ namespace WelthPeck.Controllers
 {
     public class HomeController : Controller
     {
+        Amazon.DynamoDBv2.IAmazonDynamoDB _dynamoDb;
+
+        public HomeController(Amazon.DynamoDBv2.IAmazonDynamoDB dynamoDb)
+        {
+            _dynamoDb = dynamoDb;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
-            ViewData["Message"] = "Your application description page.";
+            var tables = await _dynamoDb.ListTablesAsync();
+            ViewData["Message"] = string.Join(", ", tables.TableNames);
 
             return View();
         }

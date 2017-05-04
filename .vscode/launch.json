@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/bin/Debug/netcoreapp1.0/Welthperk.dll",
+            "program": "${workspaceRoot}/src/Wealthperk.Web/bin/Debug/netcoreapp1.1/Wealthperk.Web.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
@@ -17,9 +17,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/bin/Debug/netcoreapp1.0/Welthperk.dll",
+            "program": "${workspaceRoot}/src/Wealthperk.Web/bin/Debug/netcoreapp1.1/Wealthperk.Web.dll",
             "args": [],
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}/src/Wealthperk.Web",
             "stopAtEntry": false,
             "launchBrowser": {
                 "enabled": true,
@@ -39,7 +39,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceRoot}/Views"
+                "/Views": "${workspaceRoot}/src/Wealthperk.Web/Views"
             }
         },
         {

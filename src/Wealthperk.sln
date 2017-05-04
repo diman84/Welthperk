@@ -1,0 +1,62 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wealthperk.Web", "Wealthperk.Web\Wealthperk.Web.csproj", "{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wealthperk.Model", "Wealthperk.Model\Wealthperk.Model.csproj", "{0CFE83E9-7091-44D7-8D68-6A7A017044B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wealthperk.AWS", "Wealthperk.AWS\Wealthperk.AWS.csproj", "{943EC98B-24D6-4426-BB16-64F801E616AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Debug|x64.ActiveCfg = Debug|x64
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Debug|x64.Build.0 = Debug|x64
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Debug|x86.ActiveCfg = Debug|x86
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Debug|x86.Build.0 = Debug|x86
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Release|x64.ActiveCfg = Release|x64
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Release|x64.Build.0 = Release|x64
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Release|x86.ActiveCfg = Release|x86
+		{3F542B83-5CF8-49C0-8C65-42F7FD7B1F0D}.Release|x86.Build.0 = Release|x86
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Debug|x64.ActiveCfg = Debug|x64
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Debug|x64.Build.0 = Debug|x64
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Debug|x86.ActiveCfg = Debug|x86
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Debug|x86.Build.0 = Debug|x86
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Release|x64.ActiveCfg = Release|x64
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Release|x64.Build.0 = Release|x64
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Release|x86.ActiveCfg = Release|x86
+		{0CFE83E9-7091-44D7-8D68-6A7A017044B2}.Release|x86.Build.0 = Release|x86
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Debug|x64.ActiveCfg = Debug|x64
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Debug|x64.Build.0 = Debug|x64
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Debug|x86.ActiveCfg = Debug|x86
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Debug|x86.Build.0 = Debug|x86
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|x64.ActiveCfg = Release|x64
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|x64.Build.0 = Release|x64
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|x86.ActiveCfg = Release|x86
+		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal

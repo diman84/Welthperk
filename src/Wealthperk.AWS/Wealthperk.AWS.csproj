@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Core" Version="3.3.13.2" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.4.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wealthperk.Model\Wealthperk.Model.csproj" />
+  </ItemGroup>
+</Project>
