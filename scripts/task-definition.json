@@ -27,6 +27,10 @@
                 {
                     "name": "AWS_SECRET_ACCESS_KEY",
                     "value": "${AWS_APP_SECRET_ACCESS_KEY}"
+                },
+                {
+                    "name": "ASPNETCORE_ENVIRONMENT",
+                    "value": "Development"
                 }
             ]
         }
