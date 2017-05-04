@@ -9,10 +9,12 @@ namespace WelthPeck.Controllers
     public class HomeController : Controller
     {
         Amazon.DynamoDBv2.IAmazonDynamoDB _dynamoDb;
+        Amazon.Extensions.NETCore.Setup.AWSOptions _ops;
 
-        public HomeController(Amazon.DynamoDBv2.IAmazonDynamoDB dynamoDb)
+        public HomeController(Amazon.DynamoDBv2.IAmazonDynamoDB dynamoDb, Amazon.Extensions.NETCore.Setup.AWSOptions ops)
         {
             _dynamoDb = dynamoDb;
+            _ops = ops;
         }
 
         public IActionResult Index()
@@ -30,7 +32,29 @@ namespace WelthPeck.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            Amazon.Runtime.AWSCredentials creds = null;
+            if (_ops != null)
+            {
+                if(_ops.Credentials != null)
+                {
+                    creds = _ops.Credentials;
+                }
+                else
+                if(!string.IsNullOrEmpty(_ops.Profile) && !string.IsNullOrEmpty(_ops.ProfilesLocation))
+                {
+                    Amazon.Runtime.CredentialManagement.CredentialProfile basicProfile;
+                    var sharedFile = new Amazon.Runtime.CredentialManagement.SharedCredentialsFile(_ops.ProfilesLocation);
+                    if (sharedFile.TryGetProfile(_ops.Profile, out basicProfile))                     
+                    {
+                        creds =  Amazon.Runtime.CredentialManagement.AWSCredentialsFactory.GetAWSCredentials(basicProfile, sharedFile);
+                    }
+                }
+            }
+            
+            creds = creds ??  Amazon.Runtime.FallbackCredentialsFactory.GetCredentials();
+            
+           
+            ViewData["Message"] = creds?.GetCredentials().AccessKey;      
 
             return View();
         }
