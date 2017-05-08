@@ -5,5 +5,8 @@ source ../deploy-envs.sh
 export AWS_ECS_REPO_DOMAIN=$AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
 # Build process
-docker build -t $IMAGE_NAME ../
-docker tag $IMAGE_NAME $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME:$IMAGE_VERSION
+docker build -t $IMAGE_NAME_API ../api
+docker tag $IMAGE_NAME_API $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME_API:$IMAGE_VERSION
+
+docker build -t $IMAGE_NAME_REACT ../client-react
+docker tag $IMAGE_NAME_REACT $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME_REACT:$IMAGE_VERSION

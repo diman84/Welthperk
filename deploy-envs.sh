@@ -2,6 +2,8 @@
 
 # set environment variables used in deploy.sh and AWS task-definition.json:
 export IMAGE_NAME=netcoreapps-welthperk
+export IMAGE_NAME_API=netcoreapps-welthperk-api
+export IMAGE_NAME_REACT=netcoreapps-welthperk-react
 export IMAGE_VERSION=latest
 
 export AWS_DEFAULT_REGION=us-west-2

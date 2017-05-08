@@ -1,5 +1,5 @@
 FROM microsoft/dotnet:latest
-COPY src /app
+COPY src/api /app
 WORKDIR /app
 RUN ["dotnet", "restore"]
 WORKDIR /app/Wealthperk.Web

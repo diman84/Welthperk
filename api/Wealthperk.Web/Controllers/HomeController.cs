@@ -29,7 +29,7 @@ namespace WelthPeck.Controllers
 
             return View();
         }
-
+        
         public IActionResult Contact()
         {
             Amazon.Runtime.AWSCredentials creds = null;
