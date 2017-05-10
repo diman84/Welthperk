@@ -1,5 +1,5 @@
 FROM node:boron
-COPY src/client-react /app
+COPY . /app
 WORKDIR /app
 COPY package.json /app
 RUN ["npm", "install"]
