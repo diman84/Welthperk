@@ -16,11 +16,18 @@ envsubst < task-definition.json > new-task-definition.json
 
 eval $(aws ecr get-login --region $AWS_DEFAULT_REGION) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
 
-if [ $(aws ecr describe-repositories | jq --arg x $IMAGE_NAME '[.repositories[] | .repositoryName == $x] | any') == "true" ]; then
-    echo "Found ECS Repository $IMAGE_NAME"
+if [ $(aws ecr describe-repositories | jq --arg x $IMAGE_NAME_API '[.repositories[] | .repositoryName == $x] | any') == "true" ]; then
+    echo "Found ECS Repository $IMAGE_NAME_API"
 else
-    echo "ECS Repository doesn't exist, Creating $IMAGE_NAME ..."
-    aws ecr create-repository --repository-name $IMAGE_NAME
+    echo "ECS Repository doesn't exist, Creating $IMAGE_NAME_API ..."
+    aws ecr create-repository --repository-name $IMAGE_NAME_API
+fi
+
+if [ $(aws ecr describe-repositories | jq --arg x $IMAGE_NAME_REACT '[.repositories[] | .repositoryName == $x] | any') == "true" ]; then
+    echo "Found ECS Repository $IMAGE_NAME_REACT"
+else
+    echo "ECS Repository doesn't exist, Creating $IMAGE_NAME_REACT ..."
+    aws ecr create-repository --repository-name $IMAGE_NAME_REACT
 fi
 
 docker push $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME_API:$IMAGE_VERSION
