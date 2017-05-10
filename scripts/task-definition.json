@@ -3,8 +3,8 @@
     "networkMode": "bridge",
     "containerDefinitions": [
         {
-            "image": "${AWS_ECS_REPO_DOMAIN}/${IMAGE_NAME}:${IMAGE_VERSION}",
-            "name": "${IMAGE_NAME}",
+            "image": "${AWS_ECS_REPO_DOMAIN}/${IMAGE_NAME_API}:${IMAGE_VERSION}",
+            "name": "${IMAGE_NAME_API}",
             "cpu": 128,
             "memory": 256,
             "essential": true,
@@ -27,6 +27,26 @@
                 {
                     "name": "AWS_SECRET_ACCESS_KEY",
                     "value": "${AWS_APP_SECRET_ACCESS_KEY}"
+                }
+            ]
+        },
+        {
+            "image": "${AWS_ECS_REPO_DOMAIN}/${IMAGE_NAME_REACT}:${IMAGE_VERSION}",
+            "name": "${IMAGE_NAME_REACT}",
+            "cpu": 128,
+            "memory": 256,
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "VIRTUAL_HOST",
+                    "value": "${AWS_VIRTUAL_HOST}"
                 }
             ]
         }
