@@ -66,9 +66,9 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
   const client = new ApiClient(req);
-  const memoryHistory = createHistory(req.originalUrl);
-  const store = createStore(memoryHistory, client);
-  const history = syncHistoryWithStore(memoryHistory, store);
+  //const memoryHistory = createHistory(req.originalUrl);
+  //const store = createStore(memoryHistory, client);
+  //const history = syncHistoryWithStore(memoryHistory, store);
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
