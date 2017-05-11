@@ -1,5 +1,5 @@
 {
-  "name": "wealtperk react",    
+  "name": "wealtperk-react",    
   "license": "MIT",
   "version": "0.0.1",
   "main": "bin/server.js",
