@@ -19,7 +19,7 @@
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
         "PORT": 3000,
-        "APIPORT": 5000
+        "APIPORT": 80
       }
     },
     "start-dev": {

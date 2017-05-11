@@ -11,11 +11,11 @@ import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
 
-import { match } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
-import createHistory from 'react-router/lib/createMemoryHistory';
-import {Provider} from 'react-redux';
+//import { match } from 'react-router';
+//import { syncHistoryWithStore } from 'react-router-redux';
+//import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
+//import createHistory from 'react-router/lib/createMemoryHistory';
+//import {Provider} from 'react-redux';
 //import getRoutes from './routes';
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
@@ -72,7 +72,11 @@ app.use((req, res) => {
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
-      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+      //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+      //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}><div>Hydrated on client</div></Html>));
+      '<title>Client react</title>' +
+      '<body><h1>Client react</h1></body>'
+    );
   }
 
   if (__DISABLE_SSR__) {
