@@ -18,7 +18,7 @@
             "environment": [
                 {
                     "name": "VIRTUAL_HOST",
-                    "value": "api.${AWS_VIRTUAL_HOST}"
+                    "value": "${AWS_VIRTUAL_HOST}"
                 }
             ]
         }
