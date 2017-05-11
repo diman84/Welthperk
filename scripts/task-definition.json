@@ -2,12 +2,33 @@
     "family": "${ECS_TASK}",
     "networkMode": "bridge",
     "containerDefinitions": [
+         {
+            "image": "${AWS_ECS_REPO_DOMAIN}/${IMAGE_NAME_REACT}:${IMAGE_VERSION}",
+            "name": "${IMAGE_NAME_REACT}",
+            "cpu": 128,
+            "memory": 256,
+            "essential": true,
+            "links": ["${IMAGE_NAME_API}"],
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "VIRTUAL_HOST",
+                    "value": "api.${AWS_VIRTUAL_HOST}"
+                }
+            ]
+        },
         {
             "image": "${AWS_ECS_REPO_DOMAIN}/${IMAGE_NAME_API}:${IMAGE_VERSION}",
             "name": "${IMAGE_NAME_API}",
             "cpu": 128,
             "memory": 256,
-            "essential": true,
+            "essential": true,           
             "portMappings": [
                 {
                     "containerPort": 5000,
@@ -29,26 +50,6 @@
                     "value": "${AWS_APP_SECRET_ACCESS_KEY}"
                 }
             ]
-        },
-        {
-            "image": "${AWS_ECS_REPO_DOMAIN}/${IMAGE_NAME_REACT}:${IMAGE_VERSION}",
-            "name": "${IMAGE_NAME_REACT}",
-            "cpu": 128,
-            "memory": 256,
-            "essential": true,
-            "portMappings": [
-                {
-                    "containerPort": 3000,
-                    "hostPort": 0,
-                    "protocol": "tcp"
-                }
-            ],
-            "environment": [
-                {
-                    "name": "VIRTUAL_HOST",
-                    "value": "${AWS_VIRTUAL_HOST}"
-                }
-            ]
-        }
+        }       
     ]
 }
