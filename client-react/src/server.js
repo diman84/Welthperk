@@ -34,7 +34,13 @@ app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // Proxy to API server
 app.use('/api', (req, res) => {
-  proxy.web(req, res, {target: targetUrl});
+  proxy.web(req, res, {target: targetUrl});  
+  res.send('<!doctype html>\n' +
+      //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+      //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}><div>Hydrated on client</div></Html>));
+      '<html><title>Client react</title>' +
+      '<body><h1>API (' + targetUrl +')</h1></body></html>'
+    );
 });
 
 app.use('/ws', (req, res) => {
@@ -75,7 +81,7 @@ app.use((req, res) => {
       //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
       //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}><div>Hydrated on client</div></Html>));
       '<html><title>Client react</title>' +
-      '<body><h1>Client react (' + config.apiHost +')</h1></body></html>'
+      '<body><h1>Client react (' + targetUrl +')</h1></body></html>'
     );
   }
 
