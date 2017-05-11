@@ -255,7 +255,7 @@ paket-files/
 #webpack
 dist/
 *.iml
-webpack-assets.json
+**/webpack-assets.json
 webpack-stats.json
 npm-debug.log
 *.swp
