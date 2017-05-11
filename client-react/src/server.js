@@ -23,7 +23,7 @@ const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
 const proxy = httpProxy.createProxyServer({
-  target: targetUrl,
+  forward: targetUrl,
   ws: true
 });
 
@@ -33,45 +33,8 @@ app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // Proxy to API server
-app.use('/api', (req, resp) => {
-  //proxy.web(req, res, {target: targetUrl});  
-  http.get(targetUrl, (res) => {
-    const { statusCode } = res;
-    const contentType = res.headers['content-type'];
-
-    let error;
-    let raw;
-    if (statusCode !== 200) {
-      error = new Error(`Request Failed.\n` +
-                        `Status Code: ${statusCode}`);
-    } else if (!/^application\/json/.test(contentType)) {
-      error = new Error(`Invalid content-type.\n` +
-                        `Expected application/json but received ${contentType}`);
-    }
-    if (error) {
-      console.error(error.message);
-      // consume response data to free up memory
-      res.resume();
-      raw = error.message;
-    }
-
-    res.setEncoding('utf8');
-    let rawData = '';
-    res.on('data', (chunk) => { rawData += chunk; });
-    res.on('end', () => {
-      try {
-        //const parsedData = JSON.parse(rawData);
-        raw = rawData;
-      } catch (e) {
-        console.error(e.message);
-        raw = e.message;
-      }
-      resp.send(raw);
-    });
-  }).on('error', (e) => {
-    console.error(`Got error: ${e.message}`);
-    resp.send(e.message);
-  }); 
+app.use('/api', (req, res) => {
+    proxy.web(req, res, {target: targetUrl}); 
 });
 
 app.use('/ws', (req, res) => {
