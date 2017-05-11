@@ -1,6 +1,6 @@
 {
     "family": "${ECS_TASK}",
-    "networkMode": "host",
+    "networkMode": "bridge",
     "containerDefinitions": [
          {
             "image": "${AWS_ECS_REPO_DOMAIN}/${IMAGE_NAME_REACT}:${IMAGE_VERSION}",
