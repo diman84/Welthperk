@@ -1,16 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2.Model;
 using Microsoft.AspNetCore.Identity;
 using Wealthperk.Model;
 
 namespace Wealthperk.AWS
 {
     public class DynamoDbUserStore : Microsoft.AspNetCore.Identity.IUserStore<UserInfo>
-    {
-        public Task<IdentityResult> CreateAsync(UserInfo user, CancellationToken cancellationToken)
+    {        
+        Amazon.DynamoDBv2.IAmazonDynamoDB _dynamoDb;
+        public DynamoDbUserStore(Amazon.DynamoDBv2.IAmazonDynamoDB dynamoDb){
+            
+            _dynamoDb = dynamoDb;
+        }
+
+        public async Task<IdentityResult> CreateAsync(UserInfo user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _dynamoDb.PutItemAsync("Users", new Dictionary<string, AttributeValue>
+            {
+                { "Name", new AttributeValue(user.Email)},
+                { "Email", new AttributeValue(user.Email) }
+            },
+             cancellationToken);
+
+             return IdentityResult.Success;
         }
 
         public Task<IdentityResult> DeleteAsync(UserInfo user, CancellationToken cancellationToken)
@@ -18,9 +33,18 @@ namespace Wealthperk.AWS
             throw new NotImplementedException();
         }
 
-        public Task<UserInfo> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<UserInfo> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var record = await _dynamoDb.GetItemAsync("Users", new Dictionary<string, AttributeValue>
+            {
+                {"Id", new AttributeValue(userId)}                
+            });
+
+            return new UserInfo {
+                Id = record.Item["Id"].N,
+                UserName = record.Item["Email"].S,
+                Email = record.Item["Email"].S
+            };
         }
 
         public Task<UserInfo> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)

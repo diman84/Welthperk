@@ -8,6 +8,5 @@ export AWS_ECS_REPO_DOMAIN=$AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_DEFAULT_REGION.amazo
 docker build -t $IMAGE_NAME_API ../api
 docker tag $IMAGE_NAME_API $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME_API:$IMAGE_VERSION
 
-cp ../package.json ../client-react
 docker build -t $IMAGE_NAME_REACT ../client-react
 docker tag $IMAGE_NAME_REACT $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME_REACT:$IMAGE_VERSION

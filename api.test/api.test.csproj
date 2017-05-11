@@ -8,7 +8,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.4;portable-net451+win8</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../api/api.csproj" />
+    <!--<ProjectReference Include="../api/api.csproj" />-->
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />

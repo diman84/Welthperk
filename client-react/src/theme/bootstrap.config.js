@@ -11,8 +11,8 @@
  */
 
 module.exports = {
-  preBootstrapCustomizations: './src/theme/variables.scss',
-  mainSass: './src/theme/bootstrap.overrides.scss',
+  preBootstrapCustomizations: './client-react/src/theme/variables.scss',
+  mainSass: './client-react/src/theme/bootstrap.overrides.scss',
   verbose: false,
   debug: false,
   scripts: {

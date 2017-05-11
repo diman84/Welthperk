@@ -1,50 +1,33 @@
 {
-  "name": "wealtperk",    
+  "name": "wealtperk react",    
   "license": "MIT",
   "version": "0.0.1",
-  "main": "client-react/bin/server.js",
+  "main": "bin/server.js",
   "scripts": {
-    "postinstall": "dotnet restore ./api && dotnet restore ./api.test && npm run build",	
-	  "test:api": "cd ./api.test && dotnet xunit", 
-    "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
-    "start-prod": "better-npm-run start-prod",
-    "start-prod-api": "better-npm-run start-prod-api",
+    "postinstall": "npm run build",		  
+    "start": "concurrent --kill-others \"npm run start-prod\"",
+    "start-prod": "better-npm-run start-prod",    
     "build": "better-npm-run build",    
-    "start-dev": "better-npm-run start-dev",
-    "start-dev-api": "better-npm-run start-dev-api",
+    "start-dev": "better-npm-run start-dev",    
     "watch-client": "better-npm-run watch-client",
-    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\""    
+    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\""    
   },
   "betterScripts": {
     "start-prod": {
-      "command": "node ./client-react/bin/server.js",
+      "command": "node ./bin/server.js",
       "env": {
-        "NODE_PATH": "./client-react/src",
+        "NODE_PATH": "./src",
         "NODE_ENV": "production",
         "PORT": 3000,
         "APIPORT": 5000
       }
     },
-    "start-prod-api": {
-      "command": "cd ./api/bin/Release/netcoreapp1.1/publish/ && dotnet api.dll",
-      "env": {
-        "ASPNETCORE_ENVIRONMENT": "production",
-        "APIPORT": 5000
-      }
-    },
     "start-dev": {
-      "command": "cd ./client-react && node ./bin/server.js",
+      "command": "node ./bin/server.js",
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
         "PORT": 3000,
-        "APIPORT": 5000
-      }
-    },
-    "start-dev-api": {
-      "command": "cd ./api/Wealthperk.Web && dotnet run",
-      "env": {        
-        "ASPNETCORE_ENVIRONMENT": "Development",
         "APIPORT": 5000
       }
     },
@@ -58,7 +41,7 @@
       }
     },
     "build": {
-      "command": "dotnet build ./api && webpack --verbose --colors --display-error-details --config client-react/webpack/prod.config.js",
+      "command": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
       "env": {
         "NODE_ENV": "production"
       }
