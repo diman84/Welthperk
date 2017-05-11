@@ -74,8 +74,8 @@ app.use((req, res) => {
     res.send('<!doctype html>\n' +
       //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
       //ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}><div>Hydrated on client</div></Html>));
-      '<title>Client react</title>' +
-      '<body><h1>Client react</h1></body>'
+      '<html><title>Client react</title>' +
+      '<body><h1>Client react (' + config.apiHost +')</h1></body></html>'
     );
   }
 
