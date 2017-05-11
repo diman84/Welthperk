@@ -21,9 +21,13 @@
                     "name": "VIRTUAL_HOST",
                     "value": "${AWS_VIRTUAL_HOST}"
                 },
-                 {
+                {
                     "name": "APIHOST",
                     "value": "${AWS_INTERNAL_HOST}"
+                },
+                {
+                    "name": "APIPORT",
+                    "value": 5000
                 }                                                                                                                                           
             ]
         },
@@ -36,7 +40,7 @@
             "portMappings": [
                 {
                     "containerPort": 5000,
-                    "hostPort": 0,
+                    "hostPort": 5000,
                     "protocol": "tcp"
                 }
             ],
