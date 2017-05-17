@@ -9,5 +9,6 @@ namespace Wealthperk.Model
         public string UserName { get; set; }
         public string Email { get; set; }
         public object Id { get; set; }
+        public string PasswordHash { get; set; }
     }
 }

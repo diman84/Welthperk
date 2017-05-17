@@ -1,0 +1,11 @@
+﻿@model Wealthperk.Web.ViewModels.NewUser
+
+@{
+    ViewData["Title"] = "Register";
+}
+<h2>Register new user</h2>
+
+<form method="post" action="/api/auth/register">
+    @Html.EditorForModel()
+    <button type="submit">Create user</button>
+</form>

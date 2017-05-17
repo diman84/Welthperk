@@ -1,0 +1,13 @@
+﻿@model AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest
+
+@{
+    ViewData["Title"] = "Login";
+}
+<h2>Login</h2>
+
+<form method="post" action="/api/auth/login">    
+    <input class="text-box single-line" id="Username" name="username" type="text" value="">
+    <input class="text-box single-line" id="Password" name="password" type="text" value="">
+    <input id="GrantType" name="grant_type" type="hidden" value="password">
+    <button type="submit">Login</button>
+</form>

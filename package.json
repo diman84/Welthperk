@@ -42,7 +42,7 @@
       }
     },
     "start-dev-api": {
-      "command": "cd ./api/Wealthperk.Web && dotnet run",
+      "command": "cd ./api/Wealthperk.Web && dotnet watch run",
       "env": {        
         "ASPNETCORE_ENVIRONMENT": "Development",
         "APIPORT": 5000

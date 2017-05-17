@@ -10,6 +10,7 @@ import ApiClient from './helpers/ApiClient';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
+import url from 'url';
 
 //import { match } from 'react-router';
 //import { syncHistoryWithStore } from 'react-router-redux';
@@ -33,8 +34,31 @@ app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // Proxy to API server
-app.use('/api', (req, res) => {
+/*app.use('/api', (req, res) => {  
     proxy.web(req, res, {target: targetUrl}); 
+});*/
+app.use('/api', (request, response) => {  
+  var ph = url.parse(request.url)
+    var options = {
+        port: config.apiPort,
+        hostname: config.apiHost,
+        method: request.method,
+        path: ph.path,
+        headers: request.headers
+    }
+    console.log(options);
+    var proxyRequest = http.request(options)
+    proxyRequest.on('response', function(proxyResponse) {
+        proxyResponse.on('data', function(chunk) {
+            response.write(chunk, 'binary')
+        })
+        proxyResponse.on('end', function() { response.end() })
+        response.writeHead(proxyResponse.statusCode, proxyResponse.headers)
+    })
+    request.on('data', function(chunk) {
+        proxyRequest.write(chunk, 'binary')
+    })
+    request.on('end', function() { proxyRequest.end() })
 });
 
 app.use('/ws', (req, res) => {

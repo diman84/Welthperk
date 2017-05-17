@@ -59,6 +59,18 @@ namespace WelthPeck.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult Login()
+        {
+            return View(new AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest {
+                GrantType = "password"
+            });
+        }
+
         public IActionResult Error()
         {
             return View();

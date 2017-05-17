@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
     <PackageReference Include="AspNet.Security.OAuth.Validation" Version="1.0.0-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2-*" />
     <PackageReference Include="OpenIddict" Version="1.0.0-*" />
     <PackageReference Include="OpenIddict.Mvc" Version="1.0.0-*" />
   </ItemGroup>
@@ -19,4 +20,7 @@
     <ProjectReference Include="..\Wealthperk.Model\Wealthperk.Model.csproj" />
     <ProjectReference Include="..\Wealthperk.AWS\Wealthperk.AWS.csproj" />
   </ItemGroup>
+  <ItemGroup>
+  <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
+  </ItemGroup> 
 </Project>

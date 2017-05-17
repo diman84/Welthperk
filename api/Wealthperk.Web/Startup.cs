@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.IdentityModel.Tokens.Jwt;
+using AspNet.Security.OpenIdConnect.Primitives;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Wealthperk.Model;
 using Wealthperk.AWS;
 
@@ -33,11 +33,53 @@ namespace WelthPeck
             // Add framework services.
             services.AddIdentity<UserInfo, UserIdentityRole>()
                     .AddUserStore<DynamoDbUserStore>()
+                    .AddRoleStore<DynamoDbUserStore>()                    
                     .AddDefaultTokenProviders();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+                options.SignIn.RequireConfirmedEmail = false;
+            });
+
+            services.AddOpenIddict(options =>
+            {
+                options.AddApplicationStore<OpenIddictApplicationStore>();
+                options.AddAuthorizationStore<OpenIddictAuthorizationStore>();
+                options.AddScopeStore<OpenIddictAuthorizationStore>();
+                options.AddTokenStore<OpenIddictAuthorizationStore>();
+
+                // Register the Entity Framework stores.
+                //options.AddEntityFrameworkCoreStores<DefaultDbContext>();
+
+                // Register the ASP.NET Core MVC binder used by OpenIddict.
+                // Note: if you don't call this method, you won't be able to
+                // bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
+                options.AddMvcBinders();
+
+                // Enable the token endpoint (required to use the password flow).
+                options.EnableTokenEndpoint("/auth/login");
+
+                // Allow client applications to use the grant_type=password flow.
+                options.AllowPasswordFlow();
+
+                // During development, you can disable the HTTPS requirement.
+                options.DisableHttpsRequirement();
+
+                options.AllowRefreshTokenFlow();
+                options.UseJsonWebTokens();
+                options.AddEphemeralSigningKey();
+                options.SetAccessTokenLifetime(TimeSpan.FromDays(1));
+            });
+
             services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
             //services.AddAWSService<IAmazonS3>();
             services.AddAWSService<Amazon.DynamoDBv2.IAmazonDynamoDB>();
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options =>
+               {
+                   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+               });;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,9 +99,25 @@ namespace WelthPeck
                 //app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles();           
 
-            app.UseMvc(routes =>
+            app.UseOAuthValidation();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                RequireHttpsMetadata = false,
+                Audience = "resource-server",
+                Authority = Configuration["url"]
+            });
+
+            app.UseOpenIddict();
+            app.UseIdentity();
+             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",

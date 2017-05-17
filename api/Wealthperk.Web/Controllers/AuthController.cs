@@ -41,7 +41,8 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("~/api/auth/login")]
+        //[HttpPost("~/api/auth/login")]
+        [HttpPost]
         [Produces("application/json")]
         public async Task<IActionResult> Login(OpenIdConnectRequest request)
         {
@@ -85,7 +86,8 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("~/api/auth/register")]
+        //[HttpPost("~/api/auth/register")]
+        [HttpPost]
         public async Task<IActionResult> Register(NewUser model)
         {
             if (!ModelState.IsValid)
