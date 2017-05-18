@@ -28,7 +28,11 @@
                 {
                     "name": "APIPORT",
                     "value": "5000"
-                }                                                                                                                                           
+                },
+                {
+                    "name": "WEBPACK_DLLS",
+                    "value": "1"
+                }
             ]
         },
         {
@@ -36,7 +40,7 @@
             "name": "${IMAGE_NAME_API}",
             "cpu": 128,
             "memory": 256,
-            "essential": true,           
+            "essential": true,
             "portMappings": [
                 {
                     "containerPort": 5000,
