@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Wealthperk.Model;
 using Wealthperk.AWS;
+using Wealthperk.AWS.Models;
 
 namespace WelthPeck
 {
@@ -43,12 +44,12 @@ namespace WelthPeck
                 options.SignIn.RequireConfirmedEmail = false;
             });
 
-            services.AddOpenIddict(options =>
+            services.AddOpenIddict<OpenIddictApplication, OpenIddictAuthorization, OpenIddictScope, OpenIddictToken>(options =>
             {
                 options.AddApplicationStore<OpenIddictApplicationStore>();
                 options.AddAuthorizationStore<OpenIddictAuthorizationStore>();
-                options.AddScopeStore<OpenIddictAuthorizationStore>();
-                options.AddTokenStore<OpenIddictAuthorizationStore>();
+                options.AddScopeStore<OpenIddictScopeStore>();
+                options.AddTokenStore<OpenIddictTokenStore>();
 
                 // Register the Entity Framework stores.
                 //options.AddEntityFrameworkCoreStores<DefaultDbContext>();
@@ -116,6 +117,7 @@ namespace WelthPeck
             });
 
             app.UseOpenIddict();
+
             app.UseIdentity();
              app.UseMvc(routes =>
             {

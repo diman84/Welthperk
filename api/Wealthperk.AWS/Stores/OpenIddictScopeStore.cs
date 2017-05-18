@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using OpenIddict.Core;
-using OpenIddict.Models;
+using Wealthperk.AWS.Models;
 
 namespace Wealthperk.AWS
 {

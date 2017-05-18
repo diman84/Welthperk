@@ -342,22 +342,14 @@ namespace Wealthperk.AWS
         /// <returns>
         /// A <see cref="Task"/> that can be used to monitor the asynchronous operation.
         /// </returns>
-        public virtual async Task UpdateAsync(OpenIddictApplication application, CancellationToken cancellationToken)
+        public virtual Task UpdateAsync(OpenIddictApplication application, CancellationToken cancellationToken)
         {
             if (application == null)
             {
                 throw new ArgumentNullException(nameof(application));
             }
 
-            Context.Attach(application);
-            Context.Update(application);
-
-            try
-            {
-                await Context.SaveChangesAsync(cancellationToken);
-            }
-
-            catch (Exception) { }
+            throw new NotSupportedException();            
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using OpenIddict.Core;
 using Wealthperk.AWS.Models;
@@ -210,19 +211,17 @@ namespace Wealthperk.AWS
             {
                 throw new ArgumentNullException(nameof(token));
             }
+            //TODO: check if it is nesessary to have the same logic as in RDS
 
+            /*
             if (!string.IsNullOrEmpty(identifier))
             {
-                var key = ConvertIdentifierFromString(identifier);
-                
-                //TODO: check if it is nesessary
-               /* var authorization = await Authorizations.SingleOrDefaultAsync(element => element.Id.Equals(key));
+                var key = ConvertIdentifierFromString(identifier);                               
+                var authorization = await Authorizations.SingleOrDefaultAsync(element => element.Id.Equals(key));
                 if (authorization == null)
                 {
                     throw new InvalidOperationException("The authorization associated with the token cannot be found.");
-                }*/
-
-               token.AuthorizationId = key;
+                }
             }
 
             else
@@ -236,7 +235,10 @@ namespace Wealthperk.AWS
                 {
                     authorization.Tokens.Remove(token);
                 }
-            }
+            }*/
+            await Task.Yield();
+            var key = ConvertIdentifierFromString(identifier);               
+            token.AuthorizationId = key;
         }
 
         /// <summary>
@@ -254,8 +256,9 @@ namespace Wealthperk.AWS
             {
                 throw new ArgumentNullException(nameof(token));
             }
+            //TODO: check if it is nesessary to have the same logic as in RDS
 
-            if (!string.IsNullOrEmpty(identifier))
+           /* if (!string.IsNullOrEmpty(identifier))
             {
                 var key = ConvertIdentifierFromString(identifier);
 
@@ -279,7 +282,10 @@ namespace Wealthperk.AWS
                 {
                     application.Tokens.Remove(token);
                 }
-            }
+            }*/
+            await Task.Yield();
+            var key = ConvertIdentifierFromString(identifier);
+            token.ApplicationId = key;
         }
 
         /// <summary>
@@ -297,15 +303,19 @@ namespace Wealthperk.AWS
                 throw new ArgumentNullException(nameof(token));
             }
 
-            Context.Attach(token);
-            Context.Update(token);
-
-            try
-            {
-                await Context.SaveChangesAsync(cancellationToken);
-            }
-
-            catch (DbUpdateConcurrencyException) { }
+            await _dynamoDb.UpdateItemAsync(TableName, new Dictionary<string, AttributeValue>{
+                {"Id", new AttributeValue(token.Id)},               
+            }, new Dictionary<string, AttributeValueUpdate>{
+                {"ApplicationId", new AttributeValueUpdate(new AttributeValue(token.ApplicationId),
+                    AttributeAction.PUT)},
+                {"AuthorizationId",  new AttributeValueUpdate(new AttributeValue(token.AuthorizationId),
+                    AttributeAction.PUT)},
+                {"Subject",  new AttributeValueUpdate(new AttributeValue(token.Subject),
+                    AttributeAction.PUT)},
+                {"Type", new AttributeValueUpdate(new AttributeValue(token.Type),
+                    AttributeAction.PUT)}
+            });
+            
         }
 
         /// <summary>

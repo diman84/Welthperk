@@ -29,4 +29,5 @@ namespace Wealthperk.AWS.Models
         /// Gets or sets the subject associated with the current authorization.
         /// </summary>
         public virtual string Subject { get; set; }    
+    }
 }
