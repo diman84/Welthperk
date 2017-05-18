@@ -16,9 +16,17 @@ module.exports = Object.assign({
   apiPort: process.env.APIPORT,
   app: {
     title: 'Wealthperk',
-    head: {      
-      meta: []
+    description: 'Wealthperk.',
+    head: {
+      titleTemplate: '%s | Wealthperk',
+      meta: [
+        { name: 'description', content: 'Wealthperk.' },
+        { charset: 'utf-8' },
+        { property: 'og:site_name', content: 'Wealthperk' },
+        { property: 'og:locale', content: 'en_US' },
+        { property: 'og:title', content: 'Wealthperk' },
+        { property: 'og:description', content: 'Wealthperk.' },
+      ]
     }
-  },
-
+  }
 }, environment);

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/mail</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/mail">
+            <g id="mail">
+                <circle id="Oval-2" fill="#404040" cx="24" cy="24" r="24"></circle>
+                <g id="iconmonstr-twitter-1" transform="translate(12.000000, 12.000000)">
+                    <rect id="Rectangle-14" x="0" y="0" width="24" height="24"></rect>
+                    <g id="iconmonstr-email-2" transform="translate(0.000000, 3.000000)" fill-rule="nonzero" fill="#F3F3F3">
+                        <path d="M0,0 L0,18 L24,18 L24,0 L0,0 Z M6.623,7.929 L2,13.641 L2,4.183 L6.623,7.929 L6.623,7.929 Z M2.482,2 L21.517,2 L12,9.713 L2.482,2 L2.482,2 Z M8.176,9.188 L12,12.287 L15.83,9.183 L21.442,16 L2.663,16 L8.176,9.188 Z M17.384,7.924 L22,4.183 L22,13.531 L17.384,7.924 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

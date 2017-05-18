@@ -30,11 +30,11 @@ namespace WelthPeck
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
             // Add framework services.
             services.AddIdentity<UserInfo, UserIdentityRole>()
                     .AddUserStore<DynamoDbUserStore>()
-                    .AddRoleStore<DynamoDbUserStore>()                    
+                    .AddRoleStore<DynamoDbUserStore>()
                     .AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(options =>
             {
@@ -100,7 +100,7 @@ namespace WelthPeck
                 //app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();           
+            app.UseStaticFiles();
 
             app.UseOAuthValidation();
 
@@ -119,6 +119,7 @@ namespace WelthPeck
             app.UseOpenIddict();
 
             app.UseIdentity();
+
              app.UseMvc(routes =>
             {
                 routes.MapRoute(

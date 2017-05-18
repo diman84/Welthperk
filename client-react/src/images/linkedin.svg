@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/linkedin</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/linkedin">
+            <g id="linkedin">
+                <circle id="Oval-2" fill="#404040" cx="24" cy="24" r="24"></circle>
+                <g id="Group-13" transform="translate(12.000000, 12.000000)">
+                    <rect id="Rectangle-13" x="0" y="0" width="24" height="24"></rect>
+                    <path d="M5.68852459,24 L1.36065574,24 L1.36065574,7.98328691 L5.68852459,7.98328691 L5.68852459,24 Z M3.52459016,6.13699671 C2.13101639,6.13699671 1,4.9867055 1,3.56849835 C1,2.15029121 2.13101639,1 3.52459016,1 C4.91816393,1 6.04918033,2.15029121 6.04918033,3.56849835 C6.04918033,4.9867055 4.91960656,6.13699671 3.52459016,6.13699671 Z M23,24 L18.6721311,24 L18.6721311,15.8402127 C18.6721311,10.9361864 12.9016393,11.3074829 12.9016393,15.8402127 L12.9016393,24 L8.57377049,24 L8.57377049,7.98328691 L12.9016393,7.98328691 L12.9016393,10.5532413 C14.915541,6.78785769 23,6.5097493 23,14.1584578 L23,24 Z" id="Combined-Shape" fill="#F3F3F3"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,112 @@
+.info-icon {
+  display: inline-block;
+  @include before-absolute('', null null -6px 0px);
+  width: 12px;
+  margin-left: 4px;
+  cursor: pointer;
+  &:before {
+    @include size(24px);
+    background-image: url(../images/ic-help-24-px.svg);
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    -webkit-background-size: 24px 24px;
+    background-size: 24px 24px;
+  }
+}
+.filter-icon {
+  display: block;
+  @include before-absolute('', 0px null null 0px);
+  @include position(absolute, 30px 30px null null);
+  @include size(24px);
+  cursor: pointer;
+  &:before {
+    @include size(24px);
+    background-image: url(../images/Filters-close.svg);
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    -webkit-background-size: 24px 24px;
+    background-size: 24px 24px;
+  }
+  &._open:before {
+    background-image: url(../images/Filters-open.svg);
+  }
+}
+
+.slim-btn {
+  display: inline-block;
+  height: 24px;
+  background-color: $gray-light;
+  padding: 0 24px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+  line-height: 25px;
+  cursor: pointer;
+  + .slim-btn {
+    margin-left: 24px;
+  }
+  &.active {
+    color: #ffffff;
+    background-color: $brand-success;
+  }
+}
+
+.tooltip-inner {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 10px;
+  border-radius: $border-radius-large;
+}
+
+.nav.nav-tabs.nav-justified {
+  > li {
+    > a {
+      color: $text-color;
+      white-space: nowrap;
+      &:hover {
+        color: $link-color;
+      }
+      @media screen and (min-width: $screen-sm) {
+        background-color: transparent;
+        border: 0;
+        border-bottom: 1px solid $gray-light;
+        outline: 0;
+      }
+    }
+    &.active {
+      > a {
+        color: $link-color;
+        @media screen and (min-width: $screen-sm) {
+          background-color: transparent;
+          border: 0;
+          border-bottom: 2px solid $link-color;
+          outline: 0;
+        }
+      }
+    }
+  }
+}
+
+.data-flex-row {
+  @include flexbox();
+  padding-bottom: 32px;
+  font-size: em(12);
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  > div:last-child {
+    white-space: nowrap;
+  }
+}
+
+.marked-span {
+  display: inline-block;
+  padding-left: 24px;
+  @include before-absolute('', 4px null null 0px);
+  &:before {
+    display: block;
+    @include size(8px);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+  }
+}

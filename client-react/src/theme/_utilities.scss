@@ -1,0 +1,29 @@
+
+@function _is-size($value) {
+  @return _is-length($value)
+          or _contains("fill" "fit-content" "min-content" "max-content", $value);
+}
+
+@function _is-length($value) {
+  @return type-of($value) != "null" and (str-slice($value + "", 1, 4) == "calc"
+       or index(auto inherit initial 0, $value)
+       or (type-of($value) == "number" and not(unitless($value))));
+}
+
+@function _contains(
+  $list,
+  $values...
+) {
+
+  @each $value in $values {
+    @if type-of(index($list, $value)) != "number" {
+      @return false;
+    }
+  }
+
+  @return true;
+}
+
+@function em($pxval, $base: $em-base) {
+  @return ($pxval / $base) * 1em;
+}

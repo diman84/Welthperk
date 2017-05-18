@@ -1,0 +1,73 @@
+.value {
+  &__header {
+    min-height: 200px;
+    color: #ffffff;
+    text-align: center;
+    background-color: $brand-primary;
+    border-radius: $border-radius-large $border-radius-large 0 0;
+    &--box {
+      padding-top: 64px;
+      &:last-child {
+        min-height: 200px;
+      }
+    }
+    &--title {
+      font-size: em(18);
+      font-weight: 300;
+      margin-bottom: 8px;
+      white-space: nowrap;
+    }
+    &--value {
+      font-size: em(32);
+    }
+  }
+  &__content {
+    min-height: 362px;
+  }
+}
+
+.perfomance {
+  &__header {
+    min-height: 200px;
+    h2 {
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+  }
+  &__value {
+    margin-top: 40px;
+    color: $gray-dark;
+    font-size: em(32);
+  }
+  &__tabs {
+    min-height: 362px;
+    &--content {
+      padding: 20px 30px 0;
+    }
+  }
+}
+
+.transactions,
+.risks {
+  &__header {
+    min-height: 82px;
+    h2 {
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+  }
+  &__filters {
+    max-height: 0px;
+    overflow: hidden;
+    @include transition(max-height 0.3s);
+    &--inner {
+      padding: 24px 0;
+      margin-bottom: 30px;
+      border-top: 1px solid $gray-light;
+      border-bottom: 1px solid $gray-light;
+    }
+    &._open {
+      max-height: 300px;
+    }
+  }
+}

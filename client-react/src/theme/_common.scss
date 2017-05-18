@@ -1,0 +1,98 @@
+.content-wrapper {
+  padding-top: 40px;
+}
+h1.page-title {
+  margin: 0 0 40px;
+}
+
+.content-block {
+  margin-bottom: 30px;
+  box-shadow: 0 0 16px 0 rgba(0,0,0,0.10);
+  background-color: #fff;
+  -webkit-border-radius: $border-radius-large;
+  -moz-border-radius: $border-radius-large;
+  border-radius: $border-radius-large;
+}
+
+.pd-30 {
+  padding: 30px;
+}
+
+.bg-before-success:before {
+  background-color: $brand-success;
+}
+.bg-before-info:before {
+  background-color: $brand-info;
+}
+.bg-before-warning:before {
+  background-color: $brand-warning;
+}
+.bg-before-danger:before {
+  background-color: $brand-danger;
+}
+.bg-before-purple:before {
+  background-color: $brand-purple;
+}
+
+.btm-content-box {
+  position: relative;
+  min-height: 328px;
+  padding-bottom: 60px;
+}
+
+.view-toggler-box {
+  @include position(absolute, null 30px 0 30px);
+  height: 56px;
+  padding-top: 18px;
+  font-weight: 500;
+  a {
+    cursor: pointer;
+  }
+}
+
+.border-top {
+  border-top: 1px solid $gray-light;
+}
+
+.publicpage {
+  &__footer {
+    padding-bottom: 50px;
+    color: $text-color;
+    &--socials {
+      > a {
+        display: inline-block;
+        @include size(48px);
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        opacity: 0.9;
+        + a {
+          margin-left: 48px;
+        }
+        &:hover {
+          opacity: 1;
+        }
+        &._tw {
+          background-image: url(../images/twitter.svg);
+        }
+        &._in {
+          background-image: url(../images/linkedin.svg);
+        }
+        &._fb {
+          background-image: url(../images/facebook.svg);
+        }
+        &._email {
+          background-image: url(../images/mail.svg);
+        }
+      }
+    }
+    &--text {
+      margin: 20px 0;
+      padding: 0 24px;
+      line-height: 2;
+    }
+    &--copy {
+      line-height: 2;
+      opacity: 0.89;
+    }
+  }
+}
