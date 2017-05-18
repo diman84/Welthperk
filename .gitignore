@@ -258,11 +258,11 @@ dist/
 **/webpack-assets.json
 **/webpack/dlls/*.json
 **/webpack-stats.json
+**/static/dist/
+**/static/service-worker.js
 npm-debug.log
 *.swp
 yarn.lock
-static/dist/
-static/service-worker.js
 .happypack
 *.report.html
 
