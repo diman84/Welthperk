@@ -2,6 +2,7 @@ FROM node:boron
 COPY . /app
 WORKDIR /app
 RUN ["npm", "install"]
+RUN ["npm", "run", "postinstall"]
 EXPOSE 3000/tcp
 ENV NODE_PATH ./src
 ENV PORT 3000
