@@ -40,7 +40,13 @@ export default class Login extends Component {
       });
   };
 
-  login = data => this.props.login('local', data).then(this.successLogin);
+  login = data => this.props.login('local', data).then(this.successLogin).catch(error => {
+          this.props.notifSend({
+            message: error.message,
+            kind: 'danger',
+            dismissAfter: 5000
+          });
+      });
 
   successLogin = data => {
     this.props.notifSend({

@@ -102,6 +102,8 @@ namespace WelthPeck
 
             app.UseStaticFiles();
 
+            app.UseIdentity();
+
             app.UseOAuthValidation();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -117,8 +119,6 @@ namespace WelthPeck
             });
 
             app.UseOpenIddict();
-
-            app.UseIdentity();
 
              app.UseMvc(routes =>
             {

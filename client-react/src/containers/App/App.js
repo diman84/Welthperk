@@ -123,6 +123,9 @@ export default class App extends Component {
               {!user && <LinkContainer to="/login">
                 <NavItem>LOG IN</NavItem>
               </LinkContainer>}
+              {user && <LinkContainer to="/logout">
+                <NavItem>LOG OUT</NavItem>
+              </LinkContainer>}
             </Nav>
           </Navbar.Collapse>
         </Navbar>

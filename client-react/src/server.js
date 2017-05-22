@@ -72,9 +72,10 @@ app.use('/api', (req, res) => {
     request.on('end', function() { proxyRequest.end() })
 });
 */
-app.use('/ws', (req, res) => {
+
+/*app.use('/ws', (req, res) => {
   proxy.web(req, res, { target: `${targetUrl}/ws` });
-});
+});*/
 
 server.on('upgrade', (req, socket, head) => {
   proxy.ws(req, socket, head);
@@ -101,7 +102,6 @@ app.use((req, res) => {
   }
   const providers = {
     client: new ApiClient(req),
-    app: createApp(req),
     restApp: createApp(req)
   };
   const memoryHistory = createHistory(req.originalUrl);
@@ -131,7 +131,7 @@ app.use((req, res) => {
     } else if (renderProps) {
       loadOnServer({ ...renderProps, store, helpers: providers }).then(() => {
         const component = (
-          <Provider store={store} app={providers.app} restApp={providers.restApp} key="provider">
+          <Provider store={store} restApp={providers.restApp} key="provider">
             <ReduxAsyncConnect {...renderProps} />
           </Provider>
         );
