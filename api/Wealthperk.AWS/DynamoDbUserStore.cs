@@ -13,10 +13,11 @@ namespace Wealthperk.AWS
     public class DynamoDbUserStore : Microsoft.AspNetCore.Identity.IUserPasswordStore<UserInfo>,
                                         Microsoft.AspNetCore.Identity.IRoleStore<UserIdentityRole>,
                                             Microsoft.AspNetCore.Identity.IUserEmailStore<UserInfo>
-    {        
+                                                //Microsoft.AspNetCore.Identity.IUserClaimlStore<UserInfo>
+    {
         Amazon.DynamoDBv2.IAmazonDynamoDB _dynamoDb;
         public DynamoDbUserStore(Amazon.DynamoDBv2.IAmazonDynamoDB dynamoDb){
-            
+
             _dynamoDb = dynamoDb;
         }
 
@@ -162,7 +163,7 @@ namespace Wealthperk.AWS
         #endregion
 
         #region private methods
-        
+
         private QueryRequest FindByNameQuery(string normalizedUserName)
         {
             var request = new QueryRequest
@@ -182,22 +183,22 @@ namespace Wealthperk.AWS
         public async Task SetPasswordHashAsync(UserInfo user, string passwordHash, CancellationToken cancellationToken)
         {
             await Task.Yield();
-            user.PasswordHash = passwordHash;            
+            user.PasswordHash = passwordHash;
            /* await _dynamoDb.UpdateItemAsync("Passwords", new Dictionary<string, AttributeValue>
             {
                 {"UserId", new AttributeValue{N=user.Id.ToString()}}},
-               new Dictionary<string, AttributeValueUpdate>() 
+               new Dictionary<string, AttributeValueUpdate>()
                { {"Hash", new AttributeValueUpdate {
                    Value = new AttributeValue(passwordHash)
-               }}                
-            });        */   
+               }}
+            });        */
         }
 
         public async Task<string> GetPasswordHashAsync(UserInfo user, CancellationToken cancellationToken)
         {
             var record = await _dynamoDb.GetItemAsync("Users", new Dictionary<string, AttributeValue>
             {
-                {"Id", new AttributeValue {N = user.Id.ToString()}}              
+                {"Id", new AttributeValue {N = user.Id.ToString()}}
             });
 
             return record?.Item["PasswordHash"].S;

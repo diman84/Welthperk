@@ -46,43 +46,79 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Login(OpenIdConnectRequest request)
         {
-            if (!request.IsPasswordGrantType())
+            if (request.IsPasswordGrantType())
             {
-                return BadRequest(new
+                // Ensure the username and password is valid.
+                var user = await _userManager.FindByNameAsync(request.Username);
+                if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
                 {
-                    ErrorId = OpenIdConnectConstants.Errors.UnsupportedGrantType,
-                    ErrorDescription = "The specified grant type is not supported."
-                });
+                    return BadRequest(new
+                    {
+                        ErrorId = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The username or password is invalid."
+                    });
+                }
+
+                // Ensure the email is confirmed.
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    return BadRequest(new
+                    {
+                        ErrorId = "email_not_confirmed",
+                        ErrorDescription = "You must have a confirmed email to log in."
+                    });
+                }
+
+                // Create a new authentication ticket.
+                var ticket = await CreateTicketAsync(request, user);
+
+                _logger.LogInformation($"User logged in (id: {user.Id})");
+
+                // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
+                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+            }
+            else if (request.IsRefreshTokenGrantType())
+            {
+                // Retrieve the claims principal stored in the refresh token.
+                var info = await HttpContext.Authentication.GetAuthenticateInfoAsync(
+                    OpenIdConnectServerDefaults.AuthenticationScheme);
+
+                // Retrieve the user profile corresponding to the refresh token.
+                // Note: if you want to automatically invalidate the refresh token
+                // when the user password/roles change, use the following line instead:
+                // var user = _signInManager.ValidateSecurityStampAsync(info.Principal);
+                var user = await _userManager.GetUserAsync(info.Principal);
+                if (user == null)
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The refresh token is no longer valid."
+                    });
+                }
+
+                // Ensure the user is still allowed to sign in.
+                if (!await _signInManager.CanSignInAsync(user))
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The user is no longer allowed to sign in."
+                    });
+                }
+
+                // Create a new authentication ticket, but reuse the properties stored
+                // in the refresh token, including the scopes originally granted.
+                var ticket = await CreateTicketAsync(request, user, info.Properties);
+
+                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
             }
 
-            // Ensure the username and password is valid.
-            var user = await _userManager.FindByNameAsync(request.Username);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+            return BadRequest(new OpenIdConnectResponse
             {
-                return BadRequest(new
-                {
-                    ErrorId = OpenIdConnectConstants.Errors.InvalidGrant,
-                    ErrorDescription = "The username or password is invalid."
-                });
-            }
-
-            // Ensure the email is confirmed.
-            if (!await _userManager.IsEmailConfirmedAsync(user))
-            {
-                return BadRequest(new
-                {
-                    ErrorId = "email_not_confirmed",
-                    ErrorDescription = "You must have a confirmed email to log in."
-                });
-            }
-
-            // Create a new authentication ticket.
-            var ticket = await CreateTicket(user);
-
-            _logger.LogInformation($"User logged in (id: {user.Id})");
-
-            // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
-            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+                Error = OpenIdConnectConstants.Errors.UnsupportedGrantType,
+                ErrorDescription = "The specified grant type is not supported."
+            });
         }
 
         [AllowAnonymous]
@@ -114,7 +150,7 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
                 }
 
                 // Create a new authentication ticket.
-                var ticket = await CreateTicket(user);
+                var ticket = await CreateTicketAsync(new OpenIdConnectRequest(), user);
 
                 _logger.LogInformation($"User logged in (id: {user.Id})");
 
@@ -142,7 +178,9 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
             }
         }
 
-        private async Task<AuthenticationTicket> CreateTicket(UserInfo user)
+        private async Task<AuthenticationTicket> CreateTicketAsync(
+            OpenIdConnectRequest request, UserInfo user,
+            AuthenticationProperties properties = null)
         {
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.
@@ -150,17 +188,23 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
 
             // Create a new authentication ticket holding the user identity.
             var ticket = new AuthenticationTicket(principal,
-                new AuthenticationProperties(),
+            properties ?? new AuthenticationProperties(),
                 OpenIdConnectServerDefaults.AuthenticationScheme);
 
-            // Set the list of scopes granted to the client application.
-            ticket.SetScopes(new[]
+            if (!request.IsRefreshTokenGrantType())
             {
-                OpenIdConnectConstants.Scopes.OpenId,
-                OpenIdConnectConstants.Scopes.Email,
-                OpenIdConnectConstants.Scopes.Profile,
-                OpenIddictConstants.Scopes.Roles
-            });
+                // Set the list of scopes granted to the client application.
+                // Note: the offline_access scope must be granted
+                // to allow OpenIddict to return a refresh token.
+                ticket.SetScopes(new[]
+                {
+                    OpenIdConnectConstants.Scopes.OpenId,
+                    OpenIdConnectConstants.Scopes.Email,
+                    OpenIdConnectConstants.Scopes.Profile,
+                    OpenIdConnectConstants.Scopes.OfflineAccess,
+                    OpenIddictConstants.Scopes.Roles
+                });//.Intersect(request.GetScopes()));
+            }
 
             ticket.SetResources("resource-server");
 
@@ -190,7 +234,7 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
                     destinations.Add(OpenIdConnectConstants.Destinations.IdentityToken);
                 }
 
-                claim.SetDestinations(OpenIdConnectConstants.Destinations.AccessToken);
+                claim.SetDestinations(destinations);
             }
 
             return ticket;

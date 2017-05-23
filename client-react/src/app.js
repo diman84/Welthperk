@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import feathers from 'feathers/client';
 import hooks from 'feathers-hooks';
 import rest from 'feathers-rest/client';
-import socketio from 'feathers-socketio/client';
 import authentication from 'feathers-authentication-client';
-import io from 'socket.io-client';
 import superagent from 'superagent';
 import config from './config';
 
@@ -20,21 +18,14 @@ const configureApp = transport => feathers()
 
 const customizeAuthRequest = () =>
    hook => {
-     hook.data = {
-       username: hook.data.email,
-       password: hook.data.password,
-       grant_type: 'password'
-     };
-    hook.params.headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    };
+    const { strategy, ...data } = hook.data;
+    hook.data = data;
+    hook.params.headers = { 'Content-Type': 'application/x-www-form-urlencoded', ...hook.params.headers };
     return Promise.resolve(hook);
   };
 
-export const socket = io('', { path: host('/ws'), autoConnect: false });
-
 export function createApp(req) {
-   if (req === 'rest') {
+  if (req === 'rest') {
       const feathersApp = configureApp(rest(host('/api')).superagent(superagent));
       feathersApp.service('auth/login').hooks({
         before: {
@@ -43,8 +34,7 @@ export function createApp(req) {
           });
       return feathersApp;
   }
-
-  if (__SERVER__ && req) {
+//if (__SERVER__ && req) {
     const app = configureApp(rest(host('/api')).superagent(superagent, {
       headers: {
         Cookie: req.get('cookie'),
@@ -58,9 +48,6 @@ export function createApp(req) {
     return app;
   }
 
-  return configureApp(socketio(socket));
-}
-
 export function withApp(WrappedComponent) {
   class WithAppComponent extends Component {
     static contextTypes = {
@@ -69,8 +56,8 @@ export function withApp(WrappedComponent) {
     }
 
     render() {
-      const { app, restApp } = this.context;
-      return <WrappedComponent {...this.props} app={app} restApp={restApp} />;
+      const { restApp } = this.context;
+      return <WrappedComponent {...this.props} restApp={restApp} />;
     }
   }
 

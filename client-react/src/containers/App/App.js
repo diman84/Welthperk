@@ -60,7 +60,7 @@ export default class App extends Component {
     if (!this.props.user && nextProps.user) {
       // login
       const redirect = this.props.router.location.query && this.props.router.location.query.redirect;
-      this.props.pushState(redirect || '/loginSuccess');
+      this.props.pushState(redirect || '/portfolio');
     } else if (this.props.user && !nextProps.user) {
       // logout
       this.props.pushState('/');
@@ -122,6 +122,9 @@ export default class App extends Component {
 
               {!user && <LinkContainer to="/login">
                 <NavItem>LOG IN</NavItem>
+              </LinkContainer>}
+              {user && <LinkContainer to="/logout">
+                <NavItem eventKey={7} onClick={this.handleLogout}>LOG OUT</NavItem>
               </LinkContainer>}
             </Nav>
           </Navbar.Collapse>

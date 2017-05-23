@@ -63,7 +63,8 @@ namespace WelthPeck
                 options.EnableTokenEndpoint("/auth/login");
 
                 // Allow client applications to use the grant_type=password flow.
-                options.AllowPasswordFlow();
+                options.AllowPasswordFlow()
+                       .AllowRefreshTokenFlow();
 
                 // During development, you can disable the HTTPS requirement.
                 options.DisableHttpsRequirement();
@@ -102,6 +103,8 @@ namespace WelthPeck
 
             app.UseStaticFiles();
 
+            app.UseIdentity();
+
             app.UseOAuthValidation();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -117,8 +120,6 @@ namespace WelthPeck
             });
 
             app.UseOpenIddict();
-
-            app.UseIdentity();
 
              app.UseMvc(routes =>
             {

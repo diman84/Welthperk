@@ -11,7 +11,7 @@ using Wealthperk.AWS.Models;
 
 namespace Wealthperk.AWS
 {
-    public class OpenIddictTokenStore: IOpenIddictTokenStore<OpenIddictToken>        
+    public class OpenIddictTokenStore: IOpenIddictTokenStore<OpenIddictToken>
     {
          Amazon.DynamoDBv2.IAmazonDynamoDB _dynamoDb;
          const string TableName = "OpenIdTokens";
@@ -44,8 +44,8 @@ namespace Wealthperk.AWS
                     {"Id", new AttributeValue { S =  token.Id }},
                     {"Subject", new AttributeValue { S =  token.Subject }},
                     {"Type", new AttributeValue { S =  token.Type }},
-                    {"ApplicationId", new AttributeValue { S =  token.ApplicationId }},
-                    {"AuthorizationId", new AttributeValue { S =  token.AuthorizationId }}});
+                    {"ApplicationId", AWSHelper.CreateAttributeVale(token.ApplicationId)},
+                    {"AuthorizationId", AWSHelper.CreateAttributeVale(token.AuthorizationId)}});
 
             return token;
         }
@@ -84,14 +84,14 @@ namespace Wealthperk.AWS
 
             var result = await _dynamoDb.QueryAsync(new QueryRequest
             {
-                TableName = "OpenIdAuthorizations",
+                TableName = TableName,
                 KeyConditionExpression = "Id = :v_Id",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
                     {":v_Id", new AttributeValue { S =  key }}},
             }, cancellationToken);
 
             var record = result.Items.FirstOrDefault();
-            
+
             return OpenIdModelFactory.CreateTokenFromAWS(record);
         }
 
@@ -216,7 +216,7 @@ namespace Wealthperk.AWS
             /*
             if (!string.IsNullOrEmpty(identifier))
             {
-                var key = ConvertIdentifierFromString(identifier);                               
+                var key = ConvertIdentifierFromString(identifier);
                 var authorization = await Authorizations.SingleOrDefaultAsync(element => element.Id.Equals(key));
                 if (authorization == null)
                 {
@@ -237,7 +237,7 @@ namespace Wealthperk.AWS
                 }
             }*/
             await Task.Yield();
-            var key = ConvertIdentifierFromString(identifier);               
+            var key = ConvertIdentifierFromString(identifier);
             token.AuthorizationId = key;
         }
 
@@ -304,18 +304,18 @@ namespace Wealthperk.AWS
             }
 
             await _dynamoDb.UpdateItemAsync(TableName, new Dictionary<string, AttributeValue>{
-                {"Id", new AttributeValue(token.Id)},               
+                {"Id", new AttributeValue(token.Id)},
             }, new Dictionary<string, AttributeValueUpdate>{
-                {"ApplicationId", new AttributeValueUpdate(new AttributeValue(token.ApplicationId),
+                {"ApplicationId", new AttributeValueUpdate(AWSHelper.CreateAttributeVale(token.ApplicationId),
                     AttributeAction.PUT)},
-                {"AuthorizationId",  new AttributeValueUpdate(new AttributeValue(token.AuthorizationId),
+                {"AuthorizationId",  new AttributeValueUpdate(AWSHelper.CreateAttributeVale(token.AuthorizationId),
                     AttributeAction.PUT)},
                 {"Subject",  new AttributeValueUpdate(new AttributeValue(token.Subject),
                     AttributeAction.PUT)},
                 {"Type", new AttributeValueUpdate(new AttributeValue(token.Type),
                     AttributeAction.PUT)}
             });
-            
+
         }
 
         /// <summary>

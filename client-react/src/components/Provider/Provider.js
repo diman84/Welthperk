@@ -36,7 +36,6 @@ function warnAboutReceivingStore() {
 
 export default class Provider extends Component {
   static propTypes = {
-    app: PropTypes.object.isRequired,
     restApp: PropTypes.object.isRequired,
     store: PropTypes.shape({
       subscribe: PropTypes.func.isRequired,
@@ -47,7 +46,6 @@ export default class Provider extends Component {
   };
 
   static childContextTypes = {
-    app: PropTypes.object.isRequired,
     restApp: PropTypes.object.isRequired,
     store: PropTypes.shape({
       subscribe: PropTypes.func.isRequired,
@@ -65,7 +63,6 @@ export default class Provider extends Component {
   constructor(props, context) {
     super(props, context);
     this.store = props.store;
-    this.app = props.app;
     this.restApp = props.restApp;
   }
 
@@ -73,7 +70,6 @@ export default class Provider extends Component {
     return {
       store: this.store,
       storeSubscription: null,
-      app: this.app,
       restApp: this.restApp,
     };
   }

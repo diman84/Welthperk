@@ -1,31 +1,33 @@
 {
-  "name": "wealtperk",    
+  "name": "wealtperk",
   "license": "MIT",
   "version": "0.0.1",
   "main": "client-react/bin/server.js",
   "scripts": {
-    "postinstall": "dotnet restore ./api && dotnet restore ./api.test && concurrently \"npm run build\" \"npm run build-dlls\"",	
-	  "test:api": "cd ./api.test && dotnet xunit", 
+    "postinstall": "dotnet restore ./api && dotnet restore ./api.test && concurrently \"npm run build\" \"npm run build-dlls\"",
+	  "test:api": "cd ./api.test && dotnet xunit",
     "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
     "start-prod": "better-npm-run start-prod",
     "start-prod-api": "better-npm-run start-prod-api",
-    "build": "better-npm-run build",    
+    "build": "better-npm-run build",
     "start-dev": "better-npm-run start-dev",
     "start-dev-api": "better-npm-run start-dev-api",
     "watch-client": "better-npm-run watch-client",
     "build-dlls": "cd client-react && webpack --colors --display-error-details --config webpack/vendor.config.js",
     "lint": "eslint -c .eslintrc client-react/src",
     "test": "karma start",
-    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\""
+    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
+    "dev2": "concurrent --kill-others \"npm run start-prod\" \"npm run start-dev-api\""
   },
   "betterScripts": {
     "start-prod": {
-      "command": "node ./client-react/bin/server.js",
+      "command": "cd client-react && node ./bin/server.js",
       "env": {
-        "NODE_PATH": "./client-react/src",
+        "NODE_PATH": "./src",
         "NODE_ENV": "production",
         "PORT": 3000,
-        "APIPORT": 5000
+        "APIPORT": 5000,
+        "WEBPACK_DLLS": 1
       }
     },
     "start-prod-api": {
@@ -47,7 +49,7 @@
     },
     "start-dev-api": {
       "command": "cd ./api/Wealthperk.Web && dotnet watch run",
-      "env": {        
+      "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "APIPORT": 5000
       }

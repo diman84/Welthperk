@@ -41,6 +41,8 @@
     "no-plusplus": "off",
     "no-console": "off",
     "no-alert": "off",
+    "spaced-comment": 0,
+    "arrow-body-style": 0,
     "max-len": ["error", 120],
     "indent": 0,
     "jsx-a11y/anchor-has-content": "off",
