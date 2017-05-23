@@ -1,5 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import cookie from 'js-cookie';
+//const jwtDecode = require('jwt-decode');
 
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
@@ -49,7 +50,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: false,
-        accessToken: action.result.accessToken,
+        accessToken: action.result.access_token,
         user: action.result.user
       };
     case LOGIN_FAIL:
@@ -160,9 +161,30 @@ export function login(strategy, data, validation = true) {
     })
       .then(setToken({ client, restApp }))
       .then(setCookie({ restApp }))
+      /*.then(response => {
+        const { access_token } = response;
+        console.log('Authenticated!', response);
+        return restApp.passport.verifyJWT(access_token);
+      })
+      .then(payload => {
+        console.log('JWT Payload', payload);
+        //return restApp.service('users').get(payload.id_token);
+        return jwtDecode(payload.id_token);
+      })*/
       .then(response => {
-        restApp.set('user', response.user);
-        return response;
+        //console.log('JWT Payload', payload);
+        //return restApp.service('users').get(response.id_token);
+        const { access_token } = response;
+        return restApp.passport.verifyJWT(access_token);
+      })
+      .then(payload => {
+        //restApp.set('user', response.user);
+        //return response;
+        restApp.set('user', {email: payload.name});
+        return payload;
+      })
+      .then(payload => {
+        return {access_token:restApp.get('accessToken'), user: restApp.get('user')};
       })
       .catch(validation ? catchValidation : error => Promise.reject(error))
   };
