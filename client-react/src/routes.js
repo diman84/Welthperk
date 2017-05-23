@@ -10,7 +10,6 @@ if (typeof System.import === 'undefined') System.import = module => Promise.reso
 
 export default store => {
   const {
-    injectReducerAndRender,
     permissionsComponent
   } = getRoutesUtils(store);
 
@@ -27,7 +26,7 @@ export default store => {
     redirectAction: routerActions.replace,
     wrapperDisplayName: 'UserIsNotAuthenticated',
     predicate: user => !user,
-    failureRedirectPath: '/',
+    failureRedirectPath: '/portfolio',
     allowRedirectBack: false
   });
 
@@ -37,7 +36,6 @@ export default store => {
   return (
     <Route path="/" component={App}>
       {/* Home (main) route */}
-      <IndexRoute component={Home} />
 
       {/* Routes requiring login */}
       {/*
@@ -45,33 +43,16 @@ export default store => {
         <Route path="protected-route" {...permissionsComponent(isAuthenticated)(Component)}>
       */}
       <Route {...permissionsComponent(isAuthenticated)()}>
-        <Route path="loginSuccess" getComponent={() => System.import('./containers/LoginSuccess/LoginSuccess')} />
-        <Route
-          path="chatFeathers"
-          getComponent={() => injectReducerAndRender(
-            { chat: System.import('./redux/modules/chat') },
-            System.import('./containers/ChatFeathers/ChatFeathers')
-          )}
-        />
+        <Route path="portfolio" getComponent={() => System.import('./containers/Portfolio/Portfolio')} />
       </Route>
-
       {/* Routes disallow login */}
       <Route {...permissionsComponent(isNotAuthenticated)()}>
-        <Route path="register" getComponent={() => System.import('./containers/Register/Register')} />
+        <IndexRoute component={Home} />
       </Route>
 
       {/* Routes */}
       <Route path="login" getComponent={() => System.import('./containers/Login/Login')} />
-      <Route path="portfolio" getComponent={() => System.import('./containers/Portfolio/Portfolio')} />
-      <Route
-        path="widgets"
-        getComponent={() => injectReducerAndRender(
-          { widgets: System.import('./redux/modules/widgets') },
-          System.import('./containers/Widgets/Widgets')
-        )}
       />
-      <Route path="chat" getComponent={() => System.import('./containers/Chat/Chat')} />
-
       {/* Catch all route */}
       <Route path="*" component={NotFound} status={404} />
     </Route>

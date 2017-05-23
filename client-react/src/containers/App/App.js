@@ -112,6 +112,10 @@ export default class App extends Component {
           </Navbar.Header>
 
           <Navbar.Collapse>
+            {user && <LinkContainer to="/portfolio">
+              <NavItem>PORTFOLIO</NavItem>
+              </LinkContainer>
+            }
             <Nav navbar pullRight>
               <LinkContainer to="/help">
                 <NavItem>HELP</NavItem>

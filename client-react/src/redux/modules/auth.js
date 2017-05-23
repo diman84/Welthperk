@@ -140,11 +140,27 @@ export function isLoaded(globalState) {
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: ({ restApp }) => restApp.authenticate({
+    promise: ({ client, restApp }) => restApp.authenticate({
       grant_type: 'refresh_token',
       strategy: 'local',
       refresh_token: restApp.get('refreshToken')
-    })
+    }).then(setToken({ client, restApp }))
+      .then(setCookie({ restApp }))
+      .then(response => {
+        const { access_token } = response;
+        return restApp.passport.verifyJWT(access_token);
+      })
+      .then(payload => {
+        restApp.set('user', { email: payload.name });
+        return payload;
+      })
+      .then(() => {
+        return {
+            access_token: restApp.get('accessToken'),
+            user: restApp.get('user')
+          };
+      })
+      .catch(error => Promise.reject(error))
   };
 }
 
