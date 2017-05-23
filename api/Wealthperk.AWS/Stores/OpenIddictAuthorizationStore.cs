@@ -10,8 +10,8 @@ using Wealthperk.AWS.Models;
 
 namespace Wealthperk.AWS
 {
-    public class OpenIddictAuthorizationStore : IOpenIddictAuthorizationStore<OpenIddictAuthorization>        
-    {       
+    public class OpenIddictAuthorizationStore : IOpenIddictAuthorizationStore<OpenIddictAuthorization>
+    {
         Amazon.DynamoDBv2.IAmazonDynamoDB _dynamoDb;
         const string DBName = "OpenIdAuthorizations";
 
@@ -43,7 +43,7 @@ namespace Wealthperk.AWS
                     {"Id", new AttributeValue { S =  authorization.Id }},
                     {"Subject", new AttributeValue { S =  authorization.Subject }},
                     {"Scope", new AttributeValue { S =  authorization.Scope }},
-                    {"ApplicationId", new AttributeValue { S =  authorization.ApplicationId }}});
+                    {"ApplicationId", AWSHelper.CreateAttributeVale(authorization.ApplicationId)}});
 
             return authorization;
         }
@@ -59,7 +59,7 @@ namespace Wealthperk.AWS
         /// whose result returns the authorization corresponding to the subject/client.
         /// </returns>
         public virtual async Task<OpenIddictAuthorization> FindAsync(string subject, string client, CancellationToken cancellationToken)
-        {            
+        {
             var key = ConvertIdentifierFromString(client);
 
             var result = await _dynamoDb.QueryAsync(new QueryRequest
@@ -73,7 +73,7 @@ namespace Wealthperk.AWS
             }, cancellationToken);
 
             var record = result.Items.FirstOrDefault();
-            
+
             return OpenIdModelFactory.CreateAuthorizationFromAWS(record);
         }
 
@@ -99,7 +99,7 @@ namespace Wealthperk.AWS
             }, cancellationToken);
 
             var record = result.Items.FirstOrDefault();
-            
+
             return OpenIdModelFactory.CreateAuthorizationFromAWS(record);
         }
 

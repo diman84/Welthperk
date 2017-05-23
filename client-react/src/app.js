@@ -18,19 +18,14 @@ const configureApp = transport => feathers()
 
 const customizeAuthRequest = () =>
    hook => {
-     hook.data = {
-       username: hook.data.email,
-       password: hook.data.password,
-       grant_type: 'password'
-     };
-    hook.params.headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    };
+    const { strategy, ...data } = hook.data;
+    hook.data = data;
+    hook.params.headers = { 'Content-Type': 'application/x-www-form-urlencoded', ...hook.params.headers };
     return Promise.resolve(hook);
   };
 
 export function createApp(req) {
-  if (req === 'rest'){
+  if (req === 'rest') {
       const feathersApp = configureApp(rest(host('/api')).superagent(superagent));
       feathersApp.service('auth/login').hooks({
         before: {
@@ -39,8 +34,7 @@ export function createApp(req) {
           });
       return feathersApp;
   }
-  else {
-  //if (__SERVER__ && req) {
+//if (__SERVER__ && req) {
     const app = configureApp(rest(host('/api')).superagent(superagent, {
       headers: {
         Cookie: req.get('cookie'),
@@ -53,7 +47,6 @@ export function createApp(req) {
 
     return app;
   }
-}
 
 export function withApp(WrappedComponent) {
   class WithAppComponent extends Component {

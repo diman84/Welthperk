@@ -124,7 +124,7 @@ export default class App extends Component {
                 <NavItem>LOG IN</NavItem>
               </LinkContainer>}
               {user && <LinkContainer to="/logout">
-                <NavItem>LOG OUT</NavItem>
+                <NavItem eventKey={7} onClick={this.handleLogout}>LOG OUT</NavItem>
               </LinkContainer>}
             </Nav>
           </Navbar.Collapse>

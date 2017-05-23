@@ -63,7 +63,8 @@ namespace WelthPeck
                 options.EnableTokenEndpoint("/auth/login");
 
                 // Allow client applications to use the grant_type=password flow.
-                options.AllowPasswordFlow();
+                options.AllowPasswordFlow()
+                       .AllowRefreshTokenFlow();
 
                 // During development, you can disable the HTTPS requirement.
                 options.DisableHttpsRequirement();

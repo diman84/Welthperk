@@ -1,7 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import cookie from 'js-cookie';
 //const jwtDecode = require('jwt-decode');
-
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
@@ -110,10 +109,12 @@ const catchValidation = error => {
 
 function setToken({ client, restApp }) {
   return response => {
-    const { access_token } = response;
+    const { access_token, refresh_token } = response;
 
     // set manually the JWT for both instances of feathers/client
     restApp.set('accessToken', access_token);
+    restApp.set('refreshToken', refresh_token);
+    restApp.passport.setJWT(access_token);
     client.setJwtToken(access_token);
 
     return response;
@@ -139,7 +140,11 @@ export function isLoaded(globalState) {
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: ({ restApp }) => restApp.authenticate()
+    promise: ({ restApp }) => restApp.authenticate({
+      grant_type: 'refresh_token',
+      strategy: 'local',
+      refresh_token: restApp.get('refreshToken')
+    })
   };
 }
 
@@ -157,6 +162,7 @@ export function login(strategy, data, validation = true) {
     promise: ({ client, restApp }) => restApp.authenticate({
       ...data,
       strategy,
+      grant_type: 'password'
     //  socketId
     })
       .then(setToken({ client, restApp }))
@@ -180,11 +186,14 @@ export function login(strategy, data, validation = true) {
       .then(payload => {
         //restApp.set('user', response.user);
         //return response;
-        restApp.set('user', {email: payload.name});
+        restApp.set('user', { email: payload.name });
         return payload;
       })
-      .then(payload => {
-        return {access_token:restApp.get('accessToken'), user: restApp.get('user')};
+      .then(() => {
+        return {
+            access_token: restApp.get('accessToken'),
+            user: restApp.get('user')
+          };
       })
       .catch(validation ? catchValidation : error => Promise.reject(error))
   };
@@ -194,6 +203,6 @@ export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
     promise: ({ client, restApp }) => restApp.logout()
-      .then(() => setToken({ client, restApp })({ accessToken: null }))
+      .then(() => setToken({ client, restApp })({ access_token: null, refresh_token: null }))
   };
 }

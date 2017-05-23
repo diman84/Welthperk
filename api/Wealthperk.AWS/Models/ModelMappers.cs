@@ -15,28 +15,28 @@ namespace Wealthperk.AWS.Models
                 DisplayName = record["DisplayName"].S,
                 RedirectUri = record["RedirectUri"].S,
                 Type = record["Type"].S,
-                Id = record["Id"].S                 
+                Id = record["Id"].S
             };
         }
 
         internal static OpenIddictAuthorization CreateAuthorizationFromAWS(Dictionary<string, AttributeValue> record)
         {
             return new OpenIddictAuthorization() {
-                ApplicationId = record["ApplicationId"].S,
+                ApplicationId = record["ApplicationId"]?.S,
                 Scope = record["Scope"].S,
                 Subject = record["Subject"].S,
-                Id = record["Id"].S                 
+                Id = record["Id"].S
             };
         }
 
         internal static OpenIddictToken CreateTokenFromAWS(Dictionary<string, AttributeValue> record)
         {
             return new OpenIddictToken() {
-                ApplicationId = record["ApplicationId"].S,
-                AuthorizationId = record["AuthorizationId"].S,
+                ApplicationId = record["ApplicationId"]?.S,
+                AuthorizationId = record["AuthorizationId"]?.S,
                 Type = record["Type"].S,
                 Subject = record["Subject"].S,
-                Id = record["Id"].S                 
+                Id = record["Id"].S
             };
         }
     }

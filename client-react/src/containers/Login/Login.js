@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import LoginForm from 'components/LoginForm/LoginForm';
-import FacebookLogin from 'components/FacebookLogin/FacebookLogin';
+//import FacebookLogin from 'components/FacebookLogin/FacebookLogin';
 import * as authActions from 'redux/modules/auth';
 import * as notifActions from 'redux/modules/notifs';
 
@@ -70,14 +70,6 @@ export default class Login extends Component {
         <h1>Login</h1>
         {!user && <div>
           <LoginForm onSubmit={this.login} />
-          <p>This will "log you in" as this user, storing the username in the session of the API server.</p>
-          <FacebookLogin
-            appId="635147529978862"
-            /* autoLoad={true} */
-            fields="name,email,picture"
-            onLogin={this.onFacebookLogin}
-            component={this.FacebookLoginButton}
-          />
         </div>
         }
         {user && <div>

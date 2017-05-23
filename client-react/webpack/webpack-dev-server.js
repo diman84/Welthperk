@@ -12,7 +12,7 @@ var serverOptions = {
   quiet: true,
   noInfo: true,
   hot: true,
-  inline: true,
+  inline: false,
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
   headers: { 'Access-Control-Allow-Origin': '*' },

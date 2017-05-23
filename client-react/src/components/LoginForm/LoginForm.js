@@ -26,10 +26,10 @@ export default class LoginForm extends Component {
 
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
-        <Field name="email" type="text" component={this.renderInput} label="Email" />
+        <Field name="username" type="text" component={this.renderInput} label="Email" />
         <Field name="password" type="password" component={this.renderInput} label="Password" />
         {error && <p className="text-danger"><strong>{error}</strong></p>}
-        <button className="btn btn-success" type="submit">
+        <button className="btn btn-success pull-right" type="submit">
           <i className="fa fa-sign-in" />{' '}Log In
         </button>
       </form>
