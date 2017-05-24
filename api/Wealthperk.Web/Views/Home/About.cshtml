@@ -1,7 +1,23 @@
-﻿@{
-    ViewData["Title"] = "About";
-}
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+﻿<h3>Diagnostics.</h3>
+<div class="row">
+    <div class="col-md-12">
+        <p>@ViewData["Message"]</p>
+    </div>
+</div>
+<h3>Deployment info.</h3>
+<div class="row">
+    <div class="col-md-12">
+        <p>@ViewData["ContainerServicesTask"]</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h4>Web server</h4>
+        <p>@ViewData["WebContainer"]</p>
+    </div>
+    <div class="col-md-6">
+        <h4>API server</h4>
+        <p>@ViewData["WebContainer"]</p>
+    </div>
+</div>
 
-<p>Use this area to provide additional information.</p>
