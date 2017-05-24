@@ -26,7 +26,7 @@ export default store => {
     redirectAction: routerActions.replace,
     wrapperDisplayName: 'UserIsNotAuthenticated',
     predicate: user => !user,
-    failureRedirectPath: '/portfolio',
+    failureRedirectPath: '/accounts',
     allowRedirectBack: false
   });
 

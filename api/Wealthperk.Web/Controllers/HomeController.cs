@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +25,15 @@ namespace WelthPeck.Controllers
 
         public async Task<IActionResult> About()
         {
-            var tables = await _dynamoDb.ListTablesAsync();
-            ViewData["Message"] = "Dynamo Db functioning properly";
-
+            var cancelSource = new CancellationTokenSource();
+            cancelSource.CancelAfter(1000);
+            try{
+                var tables = await _dynamoDb.ListTablesAsync(cancelSource.Token);
+                ViewData["Message"] = "Dynamo Db functioning properly";
+            }
+            catch (TaskCanceledException ex){
+                ViewData["ErrorMessage"] = "Dynamo Db is NOT functioning";
+            }
             return View();
         }
 

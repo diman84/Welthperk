@@ -92,7 +92,7 @@ namespace Wealthperk.AWS
 
             var record = result.Items.FirstOrDefault();
 
-            return OpenIdModelFactory.CreateTokenFromAWS(record);
+            return record != null ? OpenIdModelFactory.CreateTokenFromAWS(record) : null;
         }
 
         /// <summary>

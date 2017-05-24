@@ -5,24 +5,29 @@ import { ContentBlock } from 'components';
 import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/lib/Button';
 import { WithTooltip } from 'components/Elements';
+import { ContactModal } from 'components/Elements/ContactModal';
 import { portfolioValue } from 'constants/staticText';
 
 @connect(
   state => ({
-    user: state.auth.user
+    user: state.auth.user,
+    showModal: false
   }),
   { })
 export default class Value extends Component {
   static propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    showModal: PropTypes.bool
   };
 
   static defaultProps = {
-    user: null
+    user: null,
+    showModal: false
   };
 
   render() {
     return (
+      <ContactModal showModal={this.showModal} action="ROLLOVER" title="Rollover your old RRSP"></ContactModal> &&
       <ContentBlock>
         <div>
           <div className="value__header">
@@ -30,7 +35,7 @@ export default class Value extends Component {
               <Col md={4} className="value__header--box">
                 <div className="value__header--title">
                   RETIREMENT SAVINGS
-                  <WithTooltip id="tt1" tooltip={portfolioValue} >
+                  <WithTooltip id="tt1" tooltip={portfolioValue}>
                     <span className="info-icon" />
                   </WithTooltip>
                 </div>
@@ -81,7 +86,8 @@ export default class Value extends Component {
             </div>
 
             <div style={{ marginTop: '48px' }}>
-              <Button bsSize="lg" bsStyle="primary">Rollover your old RRSP</Button>
+              <Button bsSize="lg" bsStyle="primary"
+                onClick={() => { this.setState({ showModal: true }); }}>Rollover your old RRSP</Button>
             </div>
           </div>
         </div>
