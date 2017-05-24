@@ -51,6 +51,7 @@ export default store => {
       </Route>
 
       {/* Routes */}
+      <Route path="accounts" getComponent={() => System.import('./containers/Accounts/Accounts')} />
       <Route path="login" getComponent={() => System.import('./containers/Login/Login')} />
       />
       {/* Catch all route */}

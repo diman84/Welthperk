@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
+import { AccountItem } from 'components/Accounts';
 
 @connect(
   state => ({
     user: state.auth.user
   }),
   { })
-export default class Risks extends Component {
+export default class AccountsList extends Component {
   static propTypes = {
     user: PropTypes.object
   };
@@ -21,18 +22,14 @@ export default class Risks extends Component {
     return (
       <ContentBlock>
         <div className="pd-30 btm-content-box">
-          <div className="risks__header">
-            <h2>Risk Profile</h2>
-            <p>Aggressive Growth</p>
-          </div>
+          <h2>Your Accounts</h2>
 
-          <div className="risks__content">
-            <h2>Portfolio Fee</h2>
-            <p>0.20%</p>
-          </div>
+          {[1, 2].map((item, index) => (
+            <AccountItem key={`item-${index}`} />
+          ))}
 
           <div className="view-toggler-box border-top">
-            <a>CHANGE ALLOCATION</a>
+            <a>+ ADD ANOTHER ACCOUNT</a>
           </div>
         </div>
       </ContentBlock>

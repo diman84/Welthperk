@@ -113,11 +113,11 @@ export default class App extends Component {
 
           <Navbar.Collapse>
             <Nav navbar pullRight>
-              <LinkContainer to="/help">
-                <NavItem>HELP</NavItem>
+              <LinkContainer to="/accounts">
+                <NavItem>ACCOUNTS</NavItem>
               </LinkContainer>
-              <LinkContainer to="/blog">
-                <NavItem>BLOG</NavItem>
+              <LinkContainer to="/portfolio">
+                <NavItem>PORTFOLIO</NavItem>
               </LinkContainer>
 
               {!user && <LinkContainer to="/login">

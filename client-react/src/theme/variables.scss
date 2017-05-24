@@ -146,8 +146,8 @@ $btn-default-bg:                 #e1e1e1;
 $btn-default-border:             #e1e1e1;
 
 $btn-primary-color:              #fff !default;
-$btn-primary-bg:                 $brand-primary !default;
-$btn-primary-border:             darken($btn-primary-bg, 5%) !default;
+$btn-primary-bg:                 $brand-primary;
+$btn-primary-border:             $btn-primary-bg;
 
 $btn-success-color:              #fff !default;
 $btn-success-bg:                 #2bae56;
@@ -169,7 +169,7 @@ $btn-link-disabled-color:        $gray-light !default;
 
 // Allows for customizing button radius independently from global border radius
 $btn-border-radius-base:         3px;
-$btn-border-radius-large:        $border-radius-large !default;
+$btn-border-radius-large:        $btn-border-radius-base;
 $btn-border-radius-small:        $border-radius-small !default;
 
 

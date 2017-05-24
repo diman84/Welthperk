@@ -12,6 +12,21 @@ h1.page-title {
   -webkit-border-radius: $border-radius-large;
   -moz-border-radius: $border-radius-large;
   border-radius: $border-radius-large;
+  h2:first-of-type {
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+  /* Buttons */
+  .btn-lg {
+    height: 64px;
+  }
+  .h3 {
+    color: $text-color;
+    font-size: em(24);
+    margin-top: 0;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
 }
 
 .pd-30 {
@@ -33,11 +48,21 @@ h1.page-title {
 .bg-before-purple:before {
   background-color: $brand-purple;
 }
+.bg-before-inactive:before {
+  border: 2px solid $gray-light;
+}
 
 .btm-content-box {
   position: relative;
   min-height: 328px;
   padding-bottom: 60px;
+}
+
+.color-primary {
+  color: $brand-primary !important;
+}
+.color-gray-light {
+  color: $gray-light !important;
 }
 
 .view-toggler-box {
@@ -95,4 +120,24 @@ h1.page-title {
       opacity: 0.89;
     }
   }
+}
+
+/* Flex */
+.flex-container {
+  @include flexbox();
+  > div {
+    @include flex(0 1 auto);
+  }
+}
+.flex-vertical-center {
+  -webkit-align-items: center;
+  align-items: center;
+}
+.flex-vertical-bottom {
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+}
+.flex-justified {
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
 }
