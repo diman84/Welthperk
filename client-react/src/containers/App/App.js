@@ -112,17 +112,16 @@ export default class App extends Component {
           </Navbar.Header>
 
           <Navbar.Collapse>
-            {user && <LinkContainer to="/portfolio">
-              <NavItem>PORTFOLIO</NavItem>
-              </LinkContainer>
-            }
             <Nav navbar pullRight>
-              <LinkContainer to="/help">
+              {user && <LinkContainer to="/accounts">
+                <NavItem>ACCOUNTS</NavItem>
+              </LinkContainer>}
+              {user && <LinkContainer to="/portfolio">
+                <NavItem>PORTFOLIO</NavItem>
+              </LinkContainer>}
+              {!user && <LinkContainer to="/accounts">
                 <NavItem>HELP</NavItem>
-              </LinkContainer>
-              <LinkContainer to="/blog">
-                <NavItem>BLOG</NavItem>
-              </LinkContainer>
+              </LinkContainer>}
 
               {!user && <LinkContainer to="/login">
                 <NavItem>LOG IN</NavItem>

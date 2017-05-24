@@ -44,14 +44,13 @@ export default store => {
       */}
       <Route {...permissionsComponent(isAuthenticated)()}>
         <Route path="portfolio" getComponent={() => System.import('./containers/Portfolio/Portfolio')} />
+        <Route path="accounts" getComponent={() => System.import('./containers/Accounts/Accounts')} />
       </Route>
       {/* Routes disallow login */}
       <Route {...permissionsComponent(isNotAuthenticated)()}>
         <IndexRoute component={Home} />
+        <Route path="login" getComponent={() => System.import('./containers/Login/Login')} />
       </Route>
-
-      {/* Routes */}
-      <Route path="login" getComponent={() => System.import('./containers/Login/Login')} />
       />
       {/* Catch all route */}
       <Route path="*" component={NotFound} status={404} />

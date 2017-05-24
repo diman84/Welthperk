@@ -63,6 +63,12 @@
           padding-right: 0;
         }
       }
+      &.active {
+        > a {
+          background-color: transparent;
+          opacity: 0.9;
+        }
+      }
     }
     &.navbar-right {
       @media screen and (min-width: $screen-sm) {

@@ -8,7 +8,7 @@ import { ContentBlock } from 'components';
     user: state.auth.user
   }),
   { })
-export default class Risks extends Component {
+export default class Contribution extends Component {
   static propTypes = {
     user: PropTypes.object
   };
@@ -21,18 +21,20 @@ export default class Risks extends Component {
     return (
       <ContentBlock>
         <div className="pd-30 btm-content-box">
-          <div className="risks__header">
-            <h2>Risk Profile</h2>
-            <p>Aggressive Growth</p>
+          <div style={{ marginBottom: '48px' }}>
+            <h2>Contribution</h2>
+            <p className="h3">$250.10</p>
+            <p>3% of your pay</p>
+            <p>1% employer match</p>
           </div>
 
-          <div className="risks__content">
-            <h2>Portfolio Fee</h2>
-            <p>0.20%</p>
+          <div style={{ marginBottom: '24px' }}>
+            <h2>Frequency</h2>
+            <p className="h3">Biweekly</p>
           </div>
 
           <div className="view-toggler-box border-top">
-            <a>CHANGE ALLOCATION</a>
+            <a>CHANGE CONTRIBUTION</a>
           </div>
         </div>
       </ContentBlock>
