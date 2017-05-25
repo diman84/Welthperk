@@ -29,10 +29,8 @@ export default function reducer(state = initialState, action = {}) {
 export function sendContact(data) {
   return {
     types: [CONTACT_SENDING, CONTACT_SENT, CONTACT_FAIL],
-    promise: ({ client }) => client.post({
-      ...data
-    })
-      .then(() => {})
-      .catch(error => Promise.reject(error))
-  };
+    promise: ({ client }) =>
+      client.post('/home/contact', {...data })
+            .catch(error => Promise.reject(error))
+    };
 }

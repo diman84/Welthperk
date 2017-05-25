@@ -10,7 +10,11 @@ export default function reducer(state = initialState, action) {
     case TOGGLE_MODAL:
       const actualState = state.modalState;
       const newState = actualState === false ? true : false;
-      return { modalState: newState };
+      return {
+        modalState: newState,
+        action: action.action,
+        title: action.title
+       };
     default:
       return state;
   }
@@ -19,8 +23,9 @@ export default function reducer(state = initialState, action) {
 /*
 * Actions
 * * * * */
-export function toggleModal(){
+export function toggleModal(data) {
   return {
-    type: TOGGLE_MODAL
+    type: TOGGLE_MODAL,
+    ...data
   };
 }

@@ -40,7 +40,7 @@ export default class App extends Component {
     notifs: PropTypes.object.isRequired,
     logout: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired,
-    modalState: PropTypes.object.bool
+    modalState: PropTypes.bool
   };
 
   static defaultProps = {

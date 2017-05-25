@@ -221,5 +221,6 @@ export function logout() {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
     promise: ({ client, restApp }) => restApp.logout()
       .then(() => setToken({ client, restApp })({ access_token: null, refresh_token: null }))
+      .then(() => setCookie({ restApp })())
   };
 }

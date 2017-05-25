@@ -7,7 +7,11 @@ import ContactForm from './ContactForm';
 
 @connect(
   (state) => {
-    return { showModal: state.modal.modalState };
+    return {
+      showModal: state.modal.modalState,
+      action: state.modal.action,
+      title: state.modal.title
+     };
   },
   modalActions
 )
@@ -26,10 +30,12 @@ export default class ContactModal extends Component {
     title: 'Send Request'
   }
 
+  close = () => this.props.toggleModal({})
+
   render() {
     const { title, showModal, action } = this.props;
     return (
-      <Modal show={showModal} onHide={this.props.toggleModal}>
+      <Modal show={showModal} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>

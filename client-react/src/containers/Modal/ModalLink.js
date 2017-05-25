@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import * as modalActions from 'redux/modules/modal';
-import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 
@@ -14,16 +13,16 @@ export default class ModalComponentButton extends Component{
         action: PropTypes.string.isRequired
     };
 
-    showModal = () => {
+    showModal = (event) => {
       const { title, action, toggleModal } = this.props;
+      event.preventDefault();
       toggleModal({action, title});
     }
 
     render(){
       const { title } = this.props;
       return (
-    <Button bsSize="lg" bsStyle="primary"
-      onClick={this.showModal}>{title}</Button>
+    <a onClick={this.showModal}>{title}</a>
       );
     }
 }

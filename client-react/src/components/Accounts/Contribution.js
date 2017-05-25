@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
+import ModalLink from 'containers/Modal/ModalLink';
 
 @connect(
   state => ({
@@ -34,7 +35,7 @@ export default class Contribution extends Component {
           </div>
 
           <div className="view-toggler-box border-top">
-            <a>CHANGE CONTRIBUTION</a>
+            <ModalLink action="CHANGE_CONTRIBUTION" title="CHANGE CONTRIBUTION"></ModalLink>
           </div>
         </div>
       </ContentBlock>

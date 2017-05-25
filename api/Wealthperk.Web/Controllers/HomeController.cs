@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Wealthperk.Web.ViewModels;
 
 namespace WelthPeck.Controllers
 {
@@ -52,6 +53,14 @@ namespace WelthPeck.Controllers
             return View(new AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest {
                 GrantType = "password"
             });
+        }
+
+        [HttpPost]
+        [Produces("application/json")]
+        public async Task<IActionResult> Contact(ContactRequest request)
+        {
+            await Task.Yield();
+            return StatusCode(200);
         }
 
         public IActionResult Error()

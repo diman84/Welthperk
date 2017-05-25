@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-//import PropTypes from 'prop-types';
-//import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
-import { Row, Col, /*Button, Modal*/ } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { WithTooltip } from 'components/Elements';
-//import ContactModal from 'containers/ContactForm/ContactModal';
 import ModalButton from 'containers/Modal/ModalButton';
 import { portfolioValue } from 'constants/staticText';
-//import { bindActionCreators } from 'redux';
 
 export default class Value extends Component {
   render() {
@@ -70,7 +66,7 @@ export default class Value extends Component {
             </div>
 
             <div style={{ marginTop: '48px' }}>
-              <ModalButton title="Rollover your old RRSP"></ModalButton>
+              <ModalButton action="ROLLOVER" title="Rollover your old RRSP"></ModalButton>
             </div>
           </div>
         </div>
