@@ -1,36 +1,37 @@
 import React, { Component } from 'react';
-import Modal from 'react-bootstrap/lib/Modal';
-import Button from 'react-bootstrap/lib/Button';
+import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import ContactForm from 'components/ContactForm/ContactForm';
 import { connect } from 'react-redux';
+import ContactForm from './ContactForm';
 
 @connect(
-  (state) => ({ showModal: state.showModal })
+  (state) => { return { showModal: state.showModal || false }; }
 )
 
 export default class ContactModal extends Component {
 
  static propTypes = {
-    showModal: PropTypes.bool,
-    title: PropTypes.string,
-    action: PropTypes.string
+    //showModal: PropTypes.bool.isRequired,
+    action: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired
   };
 
-  static defaultProps = {
-    showModal: false,
-    title: 'Send request',
-    action: 'GENERIC'
-  };
+  show() {
+    this.setState({ showModal: true });
+  }
 
   close() {
     this.setState({ showModal: false });
   }
 
+  messageSent() {
+    this.close();
+  }
+
   render() {
-    const { action, title, showModal } = this.props;
+    const { action, title } = this.props;
     return (
-      <Modal show={showModal} onHide={this.close}>
+      <Modal show={this.state.showModal} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -39,7 +40,7 @@ export default class ContactModal extends Component {
           <p>This functionality is not yet available over web.</p>
           <p>Please send us the request with you optional message attached
                 and we will get to you as soon as possible.</p>
-          <ContactForm action={action} />
+          <ContactForm action={action} onSuccess={this.messageSent} />
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.close}>Close</Button>

@@ -1,25 +1,46 @@
 import React, { Component } from 'react';
 import { reduxForm, Field, propTypes } from 'redux-form';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as contactActions from 'redux/modules/contact';
+import * as notifActions from 'redux/modules/notifs';
 
 @reduxForm({
   form: 'contact'
 })
+
+@connect(
+  (state) => { return { ...state }; },
+  { ...contactActions, ...notifActions }
+)
+
 export default class ContactForm extends Component {
   static propTypes = {
     ...propTypes,
-    notifSend: PropTypes.func.isRequired,
+    title: PropTypes.string,
+    action: PropTypes.string,
     sendContact: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func.isRequired,
+    notifSend: PropTypes.func.isRequired,
   }
+
+  static defaultProps = {
+    title: 'Send request',
+    action: 'GENERIC'
+  };
+
+  static textarea;
 
   sendMessage = data =>
     this.props.sendContact(data)
         .then(() => {
+                this.textarea.value = '';
                 this.props.notifSend({
-                  message: 'Your request has been sent',
-                  kind: 'success',
-                  dismissAfter: 5000
-                });
+                    message: 'Yout request sent succesfully!',
+                    kind: 'success',
+                    dismissAfter: 2000
+                  });
+                  this.props.onSuccess();
             })
         .catch(error => {
                 this.props.notifSend({
@@ -44,7 +65,8 @@ export default class ContactForm extends Component {
 
     return (
       <form className="form-horizontal" onSubmit={this.sendMessage}>
-        <Field name="username" type="text" component={this.renderInput} label="Message" />
+        <Field ref={node => { this.textarea = node; }}
+          name="username" type="text" component={this.renderInput} label="Message" />
         <Field name="action" type="hidden" component={this.renderInput} value={action} />
         {error && <p className="text-danger"><strong>{error}</strong></p>}
         <button className="btn btn-success pull-right" type="submit">
