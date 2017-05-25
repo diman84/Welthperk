@@ -21,6 +21,16 @@ namespace WelthPeck.Controllers
 
         public IActionResult Index()
         {
+            if (Request.Query.ContainsKey("success")) {
+                ViewData["Success"] = "Operation completed successfully!";
+            } else if (Request.Query.ContainsKey("error")){
+                string errors = Request.Query["error"];
+                if (!string.IsNullOrEmpty("errors")){
+                    var messages = errors.Split('|');
+                    ViewBag.Errors = messages;
+                    ViewData["Error"] = "Operation failed with errors.";
+                }
+            }
             return View();
         }
 

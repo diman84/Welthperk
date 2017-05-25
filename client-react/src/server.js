@@ -26,10 +26,7 @@ const targetUrl = `http://${config.apiHost}:${config.apiPort}`;
 const pretty = new PrettyError();
 const app = express();
 const server = new http.Server(app);
-const proxy = httpProxy.createProxyServer({
-  forward: targetUrl,
-  ws: true
-});
+const proxy = httpProxy.createProxyServer({ ws: true });
 
 app.use(cookieParser());
 app.use(compression());

@@ -154,11 +154,13 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
 
                 _logger.LogInformation($"User logged in (id: {user.Id})");
 
-                return Ok();
+                //return Ok();
+                return Redirect("/api/Home/Index?success");
             }
             else
             {
-                return BadRequest(new { general = result.Errors.Select(x => x.Description) });
+                //return BadRequest(new { general = result.Errors.Select(x => x.Description) });
+                return Redirect("/api/Home/Index?error=" + System.Net.WebUtility.UrlEncode(string.Join("|", result.Errors.Select(x => x.Description))));
             }
         }
 
