@@ -1,26 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
 import { Row, Col } from 'react-bootstrap';
-import Button from 'react-bootstrap/lib/Button';
 import { WithTooltip } from 'components/Elements';
+import ModalButton from 'containers/Modal/ModalButton';
 import { portfolioValue } from 'constants/staticText';
 
-@connect(
-  state => ({
-    user: state.auth.user
-  }),
-  { })
 export default class Value extends Component {
-  static propTypes = {
-    user: PropTypes.object
-  };
-
-  static defaultProps = {
-    user: null
-  };
-
   render() {
     return (
       <ContentBlock>
@@ -30,7 +15,7 @@ export default class Value extends Component {
               <Col md={4} className="value__header--box">
                 <div className="value__header--title">
                   RETIREMENT SAVINGS
-                  <WithTooltip id="tt1" tooltip={portfolioValue} >
+                  <WithTooltip id="tt1" tooltip={portfolioValue}>
                     <span className="info-icon" />
                   </WithTooltip>
                 </div>
@@ -81,7 +66,7 @@ export default class Value extends Component {
             </div>
 
             <div style={{ marginTop: '48px' }}>
-              <Button bsSize="lg" bsStyle="primary">Rollover your old RRSP</Button>
+              <ModalButton action="ROLLOVER" title="Rollover your old RRSP"></ModalButton>
             </div>
           </div>
         </div>

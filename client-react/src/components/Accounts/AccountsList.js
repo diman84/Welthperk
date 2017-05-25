@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
 import { AccountItem } from 'components/Accounts';
+import ModalLink from 'containers/Modal/ModalLink';
 
 @connect(
   state => ({
@@ -29,7 +30,7 @@ export default class AccountsList extends Component {
           ))}
 
           <div className="view-toggler-box border-top">
-            <a>+ ADD ANOTHER ACCOUNT</a>
+            <ModalLink action="ADD_ACCOUNT" title="+ ADD ANOTHER ACCOUNT"></ModalLink>
           </div>
         </div>
       </ContentBlock>

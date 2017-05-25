@@ -123,8 +123,9 @@ function setToken({ client, restApp }) {
 
 function setCookie({ restApp }) {
   return response => {
-    const options = response.expires_in ? { expires: response.expires_in / (60 * 60 * 24 * 1000) } : undefined;
+    const options = response.expires_in ? { expires: response.expires_in / (60 * 60 * 24) } : undefined;
     cookie.set('feathers-jwt', restApp.get('accessToken'), options);
+    cookie.set('refreshToken', restApp.get('refreshToken'), options);
     return response;
   };
 }
@@ -143,7 +144,7 @@ export function load() {
     promise: ({ client, restApp }) => restApp.authenticate({
       grant_type: 'refresh_token',
       strategy: 'local',
-      refresh_token: restApp.get('refreshToken')
+      refresh_token: restApp.get('refreshToken') || cookie.get('refreshToken')
     }).then(setToken({ client, restApp }))
       .then(setCookie({ restApp }))
       .then(response => {
@@ -220,5 +221,6 @@ export function logout() {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
     promise: ({ client, restApp }) => restApp.logout()
       .then(() => setToken({ client, restApp })({ access_token: null, refresh_token: null }))
+      .then(() => setCookie({ restApp })())
   };
 }
