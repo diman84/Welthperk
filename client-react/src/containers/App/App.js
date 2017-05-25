@@ -13,6 +13,7 @@ import { Notifs, Footer } from 'components';
 import { push } from 'react-router-redux';
 import config from 'config';
 import { asyncConnect } from 'redux-connect';
+import ContactModal from 'containers/ContactForm/ContactModal';
 
 @asyncConnect([{
   promise: ({ store: { dispatch, getState } }) => {
@@ -27,7 +28,8 @@ import { asyncConnect } from 'redux-connect';
 @connect(
   state => ({
     notifs: state.notifs,
-    user: state.auth.user
+    user: state.auth.user,
+    modalState: state.modalState
   }),
   { logout, pushState: push })
 export default class App extends Component {
@@ -37,11 +39,13 @@ export default class App extends Component {
     user: PropTypes.object,
     notifs: PropTypes.object.isRequired,
     logout: PropTypes.func.isRequired,
-    pushState: PropTypes.func.isRequired
+    pushState: PropTypes.func.isRequired,
+    modalState: PropTypes.object.bool
   };
 
   static defaultProps = {
-    user: null
+    user: null,
+    modalState: false
   };
 
   static contextTypes = {
@@ -82,7 +86,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { user, notifs, children } = this.props;
+    const { user, notifs, children, modalState } = this.props;
     const { offsetY } = this.state;
     const pathname = this.props.router.location.pathname;
     let navClass = '';
@@ -97,6 +101,7 @@ export default class App extends Component {
 
     return (
       <div className={styles.app} style={wrapperStyle}>
+        <ContactModal showModal={modalState}></ContactModal>
         <Helmet
           {...config.app.head}
         />

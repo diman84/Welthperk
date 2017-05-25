@@ -4,6 +4,7 @@ import { reducer as reduxAsyncConnect } from 'redux-connect';
 import { reducer as form } from 'redux-form';
 import auth from './modules/auth';
 import notifs from './modules/notifs';
+import modal from './modules/modal';
 // import widgets from './modules/widgets';
 // import survey from './modules/survey';
 // import chat from './modules/chat';
@@ -16,6 +17,7 @@ export default function createReducers(asyncReducers) {
     form,
     notifs,
     auth,
+    modal,
     // widgets,
     // survey,
     // chat,

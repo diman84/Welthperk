@@ -1,11 +1,14 @@
 import React,{Component} from 'react';
-import {bindActionCreators} from 'redux';
+//import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {toggleModal} from 'redux/modules/modal';
+import * as modalActions from 'redux/modules/modal';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-class ModalComponentButton extends Component{
+
+@connect(() => ({ }), modalActions)
+
+export default class ModalComponentButton extends Component{
     static propTypes = {
         toggleModal: PropTypes.func.isRequired,
         title: PropTypes.string.isRequired
@@ -19,10 +22,8 @@ class ModalComponentButton extends Component{
     }
 }
 
-function mapDispatchToProps(dispatch){
+/*function mapDispatchToProps(dispatch){
   return bindActionCreators({
     toggleModal
   }, dispatch);
-}
-
-export default connect(null, mapDispatchToProps)(ModalComponentButton);
+}*/

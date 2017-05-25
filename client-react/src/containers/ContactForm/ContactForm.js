@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field, propTypes } from 'redux-form';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 import * as contactActions from 'redux/modules/contact';
 import * as notifActions from 'redux/modules/notifs';
 
@@ -61,7 +62,7 @@ export default class ContactForm extends Component {
     </div>;
 
   render() {
-    const { action, error } = this.props;
+    const { action, error, } = this.props;
 
     return (
       <form className="form-horizontal" onSubmit={this.sendMessage}>
@@ -69,9 +70,11 @@ export default class ContactForm extends Component {
           name="username" type="text" component={this.renderInput} label="Message" />
         <Field name="action" type="hidden" component={this.renderInput} value={action} />
         {error && <p className="text-danger"><strong>{error}</strong></p>}
-        <button className="btn btn-success pull-right" type="submit">
+        <div className="form-group">
+          <Button className="btn btn-success pull-right" type="submit">
           <i className="fa" />{' '}Send
-        </button>
+          </Button>
+        </div>
       </form>
     );
   }

@@ -1,70 +1,18 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+//import PropTypes from 'prop-types';
+//import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
-import { Row, Col, Button, Modal } from 'react-bootstrap';
+import { Row, Col, /*Button, Modal*/ } from 'react-bootstrap';
 import { WithTooltip } from 'components/Elements';
 //import ContactModal from 'containers/ContactForm/ContactModal';
 import ModalButton from 'containers/Modal/ModalButton';
 import { portfolioValue } from 'constants/staticText';
-import { bindActionCreators } from 'redux';
-import { toggleModal } from 'redux/modules/modal';
-
-@connect(
-    state => {
-      return {
-        modalStatus: state ? state.modalState : false
-      };
-    },
-    dispatch => {
-        return bindActionCreators({
-        toggleModal
-      }, dispatch);
-    })
+//import { bindActionCreators } from 'redux';
 
 export default class Value extends Component {
-
-  static propTypes = {
-    modalStatus: PropTypes.bool,
-    toggleModal: PropTypes.func.isRequired
-  };
-
-  static defaultProps = {
-    modalStatus: false
-  }
-
-  constructor(props) {
-    super(props);
-    this.closeModal = this.closeModal.bind(this);
-  }
-
-  closeModal() {
-    this.props.toggleModal();
-  }
-
-  /*static defaultProps = {
-    showModal: false
-  };*/
-
   render() {
-    const { modalStatus } = this.props;
-    //const modal = <ContactModal action="ROLLOVER" title="Rollover your old RRSP"></ContactModal>;
     return (
       <ContentBlock>
-         <Modal show={modalStatus} onHide={this.closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Rollover your old RRSP</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>Rollover your old RRSP</h4>
-          <p>This functionality is not yet available over web.</p>
-          <p>Please send us the request with you optional message attached
-                and we will get to you as soon as possible.</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={this.closeModal}>Close</Button>
-        </Modal.Footer>
-      </Modal>
         <div>
           <div className="value__header">
             <Row>

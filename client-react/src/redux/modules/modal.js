@@ -5,7 +5,7 @@ const initialState = {
   modalState: false
 };
 
-export default function (state = initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_MODAL:
       const actualState = state.modalState;
