@@ -10,9 +10,15 @@ import ContentLoader, { Rect } from 'react-content-loader';
 
 
 @connect(
-  state => ({
-    ...state.account.value
-   }))
+  state => {
+    const { loading, loaded, loadError } = state.account.value;
+    return {
+      ...state.account.value.total,
+      loading,
+      loaded,
+      loadError
+    };
+   })
 
 export default class Value extends Component {
 static propTypes = {

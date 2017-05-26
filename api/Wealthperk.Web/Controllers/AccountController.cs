@@ -18,12 +18,28 @@ namespace WelthPeck.Controllers
         {
             await Task.Yield();
             return Json(new AccountValue() {
-                    retirementSavings = "$105,912.12",
-                    returns = "+ $5,912.12",
-                    totalEarnings = "+14.1%",
-                    feeSavings = "$509",
-                    freeTrades = "629",
-                    dividents = "$643",
+                        total = new TotalValue {
+                            retirementSavings = "$105,912.12",
+                            returns = "+ $5,912.12",
+                            totalEarnings = "+14.1%",
+                            feeSavings = "$509",
+                            freeTrades = "629",
+                            dividents = "$643"
+                        },
+                        accounts = new [] {
+                            new AccountBalance {
+                                name = "RRSP Employer",
+                                balance = "$15,203.51",
+                                earnings = "$1,203.51",
+                                autodeposit = false
+                            },
+                            new AccountBalance {
+                                name = "RRSP Employer",
+                                balance = "$15,203.51",
+                                earnings = "$1,203.51",
+                                autodeposit = true
+                            }
+                        }
                 });
 
         }

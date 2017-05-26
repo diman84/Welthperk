@@ -2,14 +2,28 @@
 
 namespace Wealthperk.ViewModel
 {
+    public class TotalValue
+    {
+        public string retirementSavings;
+        public string returns;
+        public string totalEarnings;
+        public string feeSavings;
+        public string freeTrades;
+        public string dividents;
+    }
+
     public class AccountValue
     {
-      public string retirementSavings;
-      public string returns;
-      public string totalEarnings;
-      public string feeSavings;
-      public string freeTrades;
-      public string dividents;
+        public TotalValue total;
+        public AccountBalance[] accounts;
+    }
+
+    public class AccountBalance
+    {
+        public string name;
+        public string balance;
+        public string earnings;
+        public bool autodeposit;
     }
 
     public class AccountSettings

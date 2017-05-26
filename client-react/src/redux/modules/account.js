@@ -4,6 +4,7 @@ const VALUE_FAIL = 'redux-example/account/VALUE_FAIL';
 const SETTINGS_LOADING = 'redux-example/account/SETTINGS_LOADING';
 const SETTINGS_LOADED = 'redux-example/account/SETTINGS_LOADED';
 const SETTINGS_FAIL = 'redux-example/account/SETTINGS_FAIL';
+const defaultError = 'Failed to load data';
 
 const initialState = {
   value: {loading: true},
@@ -39,7 +40,7 @@ export default function reducer(state = initialState, action = {}) {
         value: {
           loading: false,
           loaded: false,
-          loadError: action.error.message,
+          loadError: action.error.message || defaultError
         }
       };
     case SETTINGS_LOADING:
@@ -65,7 +66,7 @@ export default function reducer(state = initialState, action = {}) {
         settings: {
           loading: false,
           loaded: false,
-          loadError: action.error.message
+          loadError: action.error.message || defaultError
         }
       };
     default:
