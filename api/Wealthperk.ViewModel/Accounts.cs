@@ -20,6 +20,7 @@ namespace Wealthperk.ViewModel
 
     public class AccountBalance
     {
+        public string id;
         public string name;
         public string balance;
         public string earnings;

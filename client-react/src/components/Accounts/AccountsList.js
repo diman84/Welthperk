@@ -51,8 +51,8 @@ static propTypes = {
                  <Rect x={0} y={70} height={10} radius={5} width={100} />
                 </ContentLoader>}
 
-          {loaded && accounts.map((item, index) => (
-            <AccountItem key={`item-${index}`} />
+          {loaded && accounts.map((item) => (
+            <AccountItem key={item.id} item={item} />
           ))}
 
           <div className="view-toggler-box border-top">

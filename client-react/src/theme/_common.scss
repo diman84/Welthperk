@@ -52,6 +52,10 @@ h1.page-title {
   border: 2px solid $gray-light;
 }
 
+.bg-before-active:before {
+  border: 2px solid $brand-secondary;
+}
+
 .btm-content-box {
   position: relative;
   min-height: 328px;
@@ -61,6 +65,11 @@ h1.page-title {
 .color-primary {
   color: $brand-primary !important;
 }
+
+.color-secondary {
+  color: $brand-secondary !important;
+}
+
 .color-gray-light {
   color: $gray-light !important;
 }
