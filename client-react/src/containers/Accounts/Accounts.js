@@ -4,16 +4,23 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Col, Row, Grid } from 'react-bootstrap';
 import { Value, Risks, Contribution, AccountsList, Forecast } from 'components/Accounts';
-import * as authActions from 'redux/modules/auth';
+import * as accountActions from 'redux/modules/account';
 
 @connect(
-  state => ({ user: state.auth.user }),
-  authActions)
+  state => ({
+    user: state.auth.user
+   }),
+   accountActions)
 
 export default class Accounts extends Component {
 
   static propTypes = {
-    user: PropTypes.object.isRequired
+    user: PropTypes.object.isRequired,
+    loadValues: PropTypes.func.isRequired,
+  }
+
+  componentWillMount() {
+    this.props.loadValues();
   }
 
   render() {

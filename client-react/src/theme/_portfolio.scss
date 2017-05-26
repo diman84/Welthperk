@@ -20,6 +20,10 @@
     &--value {
       font-size: em(32);
     }
+    &--error {
+      padding-top: 15px;
+      color: #FF9C3A;
+    }
   }
   &__content {
     min-height: 362px;
