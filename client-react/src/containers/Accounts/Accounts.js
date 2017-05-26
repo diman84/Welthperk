@@ -17,10 +17,12 @@ export default class Accounts extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
     loadValues: PropTypes.func.isRequired,
+    loadSettings: PropTypes.func.isRequired
   }
 
   componentWillMount() {
     this.props.loadValues();
+    this.props.loadSettings();
   }
 
   render() {

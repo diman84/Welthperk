@@ -27,5 +27,25 @@ namespace WelthPeck.Controllers
                 });
 
         }
+
+        [Produces("application/json")]
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            await Task.Yield();
+            return Json(new AccountSettings() {
+                    contribution = new ContributionSettings {
+                        contribution = "$250.10",
+                        frequency = "Biweakly",
+                        description = "<p>3% of your pay</p><p>1% employer match</p>"
+                    },
+                    riskProfile = new RiskSettings {
+                        profileName = "Aggressive Growth",
+                        description = "<p>100% Growth Assets (Stocks)</p><p>0% Defensive Assets (Bonds)</p>",
+                        fee = "0.20%"
+                    }
+                });
+
+        }
     }
 }

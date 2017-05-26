@@ -65,6 +65,13 @@ static defaultProps = {
                 <div className="value__header--value">
                   {retirementSavings}
                 </div>}
+                {loading &&
+                <div>
+                  <ContentLoader height={50} speed={1}>
+                     <Rect x={50} y={10} height={20} radius={5} width={200} />
+                     <Rect x={50} y={40} height={10} radius={5} width={100} />
+                  </ContentLoader>
+                  </div>}
               </Col>
               <Col md={4} className="value__header--box">
                 <div className="value__header--title">
@@ -77,8 +84,15 @@ static defaultProps = {
                 <div className="value__header--value">
                   {totalEarnings}
                 </div>}
+                {loading &&
+                <div>
+                  <ContentLoader height={50} speed={1}>
+                     <Rect x={80} y={10} height={20} radius={5} width={200} />
+                     <Rect x={80} y={40} height={10} radius={5} width={100} />
+                  </ContentLoader>
+                  </div>}
               </Col>
-              <Col md={4} className="value__header--box" style={loaded ? {} : {'min-height': 0 }}>
+              <Col md={4} className="value__header--box" style={!loaded ? {} : {'min-height': 0 }}>
                 <div className="value__header--title">
                   RETURN
                   <WithTooltip id="tt3" tooltip={portfolioValue} >
@@ -89,18 +103,15 @@ static defaultProps = {
                 <div className="value__header--value">
                  {returns}
                 </div>}
+                {loading &&
+                <div>
+                  <ContentLoader height={50} speed={1}>
+                     <Rect x={100} y={10} height={20} radius={5} width={200} />
+                     <Rect x={100} y={40} height={10} radius={5} width={100} />
+                  </ContentLoader>
+                  </div>}
               </Col>
             </Row>
-
-            {loading &&
-              <Row>
-                <Col md={12} className="value__header--value">
-                  <ContentLoader height={50} speed={1} primaryColor={'#63B014'}
-                    style={{width: '100%'}} secondaryColor={'#6bbd17'}>
-                    <Rect x={10} y={0} height={50} width={380} />
-                  </ContentLoader>
-                </Col>
-              </Row>}
 
               {!loading && !loaded && loadError &&
               <Row>

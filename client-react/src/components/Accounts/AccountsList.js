@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
 import { AccountItem } from 'components/Accounts';
@@ -7,17 +7,10 @@ import ModalLink from 'containers/Modal/ModalLink';
 
 @connect(
   state => ({
-    user: state.auth.user
-  }),
-  { })
-export default class AccountsList extends Component {
-  static propTypes = {
-    user: PropTypes.object
-  };
+    ...state.account.accounts
+   }))
 
-  static defaultProps = {
-    user: null
-  };
+export default class AccountsList extends Component {
 
   render() {
     return (
