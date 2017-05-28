@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using Wealthperk.AWS.Models;
 using Wealthperk.Model;
 
 namespace Wealthperk.AWS
@@ -49,7 +52,7 @@ namespace Wealthperk.AWS
                 { "Id", new AttributeValue{N = userId}},
                 { "UserName", new AttributeValue(user.UserName)},
                 { "Email", new AttributeValue(user.Email) },
-                { "PasswordHash", new AttributeValue(user.PasswordHash) }
+                { "PasswordHash", new AttributeValue(user.PasswordHash)}
             },
              cancellationToken);
 
@@ -70,11 +73,7 @@ namespace Wealthperk.AWS
                 {"Id", new AttributeValue{N=userId}}
             });
 
-            return new UserInfo {
-                Id = record.Item["Id"].N,
-                UserName = record.Item["UserName"].S,
-                Email = record.Item["Email"].S
-            };
+            return UserModelFactory.CreateUserInfoFromAWS(record.Item);
         }
 
         public async Task<UserInfo> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -85,11 +84,7 @@ namespace Wealthperk.AWS
             if (record == null)
                 return null;
 
-            return new UserInfo {
-                Id = record["Id"].N,
-                UserName = record["Email"].S,
-                Email = record["Email"].S
-            };
+            return UserModelFactory.CreateUserInfoFromAWS(record);
         }
 
         public async Task<string> GetNormalizedUserNameAsync(UserInfo user, CancellationToken cancellationToken)

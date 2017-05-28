@@ -5,12 +5,13 @@ import Helmet from 'react-helmet';
 import { Col, Row, Grid } from 'react-bootstrap';
 import { Value, Risks, Contribution, AccountsList, Forecast } from 'components/Accounts';
 import * as accountActions from 'redux/modules/account';
+import * as authActions from 'redux/modules/auth';
 
 @connect(
   state => ({
     user: state.auth.user
    }),
-   accountActions)
+   {...authActions, ...accountActions})
 
 export default class Accounts extends Component {
 

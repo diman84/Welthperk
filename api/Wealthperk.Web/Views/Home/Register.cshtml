@@ -5,7 +5,22 @@
 }
 <h2>Register new user</h2>
 
-<form method="post" action="/api/auth/register">
-    @Html.EditorForModel()
-    <button type="submit">Create user</button>
+<form class"row" method="post" action="/api/auth/register">
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Email:</label>
+            @Html.TextBoxFor(x => x.username, new {@class="form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Password:</label>
+            @Html.TextBoxFor(x => x.password, new {@class="form-control"})
+        </div>
+    </div>
+     <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit">Create user</button>
+        </div>
+    </div>
 </form>

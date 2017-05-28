@@ -44,8 +44,8 @@ namespace Wealthperk.AWS
                     {"Id", new AttributeValue { S =  token.Id }},
                     {"Subject", new AttributeValue { S =  token.Subject }},
                     {"Type", new AttributeValue { S =  token.Type }},
-                    {"ApplicationId", AWSHelper.CreateAttributeVale(token.ApplicationId)},
-                    {"AuthorizationId", AWSHelper.CreateAttributeVale(token.AuthorizationId)}});
+                    {"ApplicationId", DynamoDBHelper.CreateAttributeVale(token.ApplicationId)},
+                    {"AuthorizationId", DynamoDBHelper.CreateAttributeVale(token.AuthorizationId)}});
 
             return token;
         }
@@ -306,9 +306,9 @@ namespace Wealthperk.AWS
             await _dynamoDb.UpdateItemAsync(TableName, new Dictionary<string, AttributeValue>{
                 {"Id", new AttributeValue(token.Id)},
             }, new Dictionary<string, AttributeValueUpdate>{
-                {"ApplicationId", new AttributeValueUpdate(AWSHelper.CreateAttributeVale(token.ApplicationId),
+                {"ApplicationId", new AttributeValueUpdate(DynamoDBHelper.CreateAttributeVale(token.ApplicationId),
                     AttributeAction.PUT)},
-                {"AuthorizationId",  new AttributeValueUpdate(AWSHelper.CreateAttributeVale(token.AuthorizationId),
+                {"AuthorizationId",  new AttributeValueUpdate(DynamoDBHelper.CreateAttributeVale(token.AuthorizationId),
                     AttributeAction.PUT)},
                 {"Subject",  new AttributeValueUpdate(new AttributeValue(token.Subject),
                     AttributeAction.PUT)},

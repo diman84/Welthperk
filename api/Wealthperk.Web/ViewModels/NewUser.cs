@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Wealthperk.Web.ViewModels
 {
@@ -11,5 +12,18 @@ namespace Wealthperk.Web.ViewModels
         [Required]
         [MinLength(8)]
         public string password { get; set; }
-}
+    }
+
+    public class UserAccount
+    {
+        public string username { get; set; }
+        public string accountname { get;set; }
+    }
+
+    public class AccountsRequest
+    {
+        public string username { get; set; }
+        public string accountname { get;set; }
+        public IFormFile file {get;set;}
+    }
 }

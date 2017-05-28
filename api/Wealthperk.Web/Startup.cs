@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Wealthperk.Model;
 using Wealthperk.AWS;
 using Wealthperk.AWS.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 
 namespace WelthPeck
 {
@@ -31,6 +33,9 @@ namespace WelthPeck
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IUserAccountsRepository, UserAccountsRepository>();
+            services.AddTransient<IUserAccountTimeseriesRepository, UserAccountTimeseriesRepository>();
+
             // Add framework services.
             services.AddIdentity<UserInfo, UserIdentityRole>()
                     .AddUserStore<DynamoDbUserStore>()
@@ -105,6 +110,8 @@ namespace WelthPeck
 
             app.UseIdentity();
 
+            app.UseOpenIddict();
+
             app.UseOAuthValidation();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -116,10 +123,12 @@ namespace WelthPeck
                 AutomaticChallenge = true,
                 RequireHttpsMetadata = false,
                 Audience = "resource-server",
-                Authority = Configuration["url"]
+                Authority = Configuration["api"],
+                TokenValidationParameters = new TokenValidationParameters {
+                    ValidateIssuerSigningKey = false,
+                    ValidIssuers = Configuration["frontends"]?.Split(',')
+                }
             });
-
-            app.UseOpenIddict();
 
              app.UseMvc(routes =>
             {

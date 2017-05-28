@@ -98,7 +98,7 @@ static defaultProps = {
                   </ContentLoader>
                   </div>}
               </Col>
-              <Col md={4} className="value__header--box" style={!loaded ? {} : {'min-height': 0 }}>
+              <Col md={4} className="value__header--box" style={loaded ? {} : {'min-height': 0 }}>
                 <div className="value__header--title">
                   RETURN
                   <WithTooltip id="tt3" tooltip={portfolioValue} >

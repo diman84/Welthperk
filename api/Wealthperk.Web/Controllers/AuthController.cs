@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using OpenIddict.Core;
 using Wealthperk.Model;
 using Wealthperk.Web.ViewModels;
+using Wealthperl.Model;
 
 namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
 {
@@ -31,7 +32,8 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
             IOptions<IdentityOptions> identityOptions,
            // IEmailSender emailSender,
             SignInManager<UserInfo> signInManager,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IUserAccountsRepository accountsRepo)
         {
             _userManager = userManager;
             _identityOptions = identityOptions;
@@ -131,7 +133,10 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new UserInfo { UserName = model.username, Email = model.username };
+            var user = new UserInfo {
+                UserName = model.username,
+                Email = model.username
+            };
             var result = await _userManager.CreateAsync(user, model.password);
             if (result.Succeeded)
             {
