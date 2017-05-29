@@ -15,5 +15,6 @@ namespace  Wealthperk.Model
     {
         Task UploadSeriesToAccountAsync(string accountId, IEnumerable<AccountTimeseriesValue> values);
         Task<double?> GetLatestMarketValueForAccountAsync(string accountId);
+        Task<double?> GetStartMarketValueForAccountAsync(string accountId);
     }
 }

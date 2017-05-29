@@ -16,11 +16,11 @@ namespace Wealthperk.AWS
             _dynamoDb = dynamoDb;
         }
 
-        public async Task SetSettingsToUserAsync(object userId, IEnumerable<AccountInfo> accounts)
+        public async Task SetSettingsToUserAsync(object userId, PortfolioStrategy settings)
         {
-            var item = await GetAccountsById(userId);
+            var item = await GetSettingsById(userId);
 
-            await SetUserSettings(item, userId, accounts);
+            await SetUserSettingsAsync(item, userId, settings);
         }
 
         public async Task<PortfolioStrategy> GetUserSettingsAsync(object userId)
@@ -74,18 +74,16 @@ namespace Wealthperk.AWS
             return result["Settings"].AsDocument();
         }
 
-         private async Task SetUserSettings(DynamoDBEntry item, object id, IEnumerable<AccountInfo> accounts)
+         private async Task SetUserSettingsAsync(DynamoDBEntry item, object id, PortfolioStrategy settings)
         {
             var table = Table.LoadTable(_dynamoDb, "Users");
-            var doc = new Document();
-            var list = item != null
+            var doc = item != null
                          ? item.AsDocument()
                          : new Document();
-            list.AddRange(accounts
-                .Where(x => list.All(d => d["AccountId"].AsString() != x.AccountId))
-                .Select(x => Document.FromAttributeMap(UserModelFactory.MapAccountInfoToAWS(x))));
 
-            doc["Accounts"] = list;
+           UserModelFactory.MapPortfolioSettingsToAWS(doc);
+
+            doc["Settings"] = item;
 
             await table.UpdateItemAsync(doc, new Primitive(id.ToString(), true));
         }

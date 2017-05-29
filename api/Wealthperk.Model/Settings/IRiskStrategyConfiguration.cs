@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 namespace Wealthperk.Model
 {
-    public class RiskStrategyConfiguration
+    public interface IRiskStrategyConfiguration
     {
-        public Dictionary<string, RiskStrategy> RiskStrategies { get; set; }
+        Dictionary<string, RiskStrategy> RiskStrategies { get; }
     }
 }

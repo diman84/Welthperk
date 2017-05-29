@@ -13,6 +13,7 @@ using Wealthperk.AWS;
 using Wealthperk.AWS.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using Wealthperk.Web.Core;
 
 namespace WelthPeck
 {
@@ -36,6 +37,9 @@ namespace WelthPeck
             services.AddTransient<IUserAccountsRepository, UserAccountsRepository>();
             services.AddTransient<IUserAccountTimeseriesRepository, UserAccountTimeseriesRepository>();
             services.AddTransient<IUserSettingsRepository, UserSettingsRepository>();
+            services.AddSingleton<IRiskStrategyConfiguration, RiskStrategyConfiguration>();
+
+            services.Configure<AppOptions>(Configuration.GetSection("Wealthperk"));
 
             // Add framework services.
             services.AddIdentity<UserInfo, UserIdentityRole>()

@@ -139,13 +139,20 @@ namespace WelthPeck.Controllers
             var accountBalances = new List<AccountBalance>();
             foreach (var account in accounts)
             {
-                double? mv = await _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId);
+                var values = await Task.WhenAll(
+                    _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId),
+                    _timeseriesRepo.GetStartMarketValueForAccountAsync(account.AccountId)
+                    //TODO: add cash flow
+                );
+                double? mv = values[0];//await _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId);
+                double? earn = mv - values[1];
                 retirementSavings += mv;
+                totalEarnings += earn;
                 accountBalances.Add(new AccountBalance {
                                 id = account.AccountId,
                                 name = account.DisplayName,
                                 balance = mv.FormatCurrency(),
-                                earnings = "N/A",//"$1,203.51"
+                                earnings = earn.FormatCurrency(),//"$1,203.51"
                                 autodeposit = false
                             });
             }
@@ -153,8 +160,8 @@ namespace WelthPeck.Controllers
             return new AccountValue() {
                         total = new TotalValue {
                             retirementSavings = retirementSavings.FormatCurrency(),
-                            returns = totalEarnings.FormatCurrency(),//"+14.1%",
-                            totalEarnings = "N/A",//"+ $5,912.12",
+                            returns = "N/A",//"+14.1%",
+                            totalEarnings = totalEarnings.FormatCurrency(),//"+ $5,912.12",
                             feeSavings = "N/A",//"$509",
                             freeTrades = "N/A",//"629",
                             dividents = "N/A"//"$643"

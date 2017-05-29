@@ -34,6 +34,23 @@ namespace Wealthperk.AWS
             return doc["MV"].AsDouble();
         }
 
+        public async Task<double?> GetStartMarketValueForAccountAsync(string accountId)
+        {
+            var table = Table.LoadTable(_dynamoDb, "AccountBalances");
+            var query = new QueryOperationConfig();
+            query.Limit = 1;
+            query.KeyExpression = new Expression();
+            query.KeyExpression.ExpressionStatement = "AccountId = :v_accountId";
+            query.KeyExpression.ExpressionAttributeValues[":v_accountId"] = accountId;
+
+            var search = table.Query(query);
+            var doc = (await search.GetNextSetAsync()).FirstOrDefault();
+            if (doc == null || !doc.ContainsKey("MV"))
+                return null;
+
+            return doc["MV"].AsDouble();
+        }
+
         public async Task UploadSeriesToAccountAsync(string accountId, IEnumerable<AccountTimeseriesValue> timeseries)
         {
             var table = Table.LoadTable(_dynamoDb, "AccountBalances");

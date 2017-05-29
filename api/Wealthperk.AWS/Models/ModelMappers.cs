@@ -61,6 +61,11 @@ namespace Wealthperk.AWS.Models
 
             return res;
         }
+
+        internal static void MapPortfolioSettingsToAWS(Document doc)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public static class OpenIdModelFactory
