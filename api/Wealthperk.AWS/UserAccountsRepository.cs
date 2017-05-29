@@ -70,7 +70,7 @@ namespace Wealthperk.AWS
 
             var result = (await search.GetNextSetAsync()).First();
             if (!result.ContainsKey("Accounts"))
-                return null;
+                return new List<Document>();
 
             return result["Accounts"].AsListOfDocument();
         }

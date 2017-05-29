@@ -46,6 +46,8 @@ namespace Wealthperk.AWS.Models
 
         internal static PortfolioStrategy CreateUserSettingsFromAWS(Document item)
         {
+            if (item == null)
+                return null;
             return JsonConvert.DeserializeObject<PortfolioStrategy>(item.ToJson());
         }
 

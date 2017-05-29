@@ -88,7 +88,7 @@ namespace WelthPeck.Controllers
             var res = await _accountRepo.GetUserAccountsByUserNameAsync(userName);
 
             if (!res.Any()){
-                return BadRequest("You have no acocunt configured");
+                return BadRequest(new { message = "You have no accounts configured"});
             }
 
             return Json(await GetAccountsWithValues(res));
