@@ -43,6 +43,11 @@ namespace Wealthperk.AWS.Models
             return rv;
         }
 
+        internal static PortfolioStrategy CreateUserSettingsFromAWS(Document item)
+        {
+            throw new NotImplementedException();
+        }
+
         internal static Dictionary<string, AttributeValue> MapAccountInfoToAWS(AccountInfo x)
         {
             var res = new Dictionary<string, AttributeValue> {

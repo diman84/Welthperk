@@ -35,6 +35,7 @@ namespace WelthPeck
         {
             services.AddTransient<IUserAccountsRepository, UserAccountsRepository>();
             services.AddTransient<IUserAccountTimeseriesRepository, UserAccountTimeseriesRepository>();
+            services.AddTransient<IUserSettingsRepository, UserSettingsRepository>();
 
             // Add framework services.
             services.AddIdentity<UserInfo, UserIdentityRole>()
