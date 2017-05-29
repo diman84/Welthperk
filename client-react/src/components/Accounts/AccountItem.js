@@ -28,11 +28,11 @@ export default class AccountItem extends Component {
       </div>
     </div>
     <div className="account__status">
-      {autodeposit &&
+      {!autodeposit &&
         <span className="marked-span bg-before-inactive color-gray-light">
           Auto-deposit inactive
         </span>}
-        {!autodeposit &&
+        {autodeposit &&
         <span className="marked-span bg-before-active color-secondary">
           Auto-deposit active
         </span>}

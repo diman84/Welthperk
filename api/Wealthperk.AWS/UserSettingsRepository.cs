@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DocumentModel;
+using Newtonsoft.Json;
 using Wealthperk.AWS.Models;
 using Wealthperk.Model;
 
@@ -77,13 +78,8 @@ namespace Wealthperk.AWS
          private async Task SetUserSettingsAsync(DynamoDBEntry item, object id, PortfolioStrategy settings)
         {
             var table = Table.LoadTable(_dynamoDb, "Users");
-            var doc = item != null
-                         ? item.AsDocument()
-                         : new Document();
-
-           UserModelFactory.MapPortfolioSettingsToAWS(doc);
-
-            doc["Settings"] = item;
+            var doc = new Document();
+            doc["Settings"] = Document.FromJson(JsonConvert.SerializeObject(settings));
 
             await table.UpdateItemAsync(doc, new Primitive(id.ToString(), true));
         }

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using Wealthperk.Model;
 
 namespace Wealthperk.Web.ViewModels
 {
@@ -18,6 +19,15 @@ namespace Wealthperk.Web.ViewModels
     {
         public string username { get; set; }
         public string accountname { get;set; }
+    }
+
+    public class UserSettingsRequest
+    {
+        public string username { get; set; }
+        public string riskstrategy { get;set; }
+        public int? contributionAmount { get; set; }
+        public string contributionDescription { get; set; }
+        public Frequency? contributionFrequency { get; set; }
     }
 
     public class AccountsRequest

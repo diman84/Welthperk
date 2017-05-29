@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
+using Newtonsoft.Json;
 using Wealthperk.Model;
 
 namespace Wealthperk.AWS.Models
@@ -45,7 +46,7 @@ namespace Wealthperk.AWS.Models
 
         internal static PortfolioStrategy CreateUserSettingsFromAWS(Document item)
         {
-            throw new NotImplementedException();
+            return JsonConvert.DeserializeObject<PortfolioStrategy>(item.ToJson());
         }
 
         internal static Dictionary<string, AttributeValue> MapAccountInfoToAWS(AccountInfo x)
@@ -60,11 +61,6 @@ namespace Wealthperk.AWS.Models
                 res.Add("SourceId", new AttributeValue(x.SourceId));
 
             return res;
-        }
-
-        internal static void MapPortfolioSettingsToAWS(Document doc)
-        {
-            throw new NotImplementedException();
         }
     }
 

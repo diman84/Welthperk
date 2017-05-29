@@ -22,13 +22,31 @@ namespace WelthPeck.Controllers
         private IUserAccountsRepository _accountRepo;
         private IUserAccountTimeseriesRepository _timeseriesRepo;
         private UserManager<UserInfo> _userManager;
+        private IUserSettingsRepository _settingsRepo;
+        private IRiskStrategyConfiguration _risksConfig;
 
         public AccountController(IUserAccountsRepository accountRepo, UserManager<UserInfo> userManager,
-        IUserAccountTimeseriesRepository timeseriesRepo)
+        IUserAccountTimeseriesRepository timeseriesRepo, IUserSettingsRepository settingsRepo, IRiskStrategyConfiguration risksConfig)
         {
             _accountRepo = accountRepo;
             _userManager = userManager;
             _timeseriesRepo = timeseriesRepo;
+            _settingsRepo = settingsRepo;
+            _risksConfig = risksConfig;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Settings(UserSettingsRequest req)
+        {
+             var user = await _userManager.FindByEmailAsync(req.username);
+            if (user == null)
+            {
+                return Redirect("/api/Home/Index?error=User not found");
+            }
+
+            await _settingsRepo.SetSettingsToUserAsync(user.Id, MapSettingsRequestToProtfolioSettings(req));
+
+            return Redirect("/api/Home/Index?success");
         }
 
         [HttpPost]
@@ -81,22 +99,43 @@ namespace WelthPeck.Controllers
         [HttpGet]
         public async Task<IActionResult> Settings()
         {
-            await Task.Yield();
-            return Json(new AccountSettings() {
-                    contribution = new ContributionSettings {
-                        contribution = "$250.10",
-                        frequency = "Biweakly",
-                        description = "<p>3% of your pay</p><p>1% employer match</p>"
-                    },
-                    riskProfile = new RiskSettings {
-                        profileName = "Aggressive Growth",
-                        description = "<p>100% Growth Assets (Stocks)</p><p>0% Defensive Assets (Bonds)</p>",
-                        fee = "0.20%"
+            var userName = HttpUserIdentity.CurrentUserName(User);
+            var settings = await _settingsRepo.GetUserSettingsByUserNameAsync(userName);
+            var contribution = settings != null && settings.ContributionStrategy != null
+                    ? new ContributionSettings {
+                        contribution = settings.ContributionStrategy.Amount.FormatCurrency(),//"$250.10",
+                        frequency = settings.ContributionStrategy.Frequency.ToString(),//"Biweekly"
+                        description = settings.ContributionStrategy.Description//"<p>3% of your pay</p><p>1% employer match</p>"
                     }
-                });
+                    : ContributionSettings.Undefined();
 
+            var risks =  settings != null && settings.RiskStrategy != null && _risksConfig.RiskStrategies.ContainsKey(settings.RiskStrategy)
+                    ? new RiskSettings {
+                        profileName = _risksConfig.RiskStrategies[settings.RiskStrategy].Name,//"Aggressive Growth",
+                        description = _risksConfig.RiskStrategies[settings.RiskStrategy].Description,//"<p>100% Growth Assets (Stocks)</p><p>0% Defensive Assets (Bonds)</p>",
+                        fee = _risksConfig.RiskStrategies[settings.RiskStrategy].Fee.FormatPercentage() //"0.20%"
+                    }
+                    : RiskSettings.Undefined();
+
+            return Json(new AccountSettings() {
+                    contribution = contribution,
+                    riskProfile = risks
+                });
         }
 
+        private PortfolioStrategy MapSettingsRequestToProtfolioSettings(UserSettingsRequest req)
+        {
+            var settings = new PortfolioStrategy();
+            settings.RiskStrategy = req.riskstrategy;
+            if (req.contributionAmount.HasValue && req.contributionFrequency.HasValue){
+                settings.ContributionStrategy = new Contribution {
+                    Amount = req.contributionAmount,
+                    Frequency = req.contributionFrequency,
+                    Description = req.contributionDescription
+                };
+            }
+            return settings;
+        }
 
         private async Task<IEnumerable<AccountTimeseriesValue>> ParseFileContent(IFormFile file)
         {
@@ -146,8 +185,16 @@ namespace WelthPeck.Controllers
                 );
                 double? mv = values[0];//await _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId);
                 double? earn = mv - values[1];
-                retirementSavings += mv;
-                totalEarnings += earn;
+                retirementSavings = (mv.HasValue ?
+                    (retirementSavings.HasValue
+                        ? retirementSavings + mv.Value
+                        : mv)
+                    : retirementSavings);
+                totalEarnings = (earn.HasValue ?
+                    (totalEarnings.HasValue
+                        ? totalEarnings + earn.Value
+                        : earn)
+                    : totalEarnings);
                 accountBalances.Add(new AccountBalance {
                                 id = account.AccountId,
                                 name = account.DisplayName,
@@ -160,7 +207,7 @@ namespace WelthPeck.Controllers
             return new AccountValue() {
                         total = new TotalValue {
                             retirementSavings = retirementSavings.FormatCurrency(),
-                            returns = "N/A",//"+14.1%",
+                            returns = (totalEarnings/(retirementSavings - totalEarnings)).FormatPercentage(),//"+14.1%",
                             totalEarnings = totalEarnings.FormatCurrency(),//"+ $5,912.12",
                             feeSavings = "N/A",//"$509",
                             freeTrades = "N/A",//"629",

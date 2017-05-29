@@ -38,6 +38,13 @@ namespace Wealthperk.ViewModel
         public string contribution;
         public string frequency;
         public string description;
+
+        public static ContributionSettings Undefined() {
+            return new ContributionSettings() {
+                contribution = "N/A",
+                description = "You have no contributions defined"
+            };
+        }
     }
 
     public class RiskSettings
@@ -45,5 +52,12 @@ namespace Wealthperk.ViewModel
         public string profileName;
         public string description;
         public string fee;
+
+         public static RiskSettings Undefined() {
+            return new RiskSettings() {
+                profileName = "N/A",
+                description = "You have no risks defined"
+            };
+        }
     }
 }
