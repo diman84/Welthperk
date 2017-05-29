@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Wealthperk.Model;
 using Wealthperk.Web.ViewModels;
 
 namespace WelthPeck.Controllers
@@ -12,11 +13,13 @@ namespace WelthPeck.Controllers
     {
         Amazon.DynamoDBv2.IAmazonDynamoDB _dynamoDb;
         Amazon.Extensions.NETCore.Setup.AWSOptions _ops;
+        private IRiskStrategyConfiguration _risks;
 
-        public HomeController(Amazon.DynamoDBv2.IAmazonDynamoDB dynamoDb, Amazon.Extensions.NETCore.Setup.AWSOptions ops)
+        public HomeController(Amazon.DynamoDBv2.IAmazonDynamoDB dynamoDb, Amazon.Extensions.NETCore.Setup.AWSOptions ops, IRiskStrategyConfiguration risks)
         {
             _dynamoDb = dynamoDb;
             _ops = ops;
+            _risks = risks;
         }
 
         public IActionResult Index()
@@ -55,6 +58,20 @@ namespace WelthPeck.Controllers
 
         public IActionResult Register()
         {
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult Accounts()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Settings()
+        {
+            ViewData["RiskStrategies"] = _risks.RiskStrategies.Keys.ToArray();
             return View();
         }
 

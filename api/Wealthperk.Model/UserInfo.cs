@@ -11,4 +11,10 @@ namespace Wealthperk.Model
         public object Id { get; set; }
         public string PasswordHash { get; set; }
     }
+
+    public class AccountInfo {
+        public string AccountId { get; set; }
+        public string DisplayName { get; set; }
+        public string SourceId { get; set; }
+    }
 }

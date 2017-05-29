@@ -43,7 +43,7 @@ namespace Wealthperk.AWS
                     {"Id", new AttributeValue { S =  authorization.Id }},
                     {"Subject", new AttributeValue { S =  authorization.Subject }},
                     {"Scope", new AttributeValue { S =  authorization.Scope }},
-                    {"ApplicationId", AWSHelper.CreateAttributeVale(authorization.ApplicationId)}});
+                    {"ApplicationId", DynamoDBHelper.CreateAttributeVale(authorization.ApplicationId)}});
 
             return authorization;
         }

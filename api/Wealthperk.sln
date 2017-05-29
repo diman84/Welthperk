@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wealthperk.Model", "Wealthp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wealthperk.AWS", "Wealthperk.AWS\Wealthperk.AWS.csproj", "{943EC98B-24D6-4426-BB16-64F801E616AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wealthperk.ViewModel", "Wealthperk.ViewModel\Wealthperk.ViewModel.csproj", "{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|x64.Build.0 = Release|x64
 		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|x86.ActiveCfg = Release|x86
 		{943EC98B-24D6-4426-BB16-64F801E616AD}.Release|x86.Build.0 = Release|x86
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Debug|x64.ActiveCfg = Debug|x64
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Debug|x64.Build.0 = Debug|x64
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Debug|x86.ActiveCfg = Debug|x86
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Debug|x86.Build.0 = Debug|x86
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Release|x64.ActiveCfg = Release|x64
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Release|x64.Build.0 = Release|x64
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Release|x86.ActiveCfg = Release|x86
+		{0F9339A1-A57B-4E46-9B8C-4EBF11278DE5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,59 @@
+﻿@using Wealthperk.Model
+@model Wealthperk.Web.ViewModels.UserSettingsRequest
+
+@{
+    ViewData["Title"] = "Manage accounts";
+    string[] riskStrategies = (ViewData["RiskStrategies"] as string[]) ?? new string[0];
+}
+<h2>Manage accounts for the user</h2>
+
+<form method="post" action="/api/account/settings">
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Email:</label>
+            @Html.TextBoxFor(x => x.username, new {@class="form-control"})
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Contribution Amount:</label>
+            @Html.TextBoxFor(x => x.contributionAmount, new {@class="form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Contribution Description (user html):</label>
+            @Html.TextAreaFor(x => x.contributionDescription, new {@class="form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Contribution Frequency:</label>
+            @Html.DropDownListFor(
+                x => x.contributionFrequency,
+                new SelectList(Enum.GetNames(typeof(Frequency))),
+                "Select Frequency",
+                new { @class = "form-control" })
+        </div>
+    </div>
+     <div class="form-group">
+        <div class="col-md-10">
+            <label>Risk Strategy:</label>
+            @Html.DropDownListFor(
+                x => x.riskstrategy,
+                riskStrategies.Select(x => new SelectListItem {
+                    Text = x,
+                    Value = x
+                    }).ToList(),
+                "Select Risks Strategy",
+                new { @class = "form-control" })
+        </div>
+    </div>
+
+     <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Submit" />
+        </div>
+    </div>
+</form>

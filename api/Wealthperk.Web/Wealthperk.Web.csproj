@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Wealthperk.Model\Wealthperk.Model.csproj" />
     <ProjectReference Include="..\Wealthperk.AWS\Wealthperk.AWS.csproj" />
+    <ProjectReference Include="..\Wealthperk.ViewModel\Wealthperk.ViewModel.csproj" />
   </ItemGroup>
   <ItemGroup>
   <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
