@@ -25,6 +25,7 @@ namespace Wealthperk.ViewModel
         public string balance;
         public string earnings;
         public bool autodeposit;
+        public int earningsSign;
     }
 
     public class AccountSettings

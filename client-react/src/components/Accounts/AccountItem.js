@@ -7,7 +7,16 @@ export default class AccountItem extends Component {
   }
 
   render(){
-    const {balance, earnings, name, autodeposit} = this.props.item;
+    const {balance, earnings, name, autodeposit, earningsSign} = this.props.item;
+    function signColorClass(sign) {
+        if (sign > 0){
+          return 'color-primary';
+        }
+        if (sign < 0){
+          return 'color-danger';
+        }
+        return '';
+    }
     return (
     <div className="account__item">
     <div className="account__title">
@@ -22,7 +31,7 @@ export default class AccountItem extends Component {
       </div>
       <div className="text-right">
         <div>Earnings</div>
-        <div className="_val color-primary">
+        <div className={'_val ' + signColorClass(earningsSign)}>
           {earnings}
         </div>
       </div>

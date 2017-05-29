@@ -113,7 +113,7 @@ namespace WelthPeck.Controllers
                     ? new RiskSettings {
                         profileName = _risksConfig.RiskStrategies[settings.RiskStrategy].Name,//"Aggressive Growth",
                         description = _risksConfig.RiskStrategies[settings.RiskStrategy].Description,//"<p>100% Growth Assets (Stocks)</p><p>0% Defensive Assets (Bonds)</p>",
-                        fee = _risksConfig.RiskStrategies[settings.RiskStrategy].Fee.FormatPercentage() //"0.20%"
+                        fee = string.Format("{0:0.00}%", _risksConfig.RiskStrategies[settings.RiskStrategy].Fee) //"0.20%"
                     }
                     : RiskSettings.Undefined();
 
@@ -199,16 +199,17 @@ namespace WelthPeck.Controllers
                                 id = account.AccountId,
                                 name = account.DisplayName,
                                 balance = mv.FormatCurrency(),
-                                earnings = earn.FormatCurrency(),//"$1,203.51"
-                                autodeposit = false
+                                earnings = earn.FormatCurrencyWithNoSign(),//"$1,203.51"
+                                autodeposit = false,
+                                earningsSign = Math.Sign(earn ?? 0)
                             });
             }
 
             return new AccountValue() {
                         total = new TotalValue {
                             retirementSavings = retirementSavings.FormatCurrency(),
-                            returns = (totalEarnings/(retirementSavings - totalEarnings)).FormatPercentage(),//"+14.1%",
-                            totalEarnings = totalEarnings.FormatCurrency(),//"+ $5,912.12",
+                            returns = (totalEarnings/(retirementSavings - totalEarnings)).FormatPercentageWithSign(),//"+14.1%",
+                            totalEarnings = totalEarnings.FormatCurrencyWithSign(),//"+ $5,912.12",
                             feeSavings = "N/A",//"$509",
                             freeTrades = "N/A",//"629",
                             dividents = "N/A"//"$643"
