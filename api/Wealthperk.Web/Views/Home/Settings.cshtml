@@ -7,7 +7,7 @@
 }
 <h2>Manage accounts for the user</h2>
 
-<form method="post" action="/api/account/settings">
+<form class="row"  method="post" action="/api/account/settings">
     <div class="form-group">
         <div class="col-md-10">
             <label>Email:</label>
@@ -23,7 +23,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            <label>Contribution Description (user html):</label>
+            <label>Contribution Description (use html):</label>
             @Html.TextAreaFor(x => x.contributionDescription, new {@class="form-control" })
         </div>
     </div>
