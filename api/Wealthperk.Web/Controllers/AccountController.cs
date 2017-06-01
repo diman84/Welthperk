@@ -103,9 +103,11 @@ namespace WelthPeck.Controllers
             var settings = await _settingsRepo.GetUserSettingsByUserNameAsync(userName);
             var contribution = settings != null && settings.ContributionStrategy != null
                     ? new ContributionSettings {
-                        contribution = settings.ContributionStrategy.Amount.FormatCurrency(),//"$250.10",
-                        frequency = settings.ContributionStrategy.Frequency.ToString(),//"Biweekly"
-                        description = settings.ContributionStrategy.Description//"<p>3% of your pay</p><p>1% employer match</p>"
+                        contribution = settings.ContributionStrategy.AmountPerFrequency().FormatCurrency(),//"$250.10",
+                        frequency = settings.ContributionStrategy.ContributionFrequency?.ToString() ?? "N/A",//"Biweekly"
+                        description = string.Format("<p>{0} of your pay</p><p>{1} employer match</p>",
+                            settings.ContributionStrategy.SalaryPercent?.ToString("P0") ?? "N/A",
+                            settings.ContributionStrategy.CompanyMatch?.ToString("P0") ?? "N/A")
                     }
                     : ContributionSettings.Undefined();
 
@@ -127,11 +129,13 @@ namespace WelthPeck.Controllers
         {
             var settings = new PortfolioStrategy();
             settings.RiskStrategy = req.riskstrategy;
-            if (req.contributionAmount.HasValue && req.contributionFrequency.HasValue){
+            if (req.salary.HasValue && req.contributionFrequency.HasValue) {
                 settings.ContributionStrategy = new Contribution {
-                    Amount = req.contributionAmount,
-                    Frequency = req.contributionFrequency,
-                    Description = req.contributionDescription
+                    Salary = req.salary,
+                    SalaryPercent = req.contributionPercentage,
+                    CompanyMatch = req.companyMatch,
+                    ContributionFrequency = req.contributionFrequency,
+
                 };
             }
             return settings;

@@ -15,7 +15,7 @@
   },
   "betterScripts": {
     "start-prod-api": {
-      "command": "cd ./api/bin/Release/netcoreapp1.1/publish/ && dotnet Wealthperk.Web.dll",
+      "command": "cd ./api/Wealthperk.Web && dotnet run --server.urls http://*:5000",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "production"
       }

@@ -25,8 +25,9 @@ namespace Wealthperk.Web.ViewModels
     {
         public string username { get; set; }
         public string riskstrategy { get;set; }
-        public int? contributionAmount { get; set; }
-        public string contributionDescription { get; set; }
+        public double? salary { get; set; }
+        public double? contributionPercentage { get; set; }
+        public double? companyMatch { get; set; }
         public Frequency? contributionFrequency { get; set; }
     }
 
