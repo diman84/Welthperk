@@ -31,7 +31,7 @@ namespace Wealthperk.AWS
             if (doc == null || !doc.ContainsKey("MV"))
                 return null;
 
-            return doc["MV"].AsDouble();
+            return doc["MV"].AsDouble() + (doc.ContainsKey("CF") && doc["CF"] != null ? doc["CF"].AsDouble() : 0);
         }
 
         public async Task<double?> GetStartMarketValueForAccountAsync(string accountId)
@@ -48,7 +48,35 @@ namespace Wealthperk.AWS
             if (doc == null || !doc.ContainsKey("MV"))
                 return null;
 
-            return doc["MV"].AsDouble();
+            return doc["MV"].AsDouble() + (doc.ContainsKey("CF") && doc["CF"] != null ? doc["CF"].AsDouble() : 0);
+        }
+
+        public async Task<double?> GetTotalCashFlowForAccountAsync(string accountId)
+        {
+            var table = Table.LoadTable(_dynamoDb, "AccountBalances");
+            var query = new QueryOperationConfig();
+            query.IndexName = "CFAccountId-Date-index";
+            query.KeyExpression = new Expression();
+            query.KeyExpression.ExpressionStatement = "CFAccountId = :v_accountId";
+            query.KeyExpression.ExpressionAttributeValues[":v_accountId"] = accountId;
+            query.AttributesToGet = new List<string> {"CF"};
+            query.Select = SelectValues.SpecificAttributes;
+            double? result = null;
+
+            var search = table.Query(query);
+            do
+            {
+                var list = await search.GetNextSetAsync();
+                foreach (var doc in list){
+                    if (doc != null && !doc.ContainsKey("CF") && doc["CF"] != null){
+                        result = result.HasValue
+                            ? result + doc["CF"].AsDouble()
+                            : doc["CF"].AsDouble();
+                    }
+                }
+
+            } while (!search.IsDone);
+            return result;
         }
 
         public async Task UploadSeriesToAccountAsync(string accountId, IEnumerable<AccountTimeseriesValue> timeseries)
@@ -62,7 +90,10 @@ namespace Wealthperk.AWS
                 seriesData["AccountId"] = accountId;
                 seriesData["Date"] = value.Date.ToAWSDate();
                 seriesData["MV"] = value.MarketValue;
-                seriesData["CF"] = value.CashFlow;
+                if (value.CashFlow.HasValue){
+                    seriesData["CF"] = value.CashFlow.Value;
+                    seriesData["CFAccountId"] = accountId;
+                }
                 batchWrite.AddDocumentToPut(seriesData);
             }
 

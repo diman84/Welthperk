@@ -92,7 +92,6 @@ namespace WelthPeck.Controllers
             }
 
             return Json(await GetAccountsWithValues(res));
-
         }
 
         [Produces("application/json")]
@@ -184,11 +183,12 @@ namespace WelthPeck.Controllers
             {
                 var values = await Task.WhenAll(
                     _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId),
-                    _timeseriesRepo.GetStartMarketValueForAccountAsync(account.AccountId)
+                    _timeseriesRepo.GetStartMarketValueForAccountAsync(account.AccountId),
+                    _timeseriesRepo.GetTotalCashFlowForAccountAsync(account.AccountId)
                     //TODO: add cash flow
                 );
                 double? mv = values[0];//await _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId);
-                double? earn = mv - values[1];
+                double? earn = mv - values[1] - (values[2] ?? 0);
                 retirementSavings = (mv.HasValue ?
                     (retirementSavings.HasValue
                         ? retirementSavings + mv.Value
