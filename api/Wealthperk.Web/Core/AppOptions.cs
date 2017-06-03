@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace Wealthperk.Web.Core
 {
     public class AppOptions
     {
-        public RiskOptions[] RiskStrategies { get; set; }
+        public IEnumerable<RiskOptions> RiskStrategies { get; set; }
     }
 
     public class RiskOptions
