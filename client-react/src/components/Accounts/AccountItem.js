@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 export default class AccountItem extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired
-  }
+  };
 
   render(){
-    const {balance, earnings, name, autodeposit, earningsSign} = this.props.item;
+    const {balance, earnings, name, earningsSign} = this.props.item;
     function signColorClass(sign) {
         if (sign > 0){
           return 'color-primary';
@@ -35,16 +35,6 @@ export default class AccountItem extends Component {
           {earnings}
         </div>
       </div>
-    </div>
-    <div className="account__status">
-      {!autodeposit &&
-        <span className="marked-span bg-before-inactive color-gray-light">
-          Auto-deposit inactive
-        </span>}
-        {autodeposit &&
-        <span className="marked-span bg-before-active color-secondary">
-          Auto-deposit active
-        </span>}
     </div>
   </div>);
   }

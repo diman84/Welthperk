@@ -56,7 +56,7 @@ static propTypes = {
           ))}
 
           <div className="view-toggler-box border-top">
-            <ModalLink action="ADD_ACCOUNT" title="+ ADD ANOTHER ACCOUNT"></ModalLink>
+            <ModalLink action="ADD_ACCOUNT" title="+ ADD ANOTHER ACCOUNT" />
           </div>
         </div>
       </ContentBlock>

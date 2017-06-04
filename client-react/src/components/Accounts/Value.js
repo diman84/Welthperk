@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { ContentBlock } from 'components';
 import { Row, Col } from 'react-bootstrap';
 import { WithTooltip } from 'components/Elements';
-import ModalButton from 'containers/Modal/ModalButton';
+// import ModalButton from 'containers/Modal/ModalButton';
+import ModalLink from 'containers/Modal/ModalLink';
 import { portfolioValue } from 'constants/staticText';
 import ContentLoader, { Rect } from 'react-content-loader';
 
@@ -31,7 +32,7 @@ static propTypes = {
     loading: PropTypes.bool.isRequired,
     loaded: PropTypes.bool.isRequired,
     loadError: PropTypes.string
-  }
+  };
 
 static defaultProps = {
     retirementSavings: '',
@@ -41,7 +42,7 @@ static defaultProps = {
     freeTrades: '',
     dividents: '',
     loadError: ''
-  }
+  };
 
   render() {
     const {
@@ -98,7 +99,7 @@ static defaultProps = {
                   </ContentLoader>
                   </div>}
               </Col>
-              <Col md={4} className="value__header--box" style={loaded ? {} : {'min-height': 0 }}>
+              <Col md={4} className="value__header--box" style={loaded ? {} : {minHeight: 0 }}>
                 <div className="value__header--title">
                   RETURN
                   <WithTooltip id="tt3" tooltip={portfolioValue} >
@@ -129,7 +130,7 @@ static defaultProps = {
               </Row>}
           </div>
 
-          <div className="pd-30">
+          <div className="pd-30 btm-content-box" style={{minHeight: 'auto'}}>
 
             {loaded &&
             <div className="value__features flex-container flex-vertical-center">
@@ -147,8 +148,8 @@ static defaultProps = {
               </div>
             </div>}
 
-            <div style={loaded ? { marginTop: '48px' } : { marginTop: '0' }}>
-              <ModalButton action="ROLLOVER" title="Rollover your old RRSP"></ModalButton>
+            <div className="view-toggler-box border-top">
+              <ModalLink action="ROLLOVER" title="ROLLOVER YOUR OLD RRSP" />
             </div>
           </div>
         </div>
