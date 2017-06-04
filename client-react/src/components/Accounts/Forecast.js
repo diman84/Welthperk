@@ -34,10 +34,10 @@ export default class Forecast extends Component {
 
           <div className="account__balance flex-container flex-vertical-bottom flex-justified">
             <div>
+              <div>Portfolio balance at <strong>52</strong></div>
               <div className="_val">
                 $51,823.33
               </div>
-              <div>Balance</div>
             </div>
             <div className="text-right">
               <a>How is this calculated?</a>

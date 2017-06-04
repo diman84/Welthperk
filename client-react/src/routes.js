@@ -36,19 +36,18 @@ export default store => {
   return (
     <Route path="/" component={App}>
       {/* Home (main) route */}
-
+      <IndexRoute component={Home} />
       {/* Routes requiring login */}
       {/*
         You can also protect a route like this:
         <Route path="protected-route" {...permissionsComponent(isAuthenticated)(Component)}>
       */}
       <Route {...permissionsComponent(isAuthenticated)()}>
-        <Route path="portfolio" getComponent={() => System.import('./containers/Portfolio/Portfolio')} />
         <Route path="accounts" getComponent={() => System.import('./containers/Accounts/Accounts')} />
+        <Route path="portfolio" getComponent={() => System.import('./containers/Portfolio/Portfolio')} />
       </Route>
       {/* Routes disallow login */}
       <Route {...permissionsComponent(isNotAuthenticated)()}>
-        <IndexRoute component={Home} />
         <Route path="login" getComponent={() => System.import('./containers/Login/Login')} />
       </Route>
       />

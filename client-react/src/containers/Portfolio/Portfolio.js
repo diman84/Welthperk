@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Col, Row, Grid } from 'react-bootstrap';
 import { Value, Perfomance, Transactions, Risks } from 'components/Portfolio';
+import AccountSelector from 'components/Elements/AccountSelector';
 import * as authActions from 'redux/modules/auth';
 
 @connect(
@@ -18,7 +19,7 @@ export default class Portfolio extends Component {
     const { user } = this.props;
     return (user &&
       <Grid className="content-wrapper">
-        <h1 className="text-center page-title">Hi, {user.email}, welcome to your investments!</h1>
+        <AccountSelector accountName="RRSP Personal" />
         <Helmet title="Portfolio" />
 
         <Row>
