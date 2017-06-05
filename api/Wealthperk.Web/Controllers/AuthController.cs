@@ -16,6 +16,8 @@ using OpenIddict.Core;
 using Wealthperk.Model;
 using Wealthperk.Web.ViewModels;
 using Wealthperl.Model;
+using Wealthperk.Web.Auth;
+using Wealthperk.ViewModel;
 
 namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
 {
@@ -26,6 +28,7 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
        // private readonly IEmailSender _emailSender;
         private readonly SignInManager<UserInfo> _signInManager;
         private readonly ILogger _logger;
+        private IUserAccountsRepository _accountRepo;
 
         public AuthController(
             UserManager<UserInfo> userManager,
@@ -39,11 +42,11 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
             _identityOptions = identityOptions;
          //   _emailSender = emailSender;
             _signInManager = signInManager;
+            _accountRepo = accountsRepo;
             _logger = loggerFactory.CreateLogger<AuthController>();
         }
 
         [AllowAnonymous]
-        //[HttpPost("~/api/auth/login")]
         [HttpPost]
         [Produces("application/json")]
         public async Task<IActionResult> Login(OpenIdConnectRequest request)
@@ -120,6 +123,21 @@ namespace aspnetCoreReactTemplate.aspnetCoreReactTemplate.Controllers
             {
                 Error = OpenIdConnectConstants.Errors.UnsupportedGrantType,
                 ErrorDescription = "The specified grant type is not supported."
+            });
+        }
+
+        [HttpGet("/auth/user")]
+        [Produces("application/json")]
+        public async Task<IActionResult> UserInfo(){
+            var userName = HttpUserIdentity.CurrentUserName(User);
+            var user = await _userManager.FindByEmailAsync(userName);
+            var accounts = await _accountRepo.GetUserAccountsByUserNameAsync(userName);
+            return Json(new AppUser {
+                email = user.Email,
+                accounts = accounts.Select(x=> new AppUser.AccountInfo {
+                    id = x.AccountId,
+                    name = x.DisplayName
+                }).ToArray()
             });
         }
 

@@ -141,16 +141,18 @@
       font-weight: 500;
       font-size: em(24);
       line-height: 1;
-      cursor: pointer;
       @include transition(color 0.2s);
-      > .fa {
+      > a {
+        color: inherit;
         font-size: em(18, 24);
         margin-right: 8px;
         @include translate(0, -2px);
+        @include transition(color 0.2s);
+        &:hover {
+          color: $brand-secondary;
+        }
       }
-      &:hover {
-        color: $brand-secondary;
-      }
+
     }
     &--nav.nav {
       > li {

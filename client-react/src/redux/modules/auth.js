@@ -151,9 +151,12 @@ export function load() {
         const { access_token } = response;
         return restApp.passport.verifyJWT(access_token);
       })
-      .then(payload => {
-        restApp.set('user', { email: payload.name });
-        return payload;
+      .then(() => {
+        return client.get('/auth/user');
+      })
+      .then(response => {
+        restApp.set('user', response);
+        return response;
       })
       .then(() => {
         return {
@@ -200,11 +203,12 @@ export function login(strategy, data, validation = true) {
         const { access_token } = response;
         return restApp.passport.verifyJWT(access_token);
       })
-      .then(payload => {
-        //restApp.set('user', response.user);
-        //return response;
-        restApp.set('user', { email: payload.name });
-        return payload;
+      .then(() => {
+        return client.get('/auth/user');
+      })
+      .then(response => {
+        restApp.set('user', response);
+        return response;
       })
       .then(() => {
         return {

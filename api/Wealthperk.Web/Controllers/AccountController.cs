@@ -207,6 +207,7 @@ namespace WelthPeck.Controllers
                             name = account.DisplayName,
                             balance = mv.FormatCurrency(),
                             earnings = earn.FormatCurrencyWithNoSign(),
+                            feeSavings = "N/A",
                             autodeposit = false,
                             earningsSign = Math.Sign(earn ?? 0)
                         };

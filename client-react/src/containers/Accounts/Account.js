@@ -15,15 +15,16 @@ import * as accountActions from 'redux/modules/account';
 export default class Account extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
-    loadValues: PropTypes.func.isRequired,
+    loadAccountValue: PropTypes.func.isRequired,
     loadSettings: PropTypes.func.isRequired,
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
+
   }
 
   componentWillMount() {
     if (this.props.params.id) {
       this.props.loadAccountValue(this.props.params.id);
-      this.props.loadSettings(this.props.params.id);
+      this.props.loadSettings();
     }
   }
 
