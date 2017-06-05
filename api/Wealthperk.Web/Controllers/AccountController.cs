@@ -94,6 +94,26 @@ namespace WelthPeck.Controllers
             return Json(await GetAccountsWithValues(res));
         }
 
+        [HttpGet("~/account/values/{id}")]
+        [Produces("application/json")]
+        public async Task<IActionResult> Values(string id)
+        {
+            var userName = HttpUserIdentity.CurrentUserName(User);
+            var res = await _accountRepo.GetUserAccountsByUserNameAsync(userName);
+
+            if (!res.Any()){
+                return BadRequest(new { message = "You have no accounts configured"});
+            }
+
+            var account = res.FirstOrDefault(x => x.AccountId == id);
+
+            if (account == null){
+                return NotFound(new { message = "Account not found"});
+            }
+
+            return Json(await GetAccountWithValues(account));
+        }
+
         [Produces("application/json")]
         [HttpGet]
         public async Task<IActionResult> Settings()
@@ -173,8 +193,26 @@ namespace WelthPeck.Controllers
             return rv;
         }
 
+        private async Task<AccountBalance> GetAccountWithValues(AccountInfo account)
+        {
+            var values = await Task.WhenAll(
+                    _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId),
+                    _timeseriesRepo.GetStartMarketValueForAccountAsync(account.AccountId),
+                    _timeseriesRepo.GetTotalCashFlowForAccountAsync(account.AccountId)
+                );
+            double? mv = values[0];
+            double? earn = mv - values[1] - (values[2] ?? 0);
+            return new AccountBalance {
+                            id = account.AccountId,
+                            name = account.DisplayName,
+                            balance = mv.FormatCurrency(),
+                            earnings = earn.FormatCurrencyWithNoSign(),
+                            autodeposit = false,
+                            earningsSign = Math.Sign(earn ?? 0)
+                        };
+        }
 
-        private async Task<AccountValue> GetAccountsWithValues(IEnumerable<AccountInfo> accounts)
+        private async Task<PortfolioValue> GetAccountsWithValues(IEnumerable<AccountInfo> accounts)
         {
             double? retirementSavings = null;
             double? totalEarnings = null;
@@ -185,7 +223,6 @@ namespace WelthPeck.Controllers
                     _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId),
                     _timeseriesRepo.GetStartMarketValueForAccountAsync(account.AccountId),
                     _timeseriesRepo.GetTotalCashFlowForAccountAsync(account.AccountId)
-                    //TODO: add cash flow
                 );
                 double? mv = values[0];//await _timeseriesRepo.GetLatestMarketValueForAccountAsync(account.AccountId);
                 double? earn = mv - values[1] - (values[2] ?? 0);
@@ -209,7 +246,7 @@ namespace WelthPeck.Controllers
                             });
             }
 
-            return new AccountValue() {
+            return new PortfolioValue() {
                         total = new TotalValue {
                             retirementSavings = retirementSavings.FormatCurrency(),
                             returns = (totalEarnings/(retirementSavings - totalEarnings)).FormatPercentageWithSign(),//"+14.1%",

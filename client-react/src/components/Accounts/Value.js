@@ -1,61 +1,28 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
 import { Row, Col } from 'react-bootstrap';
 import { WithTooltip } from 'components/Elements';
-// import ModalButton from 'containers/Modal/ModalButton';
-import ModalLink from 'containers/Modal/ModalLink';
 import { portfolioValue } from 'constants/staticText';
-import ContentLoader, { Rect } from 'react-content-loader';
-
+import { ValueChart } from 'components/Charts';
 
 @connect(
-  state => {
-    const { loading, loaded, loadError } = state.account.value;
-    return {
-      ...state.account.value.total,
-      loading,
-      loaded,
-      loadError
-    };
-   })
-
+  state => ({
+    user: state.auth.user,
+    current: state.account.current
+  }),
+  { })
 export default class Value extends Component {
-static propTypes = {
-    retirementSavings: PropTypes.string,
-    returns: PropTypes.string,
-    totalEarnings: PropTypes.string,
-    feeSavings: PropTypes.string,
-    freeTrades: PropTypes.string,
-    dividents: PropTypes.string,
-    loading: PropTypes.bool.isRequired,
-    loaded: PropTypes.bool.isRequired,
-    loadError: PropTypes.string
+  static propTypes = {
+    user: PropTypes.object
   };
 
-static defaultProps = {
-    retirementSavings: '',
-    returns: '',
-    totalEarnings: '',
-    feeSavings: '',
-    freeTrades: '',
-    dividents: '',
-    loadError: ''
+  static defaultProps = {
+    user: null
   };
 
   render() {
-    const {
-      retirementSavings,
-      returns,
-      totalEarnings,
-      feeSavings,
-      freeTrades,
-      dividents,
-      loaded,
-      loading,
-      loadError
-    } = this.props;
     return (
       <ContentBlock>
         <div>
@@ -63,94 +30,43 @@ static defaultProps = {
             <Row>
               <Col md={4} className="value__header--box">
                 <div className="value__header--title">
-                  RETIREMENT SAVINGS
-                  <WithTooltip id="tt1" tooltip={portfolioValue}>
+                  PORTFOLIO VALUE
+                  <WithTooltip id="tt1" tooltip={portfolioValue} >
                     <span className="info-icon" />
                   </WithTooltip>
                 </div>
-                {loaded &&
                 <div className="value__header--value">
-                  {retirementSavings}
-                </div>}
-                {loading &&
-                <div>
-                  <ContentLoader height={50} speed={1}>
-                     <Rect x={50} y={10} height={20} radius={5} width={200} />
-                     <Rect x={50} y={40} height={10} radius={5} width={100} />
-                  </ContentLoader>
-                  </div>}
+                  $105,912.12
+                </div>
               </Col>
               <Col md={4} className="value__header--box">
                 <div className="value__header--title">
-                  TOTAL EARNINGS
+                  EARNINGS
                   <WithTooltip id="tt2" tooltip={portfolioValue} >
                     <span className="info-icon" />
                   </WithTooltip>
                 </div>
-                {loaded &&
                 <div className="value__header--value">
-                  {totalEarnings}
-                </div>}
-                {loading &&
-                <div>
-                  <ContentLoader height={50} speed={1}>
-                     <Rect x={80} y={10} height={20} radius={5} width={200} />
-                     <Rect x={80} y={40} height={10} radius={5} width={100} />
-                  </ContentLoader>
-                  </div>}
+                  $105,912.12
+                </div>
               </Col>
-              <Col md={4} className="value__header--box" style={loaded ? {} : {minHeight: 0 }}>
+              <Col md={4} className="value__header--box">
                 <div className="value__header--title">
-                  RETURN
+                  SAVED ON FEES
                   <WithTooltip id="tt3" tooltip={portfolioValue} >
                     <span className="info-icon" />
                   </WithTooltip>
                 </div>
-                {loaded &&
                 <div className="value__header--value">
-                 {returns}
-                </div>}
-                {loading &&
-                <div>
-                  <ContentLoader height={50} speed={1}>
-                     <Rect x={100} y={10} height={20} radius={5} width={200} />
-                     <Rect x={100} y={40} height={10} radius={5} width={100} />
-                  </ContentLoader>
-                  </div>}
+                  $105,912.12
+                </div>
               </Col>
             </Row>
-
-              {!loading && !loaded && loadError &&
-              <Row>
-                <Col md={12} className="value__header--value">
-                  <div className="value__header--error">
-                    {loadError}
-                  </div>
-                </Col>
-              </Row>}
           </div>
 
-          <div className="pd-30 btm-content-box" style={{minHeight: 'auto'}}>
-
-            {loaded &&
-            <div className="value__features flex-container flex-vertical-center">
-              <div className="value__features--box flex-container flex-vertical-center">
-                <div className="_val">{feeSavings}</div>
-                <div className="_text">saving on fees</div>
-              </div>
-              <div className="value__features--box flex-container flex-vertical-center">
-                <div className="_val">{freeTrades}</div>
-                <div className="_text">free trades made</div>
-              </div>
-              <div className="value__features--box flex-container flex-vertical-center">
-                <div className="_val">{dividents}</div>
-                <div className="_text">reinvested devidends</div>
-              </div>
-            </div>}
-
-            <div className="view-toggler-box border-top">
-              <ModalLink action="ROLLOVER" title="ROLLOVER YOUR OLD RRSP" />
-            </div>
+          <div className="value__content pd-30">
+            <h2>Overall Chart</h2>
+            <ValueChart data={[1, 2, 3]} />
           </div>
         </div>
       </ContentBlock>

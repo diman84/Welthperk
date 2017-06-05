@@ -12,7 +12,7 @@ namespace Wealthperk.ViewModel
         public string dividents;
     }
 
-    public class AccountValue
+    public class PortfolioValue
     {
         public TotalValue total;
         public AccountBalance[] accounts;

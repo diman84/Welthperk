@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
-import { AccountItem } from 'components/Accounts';
+import { AccountItem } from 'components/Portfolio';
 import ModalLink from 'containers/Modal/ModalLink';
 import ContentLoader, { Rect } from 'react-content-loader';
 

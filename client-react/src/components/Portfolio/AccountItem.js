@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 export default class AccountItem extends Component {
   static propTypes = {
@@ -7,7 +8,7 @@ export default class AccountItem extends Component {
   };
 
   render(){
-    const {balance, earnings, name, earningsSign} = this.props.item;
+    const {balance, earnings, name, earningsSign, id} = this.props.item;
     function signColorClass(sign) {
         if (sign > 0){
           return 'color-primary';
@@ -19,9 +20,11 @@ export default class AccountItem extends Component {
     }
     return (
     <div className="account__item">
-    <div className="account__title">
-      {name}<i className="fa fa-arrow-right" />
-    </div>
+    <Link to={'/accounts/' + id}>
+      <div className="account__title">
+        {name}<i className="fa fa-arrow-right" />
+      </div>
+    </Link>
     <div className="account__balance flex-container flex-vertical-center flex-justified">
       <div>
         <div>Balance</div>

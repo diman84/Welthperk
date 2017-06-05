@@ -1,6 +1,9 @@
 const VALUE_LOADING = 'redux-example/account/VALUE_LOADING';
 const VALUE_LOADED = 'redux-example/account/VALUE_LOADED';
 const VALUE_FAIL = 'redux-example/account/VALUE_FAIL';
+const ACCOUNT_VALUE_LOADING = 'redux-example/account/ACCOUNT_VALUE_LOADING';
+const ACCOUNT_VALUE_LOADED = 'redux-example/account/ACCOUNT_VALUE_LOADED';
+const ACCOUNT_VALUE_FAIL = 'redux-example/account/ACCOUNT_VALUE_FAIL';
 const SETTINGS_LOADING = 'redux-example/account/SETTINGS_LOADING';
 const SETTINGS_LOADED = 'redux-example/account/SETTINGS_LOADED';
 const SETTINGS_FAIL = 'redux-example/account/SETTINGS_FAIL';
@@ -38,6 +41,32 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         value: {
+          loading: false,
+          loaded: false,
+          loadError: action.error.message || defaultError
+        }
+      };
+    case ACCOUNT_VALUE_LOADING:
+      return {
+        ...state,
+        current: {
+          loading: true,
+          loaded: false
+        }
+      };
+    case ACCOUNT_VALUE_LOADED:
+      return {
+        ...state,
+        current: {
+           ...action.result,
+          loading: false,
+          loaded: true
+        }
+      };
+    case ACCOUNT_VALUE_FAIL:
+      return {
+        ...state,
+        current: {
           loading: false,
           loaded: false,
           loadError: action.error.message || defaultError
@@ -82,6 +111,15 @@ export function loadValues() {
     types: [VALUE_LOADING, VALUE_LOADED, VALUE_FAIL],
     promise: ({ client }) =>
       client.get('/account/values')
+            .catch(error => Promise.reject(error))
+    };
+}
+
+export function loadAccountValue(id) {
+  return {
+    types: [ACCOUNT_VALUE_LOADING, ACCOUNT_VALUE_LOADED, ACCOUNT_VALUE_FAIL],
+    promise: ({ client }) =>
+      client.get('/account/values' + (id ? '/' + id : ''))
             .catch(error => Promise.reject(error))
     };
 }
