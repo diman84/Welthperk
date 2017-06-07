@@ -47,11 +47,12 @@ export default class Forecast extends Component {
               {forRetirement &&
                <span> by the age of <strong>{byAge}</strong></span>}
                {!forRetirement &&
-               <span> after <strong>{byAge}</strong></span>}
+               <span> after <strong>{byAge}</strong> years</span>}
                </p>}
             {loading &&
               <ContentLoader height={50} speed={1}>
-                 <Rect x={0} y={0} height={20} radius={5} width={400} />
+                 <Rect x={0} y={0} height={20} radius={5} width={300} />
+                 <Rect x={0} y={30} height={10} radius={5} width={200} />
                 </ContentLoader>}
           </div>
 
@@ -62,7 +63,7 @@ export default class Forecast extends Component {
             <div className="account__balance flex-container flex-vertical-bottom flex-justified">
               <div>
                 <div>Portfolio balance at {forRetirement && <strong>{currentAge}</strong>}
-                {forRetirement ? '' : currentAge}</div>
+                {forRetirement ? '' : ' the moment'}</div>
                 <div className="_val">
                   {currentAmount}
                 </div>

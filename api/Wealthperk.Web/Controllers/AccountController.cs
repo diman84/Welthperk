@@ -136,13 +136,13 @@ namespace WelthPeck.Controllers
 
             return Json(new Forecast{
                 byAmount = byAmount.FormatCurrency(),// "$1,019,101",
-                byAge = age.HasValue ? $"{_calcConfig.YearsAtRetirement} years old" : $" {_calcConfig.YearsForPrediction} years",//"65"
-                currentAge = age.HasValue ? age.Value.ToString() : $" the moment", //"52"
+                byAge = age.HasValue ? $"{_calcConfig.YearsAtRetirement}" : $"{_calcConfig.YearsForPrediction}",//"65"
+                currentAge = age.HasValue ? age.Value.ToString() : $"", //"52"
                 currentAmount = currentBalance.FormatCurrency(),// "$51,823.33",
                 forecast = new [] {
                         new ChartPointReal { x = 1, label = "Joined Wealthperk", y = startBalance, z = startBalance },
                         //new ChartPointReal { x = 2, label = "", y = halfWay, z = halfWay };
-                        new ChartPointReal { x = 2, label = age.HasValue ? $"{age}years old" : "current age", y = currentBalance, z = currentBalance }, //x = 3
+                        new ChartPointReal { x = 2, label = age.HasValue ? $"{age} years old" : "current age", y = currentBalance, z = currentBalance }, //x = 3
                         new ChartPoint { x = 3, label = age.HasValue ? $"{_calcConfig.YearsAtRetirement} years old" : $" after {_calcConfig.YearsForPrediction} years", z = byAmount} //x = 4
 
                 }   ,/*new [] {
