@@ -7,6 +7,7 @@ namespace Wealthperk.ViewModel.Account
         public string byAmount ;
         public string byAge ;
         public ChartPoint[] forecast;
+        public bool forRetirement;
     }
 
     public class ChartPointReal : ChartPoint

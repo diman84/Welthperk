@@ -16,6 +16,8 @@ using System.IO;
 using Wealthperk.Web.Formatting;
 using Wealthperk.ViewModel.Account;
 using Microsoft.AspNetCore.Authorization;
+using Wealthperk.Calculation;
+using Wealthperk.Model.Profile;
 
 namespace WelthPeck.Controllers
 {
@@ -26,16 +28,29 @@ namespace WelthPeck.Controllers
         private IUserAccountTimeseriesRepository _timeseriesRepo;
         private UserManager<UserInfo> _userManager;
         private IUserSettingsRepository _settingsRepo;
+        private IUserProfileRepository _profileRepo;
         private IRiskStrategyConfiguration _risksConfig;
+        private ICalculationService _calculation;
+        private ICalculationConfiguration _calcConfig;
 
-        public AccountController(IUserAccountsRepository accountRepo, UserManager<UserInfo> userManager,
-        IUserAccountTimeseriesRepository timeseriesRepo, IUserSettingsRepository settingsRepo, IRiskStrategyConfiguration risksConfig)
+        public AccountController(
+            IUserAccountsRepository accountRepo,
+            UserManager<UserInfo> userManager,
+            IUserAccountTimeseriesRepository timeseriesRepo,
+            IUserSettingsRepository settingsRepo,
+            IRiskStrategyConfiguration risksConfig,
+            ICalculationConfiguration calcConfig,
+            IUserProfileRepository profileRepo,
+            ICalculationService calculation)
         {
             _accountRepo = accountRepo;
             _userManager = userManager;
             _timeseriesRepo = timeseriesRepo;
             _settingsRepo = settingsRepo;
             _risksConfig = risksConfig;
+            _profileRepo = profileRepo;
+            _calculation = calculation;
+            _calcConfig = calcConfig;
         }
 
         [HttpPost]
@@ -151,19 +166,37 @@ namespace WelthPeck.Controllers
         [HttpGet]
         public async Task<IActionResult> Forecast()
         {
-            await Task.Yield();
+            var points = new ChartPoint[4];
+            var userName = HttpUserIdentity.CurrentUserName(User);
+            var age = (await _profileRepo.GetUserProfileByUserNameAsync(userName) ?? UserProfile.Default()).Age();
+            var accounts = (await _accountRepo.GetUserAccountsByUserNameAsync(userName));
+            var currentBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetLatestMarketValueForAccountAsync(acc.AccountId)))).Sum() ?? 0;
+            var startBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetStartMarketValueForAccountAsync(acc.AccountId)))).Sum() ?? 0;
+            var halfWay = startBalance + (currentBalance - startBalance)/2;
+            var annualContribution = (await _settingsRepo.GetUserSettingsByUserNameAsync(userName))?.ContributionStrategy?.AnnualContribution() ?? 0;
+            var byAmount = _calculation.PredictionForYears(
+                                startBalance: currentBalance,
+                                annualContribution: annualContribution,
+                                annualGrowth: _calcConfig.DefaultGrowth,
+                                years: age.HasValue ? (_calcConfig.YearsAtRetirement - age.Value) : _calcConfig.YearsForPrediction);
+
+            points[0] = new ChartPointReal { x = 1, label = "Joined Wealthperk", y = startBalance, z = startBalance };
+            points[1] = new ChartPointReal { x = 2, label = "", y = halfWay, z = halfWay };
+            points[2] = new ChartPointReal { x = 3, label = age.HasValue ? $"{age}years old" : "current age", y = currentBalance, z = currentBalance };
+            points[3] = new ChartPoint { x = 4, label = age.HasValue ? $"{_calcConfig.YearsAtRetirement} years old" : $" after {_calcConfig.YearsForPrediction} years", z = byAmount};
 
             return Json(new Forecast{
-                byAmount = "$1,019,101",
-                byAge = "65",
-                currentAge = "52",
-                currentAmount = "$51,823.33",
-                forecast = new [] {
+                byAmount = byAmount.FormatCurrency(),// "$1,019,101",
+                byAge = age.HasValue ? $"{_calcConfig.YearsAtRetirement} years old" : $" {_calcConfig.YearsForPrediction} years",//"65"
+                currentAge = age.HasValue ? age.Value.ToString() : $" the moment", //"52"
+                currentAmount = currentBalance.FormatCurrency(),// "$51,823.33",
+                forecast = points,/*new [] {
                     new ChartPointReal { x = 1, label = "Today", y = 180, z = 180 },
                     new ChartPointReal { x = 2, label = "", y = 240, z = 240 },
                     new ChartPointReal { x = 3, label = "48 years old", y = 360, z = 360 },
                     new ChartPoint { x = 4, label = "65 years old", z = 1000 }
-                    }
+                    }*/
+                forRetirement = age.HasValue
                 });
         }
 

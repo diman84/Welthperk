@@ -40,8 +40,13 @@ export default class ForecastChart extends Component {
     );
   };
 
+  valueFormatter = (arg) => {
+    return arg.toLocaleString ? arg.toLocaleString() : arg;
+  }
+
   render() {
     const {data} = this.props;
+    const labels = data.map((d) => (d.label));
     return (
       <ResponsiveContainer width="100%" height={228}>
         <AreaChart data={data}>
@@ -59,10 +64,10 @@ export default class ForecastChart extends Component {
             hide={false}
             stroke="#d7d7d7"
             strokeWidth={0}
-            ticks={['Today', '', '48 years old', '65 years old']}
+            ticks={labels}
             tick={this.formatXTicks}
           />
-          <Tooltip />
+          <Tooltip formatter={this.valueFormatter} />
           <Area
             dataKey="y"
             stroke="#FF9C3A"
@@ -81,7 +86,8 @@ export default class ForecastChart extends Component {
             dot={false}
             type="monotone"
           />
-          <ReferenceLine x="48 years old" stroke="#FF9C3A" />
+          {labels[2] &&
+          <ReferenceLine x={labels[2]} stroke="#FF9C3A" />}
         </AreaChart>
       </ResponsiveContainer>
     );

@@ -22,17 +22,20 @@ export default class Forecast extends Component {
     byAmount: PropTypes.string.isRequired,
     byAge: PropTypes.string.isRequired,
     forecast: PropTypes.array.isRequired,
+    forRetirement: PropTypes.bool,
     loading: PropTypes.bool.isRequired,
     loaded: PropTypes.bool.isRequired,
     loadError: PropTypes.string
   }
 
   static defaultProps = {
-      loadError: ''
+      loadError: '',
+      forRetirement: true
     };
 
   render() {
-    const { currentAmount, currentAge, byAmount, byAge, forecast, loading, loaded, loadError } = this.props;
+    const { currentAmount, currentAge, byAmount, byAge, forecast,
+       loading, loaded, loadError, forRetirement } = this.props;
     return (
       <ContentBlock>
         <div className="pd-30">
@@ -40,7 +43,12 @@ export default class Forecast extends Component {
             <h2>Future You</h2>
             {loaded &&
             <p>With the current contribution you are projected to have
-              roughly <strong>{byAmount}</strong> by the age of <strong>{byAge}</strong></p>}
+              roughly <strong>{byAmount}</strong>
+              {forRetirement &&
+               <span> by the age of <strong>{byAge}</strong></span>}
+               {!forRetirement &&
+               <span> after <strong>{byAge}</strong></span>}
+               </p>}
             {loading &&
               <ContentLoader height={50} speed={1}>
                  <Rect x={0} y={0} height={20} radius={5} width={400} />
@@ -53,7 +61,8 @@ export default class Forecast extends Component {
            {loaded &&
             <div className="account__balance flex-container flex-vertical-bottom flex-justified">
               <div>
-                <div>Portfolio balance at <strong>{currentAge}</strong></div>
+                <div>Portfolio balance at {forRetirement && <strong>{currentAge}</strong>}
+                {forRetirement ? '' : currentAge}</div>
                 <div className="_val">
                   {currentAmount}
                 </div>
