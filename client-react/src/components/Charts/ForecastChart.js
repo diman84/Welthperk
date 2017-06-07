@@ -86,8 +86,7 @@ export default class ForecastChart extends Component {
             dot={false}
             type="monotone"
           />
-          {labels[2] &&
-          <ReferenceLine x={labels[2]} stroke="#FF9C3A" />}
+          <ReferenceLine x={labels[1]} stroke="#FF9C3A" />
         </AreaChart>
       </ResponsiveContainer>
     );

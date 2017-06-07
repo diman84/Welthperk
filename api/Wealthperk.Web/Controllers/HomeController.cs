@@ -75,6 +75,12 @@ namespace WelthPeck.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
         public IActionResult Login()
         {
             return View(new AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest {

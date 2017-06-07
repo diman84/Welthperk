@@ -2,12 +2,12 @@
 @model Wealthperk.Web.ViewModels.UserSettingsRequest
 
 @{
-    ViewData["Title"] = "Manage accounts";
+    ViewData["Title"] = "Manage settings";
     string[] riskStrategies = (ViewData["RiskStrategies"] as string[]) ?? new string[0];
 }
-<h2>Manage accounts for the user</h2>
+<h2>Manage settings for the user</h2>
 
-<form class="row"  method="post" action="/api/account/settings">
+<form class="row"  method="post" action="/api/manage/settings">
     <div class="form-group">
         <div class="col-md-10">
             <label>Email:</label>

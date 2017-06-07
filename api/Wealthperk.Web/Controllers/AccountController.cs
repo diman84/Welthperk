@@ -53,51 +53,6 @@ namespace WelthPeck.Controllers
             _calcConfig = calcConfig;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Settings(UserSettingsRequest req)
-        {
-             var user = await _userManager.FindByEmailAsync(req.username);
-            if (user == null)
-            {
-                return Redirect("/api/Home/Index?error=User not found");
-            }
-
-            await _settingsRepo.SetSettingsToUserAsync(user.Id, MapSettingsRequestToProtfolioSettings(req));
-
-            return Redirect("/api/Home/Index?success");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Accounts(AccountsRequest req)
-        {
-            var user = await _userManager.FindByEmailAsync(req.username);
-            if (user == null)
-            {
-                return Redirect("/api/Home/Index?error=User not found");
-            }
-
-            var accounts = await _accountRepo.GetUserAccountsAsync(user.Id);
-            var account = accounts.FirstOrDefault(x=>x.DisplayName.Equals(req.accountname, StringComparison.CurrentCultureIgnoreCase));
-            if (account == null){
-                account = new AccountInfo {
-                    AccountId = IdGenerator.GenerateIdForAccount(user.Id),
-                    DisplayName = req.accountname
-                };
-                await _accountRepo.AddAccountsToUserAsync(user.Id, new []{account});
-            }
-
-            if (req.file != null && req.file.Length > 0){
-                try {
-                    await _timeseriesRepo.UploadSeriesToAccountAsync(account.AccountId, await ParseFileContent(req.file));
-                }
-                catch(Exception ex) {
-                    return Redirect("/api/Home/Index?error=Account is created, but series won't upload|" + ex.Message);
-                }
-            }
-
-            return Redirect("/api/Home/Index?success");
-        }
-
         [Produces("application/json")]
         [HttpGet]
         public async Task<IActionResult> Values()
@@ -166,13 +121,12 @@ namespace WelthPeck.Controllers
         [HttpGet]
         public async Task<IActionResult> Forecast()
         {
-            var points = new ChartPoint[4];
             var userName = HttpUserIdentity.CurrentUserName(User);
             var age = (await _profileRepo.GetUserProfileByUserNameAsync(userName) ?? UserProfile.Default()).Age();
             var accounts = (await _accountRepo.GetUserAccountsByUserNameAsync(userName));
             var currentBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetLatestMarketValueForAccountAsync(acc.AccountId)))).Sum() ?? 0;
             var startBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetStartMarketValueForAccountAsync(acc.AccountId)))).Sum() ?? 0;
-            var halfWay = startBalance + (currentBalance - startBalance)/2;
+            //var halfWay = startBalance + (currentBalance - startBalance)/2;
             var annualContribution = (await _settingsRepo.GetUserSettingsByUserNameAsync(userName))?.ContributionStrategy?.AnnualContribution() ?? 0;
             var byAmount = _calculation.PredictionForYears(
                                 startBalance: currentBalance,
@@ -180,17 +134,18 @@ namespace WelthPeck.Controllers
                                 annualGrowth: _calcConfig.DefaultGrowth,
                                 years: age.HasValue ? (_calcConfig.YearsAtRetirement - age.Value) : _calcConfig.YearsForPrediction);
 
-            points[0] = new ChartPointReal { x = 1, label = "Joined Wealthperk", y = startBalance, z = startBalance };
-            points[1] = new ChartPointReal { x = 2, label = "", y = halfWay, z = halfWay };
-            points[2] = new ChartPointReal { x = 3, label = age.HasValue ? $"{age}years old" : "current age", y = currentBalance, z = currentBalance };
-            points[3] = new ChartPoint { x = 4, label = age.HasValue ? $"{_calcConfig.YearsAtRetirement} years old" : $" after {_calcConfig.YearsForPrediction} years", z = byAmount};
-
             return Json(new Forecast{
                 byAmount = byAmount.FormatCurrency(),// "$1,019,101",
                 byAge = age.HasValue ? $"{_calcConfig.YearsAtRetirement} years old" : $" {_calcConfig.YearsForPrediction} years",//"65"
                 currentAge = age.HasValue ? age.Value.ToString() : $" the moment", //"52"
                 currentAmount = currentBalance.FormatCurrency(),// "$51,823.33",
-                forecast = points,/*new [] {
+                forecast = new [] {
+                        new ChartPointReal { x = 1, label = "Joined Wealthperk", y = startBalance, z = startBalance },
+                        //new ChartPointReal { x = 2, label = "", y = halfWay, z = halfWay };
+                        new ChartPointReal { x = 2, label = age.HasValue ? $"{age}years old" : "current age", y = currentBalance, z = currentBalance }, //x = 3
+                        new ChartPoint { x = 3, label = age.HasValue ? $"{_calcConfig.YearsAtRetirement} years old" : $" after {_calcConfig.YearsForPrediction} years", z = byAmount} //x = 4
+
+                }   ,/*new [] {
                     new ChartPointReal { x = 1, label = "Today", y = 180, z = 180 },
                     new ChartPointReal { x = 2, label = "", y = 240, z = 240 },
                     new ChartPointReal { x = 3, label = "48 years old", y = 360, z = 360 },
@@ -198,55 +153,6 @@ namespace WelthPeck.Controllers
                     }*/
                 forRetirement = age.HasValue
                 });
-        }
-
-        private PortfolioStrategy MapSettingsRequestToProtfolioSettings(UserSettingsRequest req)
-        {
-            var settings = new PortfolioStrategy();
-            settings.RiskStrategy = req.riskstrategy;
-            if (req.salary.HasValue && req.contributionFrequency.HasValue) {
-                settings.ContributionStrategy = new Contribution {
-                    Salary = req.salary,
-                    SalaryPercent = req.contributionPercentage,
-                    CompanyMatch = req.companyMatch,
-                    ContributionFrequency = req.contributionFrequency,
-
-                };
-            }
-            return settings;
-        }
-
-        private async Task<IEnumerable<AccountTimeseriesValue>> ParseFileContent(IFormFile file)
-        {
-            var rv = new List<AccountTimeseriesValue>();
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                memoryStream.Position = 0;
-                using(var reader = new StreamReader(memoryStream))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        var line = reader.ReadLine();
-                        var values = line.Split(new [] {";"}, StringSplitOptions.RemoveEmptyEntries);
-                        if(values.Length > 1
-                            &&  DateTime.TryParse(values[0], out DateTime date)
-                            &&  double.TryParse(values[1], out double mv))
-                        {
-                            var timeseriesData = new AccountTimeseriesValue {
-                                Date = date,
-                                MarketValue = mv
-                            };
-                            if (values.Length > 2 && double.TryParse(values[2], out double cf)) {
-                                timeseriesData.CashFlow = cf;
-                            }
-                            rv.Add(timeseriesData);
-                        }
-                    }
-                }
-
-            }
-            return rv;
         }
 
         private async Task<AccountBalance> GetAccountWithValues(AccountInfo account)
