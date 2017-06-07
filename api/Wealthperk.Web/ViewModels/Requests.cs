@@ -36,6 +36,9 @@ namespace Wealthperk.Web.ViewModels
     {
         public string username { get; set; }
         public DateTime? birthday { get;set; }
+        public string firstName { get;set; }
+        public string lastName { get;set; }
+
     }
 
     public class AccountsRequest
