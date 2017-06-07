@@ -3,47 +3,67 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
 import { ForecastChart } from 'components/Charts';
+import ContentLoader, { Rect } from 'react-content-loader';
 
 @connect(
-  state => ({
-    user: state.auth.user
-  }),
-  { })
+  state => {
+    const { loading, loaded, loadError } = state.charts;
+    return {
+      ...state.charts.futureYou,
+      loading,
+      loaded,
+      loadError
+    };
+   })
 export default class Forecast extends Component {
   static propTypes = {
-    user: PropTypes.object
-  };
+    currentAmount: PropTypes.string.isRequired,
+    currentAge: PropTypes.string.isRequired,
+    byAmount: PropTypes.string.isRequired,
+    byAge: PropTypes.string.isRequired,
+    forecast: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    loaded: PropTypes.bool.isRequired,
+    loadError: PropTypes.string
+  }
 
   static defaultProps = {
-    user: null
-  };
+      loadError: ''
+    };
 
   render() {
+    const { currentAmount, currentAge, byAmount, byAge, forecast, loading, loaded, loadError } = this.props;
     return (
       <ContentBlock>
         <div className="pd-30">
           <div style={{ marginBottom: '24px' }}>
             <h2>Future You</h2>
+            {loaded &&
             <p>With the current contribution you are projected to have
-              roughly <strong>$1,019,101</strong> by the age of <strong>65</strong></p>
+              roughly <strong>{byAmount}</strong> by the age of <strong>{byAge}</strong></p>}
+            {loading &&
+              <ContentLoader height={50} speed={1}>
+                 <Rect x={0} y={0} height={20} radius={5} width={400} />
+                </ContentLoader>}
           </div>
 
           <div style={{ marginBottom: '8px' }}>
-            <ForecastChart data={[1, 2, 3]} />
+            {loaded && <ForecastChart data={forecast} />}
           </div>
-
-          <div className="account__balance flex-container flex-vertical-bottom flex-justified">
-            <div>
-              <div>Portfolio balance at <strong>52</strong></div>
-              <div className="_val">
-                $51,823.33
+           {loaded &&
+            <div className="account__balance flex-container flex-vertical-bottom flex-justified">
+              <div>
+                <div>Portfolio balance at <strong>{currentAge}</strong></div>
+                <div className="_val">
+                  {currentAmount}
+                </div>
               </div>
-            </div>
-            <div className="text-right">
-              <a>How is this calculated?</a>
-            </div>
-          </div>
-
+              <div className="text-right">
+                <a>How is this calculated?</a>
+              </div>
+            </div>}
+          {!loading && !loaded && loadError &&
+          <div>{loadError}</div>}
         </div>
       </ContentBlock>
     );

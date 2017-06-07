@@ -14,9 +14,12 @@ using Microsoft.AspNetCore.Identity;
 using Wealthperk.Model.Accounts;
 using System.IO;
 using Wealthperk.Web.Formatting;
+using Wealthperk.ViewModel.Account;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WelthPeck.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private IUserAccountsRepository _accountRepo;
@@ -144,6 +147,26 @@ namespace WelthPeck.Controllers
                 });
         }
 
+        [Produces("application/json")]
+        [HttpGet]
+        public async Task<IActionResult> Forecast()
+        {
+            await Task.Yield();
+
+            return Json(new Forecast{
+                byAmount = "$1,019,101",
+                byAge = "65",
+                currentAge = "52",
+                currentAmount = "$51,823.33",
+                forecast = new [] {
+                    new ChartPointReal { x = 1, label = "Today", y = 180, z = 180 },
+                    new ChartPointReal { x = 2, label = "", y = 240, z = 240 },
+                    new ChartPointReal { x = 3, label = "48 years old", y = 360, z = 360 },
+                    new ChartPoint { x = 4, label = "65 years old", z = 1000 }
+                    }
+                });
+        }
+
         private PortfolioStrategy MapSettingsRequestToProtfolioSettings(UserSettingsRequest req)
         {
             var settings = new PortfolioStrategy();
@@ -172,7 +195,7 @@ namespace WelthPeck.Controllers
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
-                        var values = line.Split(new [] {';'}, StringSplitOptions.RemoveEmptyEntries);
+                        var values = line.Split(new [] {";"}, StringSplitOptions.RemoveEmptyEntries);
                         if(values.Length > 1
                             &&  DateTime.TryParse(values[0], out DateTime date)
                             &&  double.TryParse(values[1], out double mv))

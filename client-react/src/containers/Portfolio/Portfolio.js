@@ -5,25 +5,28 @@ import Helmet from 'react-helmet';
 import { Col, Row, Grid } from 'react-bootstrap';
 import { Value, Contribution, AccountsList, Forecast } from 'components/Portfolio';
 import * as accountActions from 'redux/modules/account';
+import * as chartActions from 'redux/modules/charts';
 import * as authActions from 'redux/modules/auth';
 
 @connect(
   state => ({
     user: state.auth.user
    }),
-   {...authActions, ...accountActions})
+   {...authActions, ...accountActions, ...chartActions})
 
 export default class Portfolio extends Component {
 
   static propTypes = {
     user: PropTypes.object.isRequired,
     loadValues: PropTypes.func.isRequired,
-    loadSettings: PropTypes.func.isRequired
+    loadSettings: PropTypes.func.isRequired,
+    loadForecast: PropTypes.func.isRequired
   }
 
   componentWillMount() {
     this.props.loadValues();
     this.props.loadSettings();
+    this.props.loadForecast();
   }
 
   render() {

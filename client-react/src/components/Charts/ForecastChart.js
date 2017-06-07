@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveContainer, AreaChart, Area, YAxis, XAxis, Tooltip, ReferenceLine } from 'recharts';
-
-const data = [
+/*const data = [
   { x: 1, label: 'Today', y: 180, z: 180 },
   { x: 2, label: '', y: 240, z: 240 },
   { x: 3, label: '48 years old', y: 360, z: 360 },
   { x: 4, label: '65 years old', z: 1000 }
 ];
-
+*/
 export default class ForecastChart extends Component {
   static propTypes = {
     data: PropTypes.array.isRequired
@@ -42,6 +41,7 @@ export default class ForecastChart extends Component {
   };
 
   render() {
+    const {data} = this.props;
     return (
       <ResponsiveContainer width="100%" height={228}>
         <AreaChart data={data}>
