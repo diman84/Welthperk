@@ -74,7 +74,7 @@ namespace Wealthperk.Web.Formatting
         }
 
 
-        public static string FormatCurrency(this double value, string cur = "$")
+        private static string FormatCurrency(this double value, string cur = "$")
         {
              return string.Format("{0}{1:#,#.##}", cur, value);
         }

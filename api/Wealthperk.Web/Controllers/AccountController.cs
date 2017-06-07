@@ -124,15 +124,17 @@ namespace WelthPeck.Controllers
             var userName = HttpUserIdentity.CurrentUserName(User);
             var age = (await _profileRepo.GetUserProfileByUserNameAsync(userName) ?? UserProfile.Default()).Age();
             var accounts = (await _accountRepo.GetUserAccountsByUserNameAsync(userName));
-            var currentBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetLatestMarketValueForAccountAsync(acc.AccountId)))).Sum() ?? 0;
-            var startBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetStartMarketValueForAccountAsync(acc.AccountId)))).Sum() ?? 0;
+            var currentBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetLatestMarketValueForAccountAsync(acc.AccountId)))).Sum();
+            var startBalance = (await Task.WhenAll(accounts.Select(acc=> _timeseriesRepo.GetStartMarketValueForAccountAsync(acc.AccountId)))).Sum();
             //var halfWay = startBalance + (currentBalance - startBalance)/2;
             var annualContribution = (await _settingsRepo.GetUserSettingsByUserNameAsync(userName))?.ContributionStrategy?.AnnualContribution() ?? 0;
-            var byAmount = _calculation.PredictionForYears(
-                                startBalance: currentBalance,
+            var byAmount = currentBalance.HasValue
+                ? _calculation.PredictionForYears(
+                                startBalance: currentBalance.Value,
                                 annualContribution: annualContribution,
                                 annualGrowth: _calcConfig.DefaultGrowth,
-                                years: age.HasValue ? (_calcConfig.YearsAtRetirement - age.Value) : _calcConfig.YearsForPrediction);
+                                years: age.HasValue ? (_calcConfig.YearsAtRetirement - age.Value) : _calcConfig.YearsForPrediction)
+                : default(double?);
 
             return Json(new Forecast{
                 byAmount = byAmount.FormatCurrency(),// "$1,019,101",
