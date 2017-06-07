@@ -1,0 +1,27 @@
+﻿@using Wealthperk.Model
+@model Wealthperk.Web.ViewModels.UserProfileRequest
+
+@{
+    ViewData["Title"] = "Manage profile";
+}
+<h2>Manage profile for the user</h2>
+
+<form class="row"  method="post" action="/api/manage/profile">
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Email:</label>
+            @Html.TextBoxFor(x => x.username, new {@class="form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <label>Bithday:</label>
+            @Html.TextBoxFor(x => x.birthday, new {@class="form-control"})
+        </div>
+    </div>
+     <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Submit" />
+        </div>
+    </div>
+</form>

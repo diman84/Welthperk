@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Wealthperk.Model;
@@ -29,6 +30,12 @@ namespace Wealthperk.Web.ViewModels
         public double? contributionPercentage { get; set; }
         public double? companyMatch { get; set; }
         public Frequency? contributionFrequency { get; set; }
+    }
+
+    public class UserProfileRequest
+    {
+        public string username { get; set; }
+        public DateTime? birthday { get;set; }
     }
 
     public class AccountsRequest

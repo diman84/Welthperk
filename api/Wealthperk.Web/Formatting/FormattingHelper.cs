@@ -16,7 +16,7 @@ namespace Wealthperk.Web.Formatting
              }
         }
 
-public static string FormatPercentageWithSign(this double? value, string cur = "$")
+        public static string FormatPercentageWithSign(this double? value, string cur = "$")
         {
             switch(value) {
                  case null:
@@ -74,7 +74,7 @@ public static string FormatPercentageWithSign(this double? value, string cur = "
         }
 
 
-        private static string FormatCurrency(this double value, string cur = "$")
+        public static string FormatCurrency(this double value, string cur = "$")
         {
              return string.Format("{0}{1:#,#.##}", cur, value);
         }

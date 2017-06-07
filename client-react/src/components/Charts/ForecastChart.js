@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveContainer, AreaChart, Area, YAxis, XAxis, Tooltip, ReferenceLine } from 'recharts';
-
-const data = [
+/*const data = [
   { x: 1, label: 'Today', y: 180, z: 180 },
   { x: 2, label: '', y: 240, z: 240 },
   { x: 3, label: '48 years old', y: 360, z: 360 },
   { x: 4, label: '65 years old', z: 1000 }
 ];
-
+*/
 export default class ForecastChart extends Component {
   static propTypes = {
     data: PropTypes.array.isRequired
@@ -41,7 +40,13 @@ export default class ForecastChart extends Component {
     );
   };
 
+  valueFormatter = (arg) => {
+    return arg.toLocaleString ? arg.toLocaleString() : arg;
+  }
+
   render() {
+    const {data} = this.props;
+    const labels = data.map((d) => (d.label));
     return (
       <ResponsiveContainer width="100%" height={228}>
         <AreaChart data={data}>
@@ -59,10 +64,10 @@ export default class ForecastChart extends Component {
             hide={false}
             stroke="#d7d7d7"
             strokeWidth={0}
-            ticks={['Today', '', '48 years old', '65 years old']}
+            ticks={labels}
             tick={this.formatXTicks}
           />
-          <Tooltip />
+          <Tooltip formatter={this.valueFormatter} />
           <Area
             dataKey="y"
             stroke="#FF9C3A"
@@ -81,7 +86,7 @@ export default class ForecastChart extends Component {
             dot={false}
             type="monotone"
           />
-          <ReferenceLine x="48 years old" stroke="#FF9C3A" />
+          <ReferenceLine x={labels[1]} stroke="#FF9C3A" />
         </AreaChart>
       </ResponsiveContainer>
     );

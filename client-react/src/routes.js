@@ -26,7 +26,7 @@ export default store => {
     redirectAction: routerActions.replace,
     wrapperDisplayName: 'UserIsNotAuthenticated',
     predicate: user => !user,
-    failureRedirectPath: '/accounts',
+    failureRedirectPath: '/portfolio',
     allowRedirectBack: false
   });
 
@@ -43,8 +43,8 @@ export default store => {
         <Route path="protected-route" {...permissionsComponent(isAuthenticated)(Component)}>
       */}
       <Route {...permissionsComponent(isAuthenticated)()}>
-        <Route path="accounts" getComponent={() => System.import('./containers/Accounts/Accounts')} />
         <Route path="portfolio" getComponent={() => System.import('./containers/Portfolio/Portfolio')} />
+        <Route path="accounts/:id" getComponent={() => System.import('./containers/Accounts/Account')} />
       </Route>
       {/* Routes disallow login */}
       <Route {...permissionsComponent(isNotAuthenticated)()}>
