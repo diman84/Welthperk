@@ -131,6 +131,8 @@ namespace WelthPeck.Controllers
         {
             var porfile = new UserProfile();
             porfile.Birthday = req.birthday;
+            porfile.FirstName = req.firstName;
+            porfile.LastName = req.lastName;
             return porfile;
         }
 

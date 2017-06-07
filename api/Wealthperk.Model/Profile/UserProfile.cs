@@ -4,6 +4,8 @@ namespace Wealthperk.Model.Profile
 {
     public class UserProfile {
         public DateTime? Birthday {get;set;}
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public static UserProfile Default()
         {
