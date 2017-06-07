@@ -7,7 +7,7 @@ export Home from './Home/Home';
 // export LoginSuccess from './LoginSuccess/LoginSuccess';
 export NotFound from './NotFound/NotFound';
 export Portfolio from './Portfolio/Portfolio';
-export Accounts from './Accounts/Accounts';
+export Account from './Accounts/Account';
 // export Register from './Register/Register';
 // export Survey from './Survey/Survey';
 // export Widgets from './Widgets/Widgets';

@@ -3,52 +3,52 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Col, Row, Grid } from 'react-bootstrap';
-import { Value, Contribution, AccountsList, Forecast } from 'components/Portfolio';
-import * as accountActions from 'redux/modules/account';
-import * as chartActions from 'redux/modules/charts';
+import { Value, Perfomance, Transactions, Risks } from 'components/Accounts';
+import AccountSelector from 'components/Elements/AccountSelector';
 import * as authActions from 'redux/modules/auth';
+import * as accountActions from 'redux/modules/account';
 
 @connect(
-  state => ({
-    user: state.auth.user
-   }),
-   {...authActions, ...accountActions, ...chartActions})
+  state => ({ user: state.auth.user }),
+   {...authActions, ...accountActions})
 
-export default class Portfolio extends Component {
-
+export default class Account extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
-    loadValues: PropTypes.func.isRequired,
+    loadAccountValue: PropTypes.func.isRequired,
     loadSettings: PropTypes.func.isRequired,
-    loadForecast: PropTypes.func.isRequired
+    params: PropTypes.object.isRequired,
+
   }
 
   componentWillMount() {
-    this.props.loadValues();
-    this.props.loadSettings();
-    this.props.loadForecast();
+    if (this.props.params.id) {
+      this.props.loadAccountValue(this.props.params.id);
+      this.props.loadSettings();
+    }
   }
 
   render() {
     const { user } = this.props;
-    return (
+    return (user &&
       <Grid className="content-wrapper">
-        <h1 className="page-title" style={{fontSize: '24px'}}>Good afternoon, {user.email}!</h1>
-        <Helmet title="Portfolio" />
+        <AccountSelector />
+        <Helmet title="Account" />
+
         <Row>
           <Col md={8}>
             <Value />
           </Col>
           <Col md={4}>
-            <AccountsList />
+            <Perfomance />
           </Col>
         </Row>
         <Row>
           <Col md={8}>
-            <Forecast />
+            <Transactions />
           </Col>
           <Col md={4}>
-            <Contribution />
+            <Risks />
           </Col>
         </Row>
 

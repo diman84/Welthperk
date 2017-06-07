@@ -6,6 +6,7 @@ import auth from './modules/auth';
 import notifs from './modules/notifs';
 import modal from './modules/modal';
 import account from './modules/account';
+import charts from './modules/charts';
 // import widgets from './modules/widgets';
 // import survey from './modules/survey';
 // import chat from './modules/chat';
@@ -20,6 +21,7 @@ export default function createReducers(asyncReducers) {
     auth,
     modal,
     account,
+    charts,
     // widgets,
     // survey,
     // chat,

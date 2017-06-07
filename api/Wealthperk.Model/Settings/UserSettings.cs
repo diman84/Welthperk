@@ -16,6 +16,11 @@ namespace Wealthperk.Model
         public double? SalaryPercent { get; set; }
         public double? CompanyMatch { get; set; }
 
+        public double? AnnualContribution()
+        {
+            return GetContribution(Salary);
+        }
+
         public double? AmountPerFrequency()
         {
             var dfi = DateTimeFormatInfo.CurrentInfo;
@@ -36,7 +41,12 @@ namespace Wealthperk.Model
                 default:
                     break;
             }
-            return salaryPerFrequency * (SalaryPercent + (CompanyMatch ?? 0));
+            return GetContribution(salaryPerFrequency);
+        }
+
+        private double? GetContribution(double? amount)
+        {
+            return amount * (SalaryPercent + (CompanyMatch ?? 0));
         }
     }
 

@@ -6,6 +6,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using Newtonsoft.Json;
 using Wealthperk.Model;
+using Wealthperk.Model.Profile;
 
 namespace Wealthperk.AWS.Models
 {
@@ -42,6 +43,13 @@ namespace Wealthperk.AWS.Models
                 rv.SourceId = arg["SourceId"].AsString();
 
             return rv;
+        }
+
+        internal static UserProfile CreateUserProfileFromAWS(Document item)
+        {
+            if (item == null)
+                return null;
+            return JsonConvert.DeserializeObject<UserProfile>(item.ToJson());
         }
 
         internal static PortfolioStrategy CreateUserSettingsFromAWS(Document item)

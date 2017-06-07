@@ -111,6 +111,14 @@
     .fa {
       font-size: em(10);
       margin-left: 8px;
+      @include translate(0, -2px);
+      @include transition(margin-left 0.2s);
+    }
+    &:hover {
+      color: $brand-secondary;
+      > .fa {
+        margin-left: 16px;
+      }
     }
   }
   &__balance {
@@ -122,5 +130,65 @@
   }
   &__status {
     margin: 16px 0 8px;
+  }
+  &__selector {
+    margin-bottom: 32px;
+    > div {
+      float: left;
+    }
+    &--link {
+      color: $gray-dark;
+      font-weight: 500;
+      font-size: em(24);
+      line-height: 1;
+      @include transition(color 0.2s);
+      > a {
+        color: inherit;
+        font-size: em(18, 24);
+        margin-right: 8px;
+        @include translate(0, -2px);
+        @include transition(color 0.2s);
+        &:hover {
+          color: $brand-secondary;
+        }
+      }
+
+    }
+    &--nav.nav {
+      > li {
+        > a {
+          padding: 4px 0 0 16px;
+          &:hover,
+          &:focus {
+            background-color: transparent;
+          }
+          > .caret {
+            border-top: 6px dashed $gray-dark;
+            border-top: 6px solid \9;
+            border-right: 6px solid transparent;
+            border-left: 6px solid transparent;
+          }
+        }
+      }
+      .dropdown-menu {
+        padding: 0 16px;
+        border-radius: 6px;
+        border: 0;
+        > li {
+          border-bottom: 1px solid $gray-light;
+          > a {
+            padding: 8px 0;
+            &:hover,
+            &:focus {
+              background-color: transparent;
+              color: $brand-secondary;
+            }
+          }
+          &:last-child {
+            border-bottom: 0;
+          }
+        }
+      }
+    }
   }
 }

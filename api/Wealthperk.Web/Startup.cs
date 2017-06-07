@@ -14,6 +14,7 @@ using Wealthperk.AWS.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using Wealthperk.Web.Core;
+using Wealthperk.Calculation;
 
 namespace WelthPeck
 {
@@ -37,12 +38,18 @@ namespace WelthPeck
             services.AddTransient<IUserAccountsRepository, UserAccountsRepository>();
             services.AddTransient<IUserAccountTimeseriesRepository, UserAccountTimeseriesRepository>();
             services.AddTransient<IUserSettingsRepository, UserSettingsRepository>();
+            services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            services.AddTransient<ICalculationService, CalculationService>();
+
             services.AddSingleton<IRiskStrategyConfiguration, RiskStrategyConfiguration>();
+            services.AddSingleton<ICalculationConfiguration, CalculationConfiguration>();
 
             services.Configure<AppOptions>(Configuration.GetSection("Wealthperk"));
 
             // Add framework services.
-            services.AddIdentity<UserInfo, UserIdentityRole>()
+            services.AddIdentity<UserInfo, UserIdentityRole>(config => {
+                        config.Cookies.ApplicationCookie.AutomaticChallenge = false;
+                    })
                     .AddUserStore<DynamoDbUserStore>()
                     .AddRoleStore<DynamoDbUserStore>()
                     .AddDefaultTokenProviders();
@@ -125,7 +132,7 @@ namespace WelthPeck
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
+                AutomaticChallenge = false,
                 RequireHttpsMetadata = false,
                 Audience = "resource-server",
                 Authority = Configuration["api"],

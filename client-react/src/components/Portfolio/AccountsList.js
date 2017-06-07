@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContentBlock } from 'components';
-import { AccountItem } from 'components/Accounts';
+import { AccountItem } from 'components/Portfolio';
 import ModalLink from 'containers/Modal/ModalLink';
 import ContentLoader, { Rect } from 'react-content-loader';
 
@@ -56,7 +56,7 @@ static propTypes = {
           ))}
 
           <div className="view-toggler-box border-top">
-            <ModalLink action="ADD_ACCOUNT" title="+ ADD ANOTHER ACCOUNT"></ModalLink>
+            <ModalLink action="ADD_ACCOUNT" title="+ ADD ANOTHER ACCOUNT" />
           </div>
         </div>
       </ContentBlock>
